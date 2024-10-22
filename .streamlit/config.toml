@@ -1,0 +1,13 @@
+[server]
+maxUploadSize = 400
+
+
+
+[theme]
+primaryColor="#cebde0"
+backgroundColor="#2f1f42"
+secondaryBackgroundColor="#220e06"
+textColor="#c7e5b0"
+# primaryColor = '#FF8C02' # Bright Orange
+# backgroundColor = '#00325B' # Dark Blue
+# secondaryBackgroundColor = '#55B2FF' # Lighter Blue
