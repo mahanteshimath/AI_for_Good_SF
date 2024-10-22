@@ -3,9 +3,9 @@ import streamlit as st
 
 # --- PAGE SETUP ---
 about_page = st.Page(
-    "pages/about_me.py",
-    title="About Me",
-    icon=":material/account_circle:",
+    "pages/Architecture.py",
+    title="Architecture",
+    icon=":material/home:",
     default=True,
 )
 project_1_page = st.Page(
