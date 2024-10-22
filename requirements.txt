@@ -66,4 +66,4 @@ matplotlib
 seaborn
 requests
 chardet
-textblob 
+textblob
