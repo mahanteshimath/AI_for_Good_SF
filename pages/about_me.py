@@ -12,8 +12,6 @@ with col2:
     st.write(
         "Senior Data Analyst, assisting enterprises by supporting data-driven decision-making."
     )
-    if st.button("✉️ Contact Me"):
-        show_contact_form()
 
 
 # --- EXPERIENCE & QUALIFICATIONS ---
