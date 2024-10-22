@@ -1,5 +1,12 @@
 import streamlit as st
-
+import snowflake.connector
+from snowflake.connector.pandas_tools import write_pandas
+from pathlib import Path
+import time
+import pandas as pd
+from PIL import Image
+from io import BytesIO
+import requests 
 
 # --- PAGE SETUP ---
 Architecture_page = st.Page(
@@ -32,6 +39,8 @@ pg = st.navigation(
 # --- SHARED ON ALL PAGES ---
 # st.logo("src/codingisfun_logo.png")
 # st.sidebar.markdown("Made with ❤️ by [Sven](https://youtube.com/@codingisfun)")
+
+
 
 
 # --- RUN NAVIGATION ---
