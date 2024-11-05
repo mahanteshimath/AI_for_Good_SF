@@ -74,7 +74,7 @@ pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "SF-MP Social impact Data": [project_1_page,project_2_page],
-        "Open Government Data":[road_page, safety_page,,Drowsiness,chatbot],
+        "Open Government Data":[road_page, safety_page,Drowsiness,chatbot],
     }
 )
 
