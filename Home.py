@@ -66,7 +66,7 @@ Drowsiness = st.Page(
     icon=":material/swap_driving_apps_wheel:",
 )
 chatbot = st.Page(
-    "pages/chatbot.py",
+    "pages/Snowflake_chatbot.py",
     title="Chat Bot",
     icon=":material/smart_toy:",
 )
