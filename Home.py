@@ -14,6 +14,13 @@ st.logo(
     icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
 )
 
+st.set_page_config(
+  page_title="INDIAN-INFRA-AI-INSIGHTS",
+  page_icon="🇮🇳",
+  layout="wide",
+  initial_sidebar_state="expanded",
+) 
+
 # --- PAGE SETUP ---
 Architecture_page = st.Page(
     "pages/Architecture.py",
