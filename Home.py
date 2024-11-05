@@ -67,7 +67,7 @@ Drowsiness = st.Page(
 )
 chatbot = st.Page(
     "pages/Snowflake_chatbot.py",
-    title="Chat Bot",
+    title="Snowflake chatbot",
     icon=":material/smart_toy:",
 )
 pg = st.navigation(
