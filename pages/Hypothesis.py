@@ -54,12 +54,8 @@ df = pd.DataFrame(data)
 # Set the title of the app
 st.title("Budget Allocation Over Financial Years")
 
-# Display the DataFrame as a table
-st.subheader("Budget Allocation Data")
-st.dataframe(df)
-
-# Create a bar chart for budget allocation
-st.subheader("Budget Allocation Visualization")
+r1_expander = st.expander("Budget Allocation Data")
+st.r1_expander(df)
 plt.figure(figsize=(10, 6))
 bars = plt.bar(df["Financial Year"], df["Budget Allocation (in lakh crore)"], color='skyblue')
 plt.title("Budget Allocation (in lakh crore) by Financial Year")
