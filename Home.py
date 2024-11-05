@@ -18,7 +18,7 @@ Architecture_page = st.Page(
 Hypothesis_page = st.Page(
     "pages/Hypothesis.py",
     title="Hypothesis",
-    icon=":material/cognition:"
+    icon=":material/cognition_2:"
 )
 project_1_page = st.Page(
     "pages/sales_dashboard.py",
@@ -36,7 +36,7 @@ project_2_page = st.Page(
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "Projects": [project_1_page, project_2_page],
+        "Snowflake MP": [project_1_page, project_2_page],
     }
 )
 
