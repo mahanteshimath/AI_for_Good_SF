@@ -1,5 +1,11 @@
 import streamlit as st
 
+st.logo(
+    image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg",
+    link="https://www.linkedin.com/in/mahantesh-hiremath/",
+    icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
+)
+
 col1, col2 = st.columns(2, gap="small")
 with col1:
     st.image("./src/India.jpeg")
