@@ -67,7 +67,7 @@ Drowsiness = st.Page(
 )
 PMAY = st.Page(
     "pages/PMAY_AI.py",
-    title="PMAY Beneficiary Analysis Using AI",
+    title="PMAY Analysis Using AI",
     icon=":material/house:",
 )
 chatbot = st.Page(
