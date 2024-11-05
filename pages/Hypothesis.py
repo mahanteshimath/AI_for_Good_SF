@@ -1,33 +1,15 @@
 import streamlit as st
 
-image = "./src/India.jpeg"
-
-# Set the background image using CSS
-st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-image: url('{image}');
-        background-size: cover;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# --- HERO SECTION ---
-col1, col2 = st.columns(2, gap="small", vertical_alignment="center")
+col1, col2 = st.columns(2, gap="small")
 with col1:
     st.image("./src/India.jpeg")
 
 with col2:
-    st.title("Sven Bosau", anchor=False)
+    st.title("Hypothesis", anchor=False)
     st.write(
         "Senior Data Analyst, assisting enterprises by supporting data-driven decision-making."
     )
 
-
-# --- EXPERIENCE & QUALIFICATIONS ---
 st.write("\n")
 st.subheader("Experience & Qualifications", anchor=False)
 st.write(
@@ -38,8 +20,6 @@ st.write(
     - Excellent team-player and displaying a strong sense of initiative on tasks
     """
 )
-
-# --- SKILLS ---
 st.write("\n")
 st.subheader("Hard Skills", anchor=False)
 st.write(
