@@ -90,7 +90,7 @@ fig.update_traces(
 fig.update_layout(
     yaxis_title="Budget Allocation (in ₹ lakh crore)",
     xaxis_title="Financial Year",
-    hoverlabel=dict(bgcolor="white", font_size=12, font_family="Arial"),
+    hoverlabel=dict(bgcolor="blue", font_size=12, font_family="Arial"),
     template="plotly_white"
 )
 
