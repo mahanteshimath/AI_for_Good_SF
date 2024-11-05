@@ -18,7 +18,7 @@ st.markdown(
 # --- HERO SECTION ---
 col1, col2 = st.columns(2, gap="small", vertical_alignment="center")
 with col1:
-    st.image("./src/India.jpeg", width=230)
+    st.image("./src/India.jpeg")
 
 with col2:
     st.title("Sven Bosau", anchor=False)
