@@ -15,6 +15,12 @@ Architecture_page = st.Page(
     icon=":material/home:",
     default=True,
 )
+Hypothesis_page = st.Page(
+    "pages/Hypothesis.py",
+    title="Hypothesis",
+    icon=":cognition/cognition:",
+    default=True,
+)
 project_1_page = st.Page(
     "pages/sales_dashboard.py",
     title="Sales Dashboard",
@@ -30,7 +36,7 @@ project_2_page = st.Page(
 # --- NAVIGATION SETUP [WITH SECTIONS]---
 pg = st.navigation(
     {
-        "Info": [Architecture_page],
+        "Info": [Hypothesis_page,Architecture_page],
         "Projects": [project_1_page, project_2_page],
     }
 )
