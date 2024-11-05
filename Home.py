@@ -36,15 +36,11 @@ Hypothesis_page = st.Page(
 
 #"SF-MP Social impact"
 project_1_page = st.Page(
-    "pages/Fleet_Monitoring.py",
-    title="Fleet Monitoring",
-    icon=":material/bar_chart:",
+    "pages/Fleet_Monitoring_and_Prediction.py.py",
+    title="Fleet Monitoring and Prediction.py",
+    icon=":material/road:",
 )
-project_2_page = st.Page(
-    "pages/chatbot.py",
-    title="Chat Bot",
-    icon=":material/smart_toy:",
-)
+
 
  #"Open Government Data"
 road_page = st.Page(
@@ -56,13 +52,19 @@ road_page = st.Page(
 safety_page = st.Page(
     "pages/Safety_in_Construction_Using_AI.py",
     title="Safety in Construction Using AI",
-    icon=":material/bar_chart:",
+    icon=":material/health_and_safety:",
+)
+
+chatbot = st.Page(
+    "pages/chatbot.py",
+    title="Chat Bot",
+    icon=":material/smart_toy:",
 )
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "SF-MP Social impact": [project_1_page, project_2_page],
-        "Open Government Data":[road_page, safety_page],
+        "SF-MP Social impact": [project_1_page],
+        "Open Government Data":[road_page, safety_page,chatbot],
     }
 )
 
