@@ -44,9 +44,9 @@ project_1_page = st.Page(
 
  #"Open Government Data"
 road_page = st.Page(
-    "pages/Road_Accidents_Prevention_Using_AI.py",
-    title="Road Accidents Prevention Using_AI",
-    icon=":material/bar_chart:",
+    "pages/Accidents_Prevention_Using_AI.py",
+    title="Accidents Prevention Using AI",
+    icon=":material/car_crash:",
 )
 
 safety_page = st.Page(
