@@ -65,16 +65,22 @@ Drowsiness = st.Page(
     title="Drowsiness Detection",
     icon=":material/swap_driving_apps_wheel:",
 )
+PMAY = st.Page(
+    "pages/PMAY_AI.py",
+    title="PMAY Beneficiary Analysis Using AI",
+    icon=":material/house:",
+)
 chatbot = st.Page(
     "pages/Snowflake_chatbot.py",
     title="Snowflake chatbot",
     icon=":material/smart_toy:",
 )
+
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "SF-MP Social impact Data": [project_1_page,project_2_page],
-        "Open Government Data":[road_page, safety_page,Drowsiness,chatbot],
+        "Open Government Data":[road_page, safety_page,Drowsiness,PMAY,chatbot],
     }
 )
 
