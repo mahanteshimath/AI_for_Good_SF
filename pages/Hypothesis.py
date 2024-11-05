@@ -61,13 +61,17 @@ st.dataframe(df)
 # Create a bar chart for budget allocation
 st.subheader("Budget Allocation Visualization")
 plt.figure(figsize=(10, 6))
-plt.bar(df["Financial Year"], df["Budget Allocation (in lakh crore)"], color='skyblue')
+bars = plt.bar(df["Financial Year"], df["Budget Allocation (in lakh crore)"], color='skyblue')
 plt.title("Budget Allocation (in lakh crore) by Financial Year")
 plt.xlabel("Financial Year")
 plt.ylabel("Budget Allocation (in lakh crore)")
 plt.xticks(rotation=45)
 plt.grid(axis='y')
 
+# Add values on top of the bars
+for bar in bars:
+    yval = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 2), ha='center', va='bottom')
+
 # Display the chart in Streamlit
 st.pyplot(plt)
-
