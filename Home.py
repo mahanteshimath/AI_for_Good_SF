@@ -18,7 +18,7 @@ Architecture_page = st.Page(
 Hypothesis_page = st.Page(
     "pages/Hypothesis.py",
     title="Hypothesis",
-    icon=":cognition/cognition:",
+    icon=":material/cognition:",
     default=True,
 )
 project_1_page = st.Page(
