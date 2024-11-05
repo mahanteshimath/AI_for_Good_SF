@@ -22,7 +22,7 @@ with col2:
     st.write(
         '''Finally my point is sometimes building one bridge helped villages to improve economically i.e people can transport goods or youth can go for jobs or higher education.'''
     )
-
+st.markdown("""---------------------------------""")
 st.write("\n")
 
 st.write("\n")

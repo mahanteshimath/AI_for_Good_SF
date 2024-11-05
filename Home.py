@@ -33,9 +33,11 @@ Hypothesis_page = st.Page(
     title="Hypothesis",
     icon=":material/cognition:"
 )
+
+#"SF-MP Social impact"
 project_1_page = st.Page(
-    "pages/sales_dashboard.py",
-    title="Sales Dashboard",
+    "pages/Fleet_Monitoring.py",
+    title="Fleet Monitoring",
     icon=":material/bar_chart:",
 )
 project_2_page = st.Page(
@@ -44,21 +46,25 @@ project_2_page = st.Page(
     icon=":material/smart_toy:",
 )
 
+ #"Open Government Data"
+road_page = st.Page(
+    "pages/Road_Accidents_Prevention_Using_AI.py",
+    title="Road Accidents Prevention Using_AI",
+    icon=":material/bar_chart:",
+)
 
+safety_page = st.Page(
+    "pages/Safety_in_Construction_Using_AI.py",
+    title="Safety in Construction Using AI",
+    icon=":material/bar_chart:",
+)
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "SF-MP Social impact": [project_1_page, project_2_page],
+        "Open Government Data":[road_page, safety_page],
     }
 )
 
 
-# --- SHARED ON ALL PAGES ---
-# st.logo("src/codingisfun_logo.png")
-# st.sidebar.markdown("Made with ❤️ by [Sven](https://youtube.com/@codingisfun)")
-
-
-
-
-# --- RUN NAVIGATION ---
 pg.run()
