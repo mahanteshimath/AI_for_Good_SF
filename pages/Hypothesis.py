@@ -123,4 +123,4 @@ st.plotly_chart(fig)
 
 # Display the notes below the chart as a table for easy reference
 st.subheader("Detailed Notes for Each Year")
-st.table(df[["Financial Year", "Notes"]])
+st.table(df[["Financial Year", "Budget Allocation (in ₹ lakh crore)","Notes"]])
