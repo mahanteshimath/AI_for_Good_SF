@@ -60,7 +60,11 @@ safety_page = st.Page(
     title="Safety in Construction Using AI",
     icon=":material/health_and_safety:",
 )
-
+Drowsiness = st.Page(
+    "pages/Drowsiness_Detection.py",
+    title="Drowsiness Detection",
+    icon=":material/swap_driving_apps_wheel:",
+)
 chatbot = st.Page(
     "pages/chatbot.py",
     title="Chat Bot",
@@ -69,8 +73,8 @@ chatbot = st.Page(
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "SF-MP Social impact": [project_1_page,project_2_page],
-        "Open Government Data":[road_page, safety_page,chatbot],
+        "SF-MP Social impact Data": [project_1_page,project_2_page],
+        "Open Government Data":[road_page, safety_page,,Drowsiness,chatbot],
     }
 )
 
