@@ -11,4 +11,4 @@ with open("./src/Architectureembed.txt", "r") as file:
 
 
 # Display the HTML content as an embedded diagram in Streamlit
-components.html(html_content, height=800)
+components.html(html_content, width=800, height=600, scrolling=True)
