@@ -22,6 +22,8 @@ st.write("\n")
 
 st.write("\n")
 
+
+
 # Creating the budget allocation data as a DataFrame
 data = {
     "Financial Year": [
@@ -51,12 +53,15 @@ data = {
 # Convert the data to a DataFrame
 df = pd.DataFrame(data)
 
+
+df = pd.read_csv('src/InfraBudget.csv')
+
 # Set the title of the app
 st.title("Budget Allocation Over Financial Years")
 
 r1_expander = st.expander("Budget Allocation Data")
 r1_expander.table(df)
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(8, 6))
 bars = plt.bar(df["Financial Year"], df["Budget Allocation (in lakh crore)"], color='skyblue')
 plt.title("Budget Allocation (in lakh crore) by Financial Year")
 plt.xlabel("Financial Year")
