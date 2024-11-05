@@ -55,7 +55,7 @@ df = pd.DataFrame(data)
 st.title("Budget Allocation Over Financial Years")
 
 r1_expander = st.expander("Budget Allocation Data")
-r1_expander.write(df)
+r1_expander.table(df)
 plt.figure(figsize=(10, 6))
 bars = plt.bar(df["Financial Year"], df["Budget Allocation (in lakh crore)"], color='skyblue')
 plt.title("Budget Allocation (in lakh crore) by Financial Year")
