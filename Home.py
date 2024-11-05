@@ -45,11 +45,10 @@ project_2_page = st.Page(
 )
 
 
-# --- NAVIGATION SETUP [WITH SECTIONS]---
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "Snowflake MP": [project_1_page, project_2_page],
+        "SF-MP Social impact": [project_1_page, project_2_page],
     }
 )
 
