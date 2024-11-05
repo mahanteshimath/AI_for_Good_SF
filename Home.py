@@ -36,7 +36,7 @@ Hypothesis_page = st.Page(
 
 #"SF-MP Social impact"
 project_1_page = st.Page(
-    "pages/Fleet_Monitoring_and_Prediction.py.py",
+    "pages/Fleet_Monitoring_and_Prediction.py",
     title="Fleet Monitoring and Prediction.py",
     icon=":material/road:",
 )
