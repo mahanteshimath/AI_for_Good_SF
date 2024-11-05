@@ -54,7 +54,7 @@ data = {
 df = pd.DataFrame(data)
 
 
-df = pd.read_csv('src/InfraBudget.csv')
+# df = pd.read_csv('src/InfraBudget.csv')
 
 # Set the title of the app
 st.title("Budget Allocation Over Financial Years")
