@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import streamlit.components.v1 as components
+
 
 st.logo(
     image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg",
@@ -26,8 +28,22 @@ st.markdown("""---------------------------------""")
 st.write("\n")
 
 st.write("\n")
+st.title("Girish Bharadwaj: Bridge Man of India")
 
 
+# Define the URL to embed
+url = "https://www.newindianexpress.com/good-news/2020/Nov/15/girish-bharadwajhow-a-hole-in-a-boat-led-to-the-emergence-of-bridge-man-of-india-2223737.html"
+
+# Embed the URL in an iframe with scrolling enabled
+components.html(
+    f"""
+    <iframe src="{url}" width="100%" height="600" style="border:none; overflow:auto;"></iframe>
+    """,
+    height=600,
+    scrolling=True
+)
+
+st.markdown("""---------------------------------""")
 
 # Creating the budget allocation data as a DataFrame
 data = {
