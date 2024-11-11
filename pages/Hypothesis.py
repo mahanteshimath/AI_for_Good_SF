@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import streamlit.components.v1 as components
 
 
 st.logo(
@@ -31,17 +30,22 @@ st.write("\n")
 st.title("Girish Bharadwaj: Bridge Man of India")
 
 
-# Define the URL to embed
-url = "https://www.newindianexpress.com/good-news/2020/Nov/15/girish-bharadwajhow-a-hole-in-a-boat-led-to-the-emergence-of-bridge-man-of-india-2223737.html"
+article_content = """
+### Girish Bharadwaj: How a Hole in a Boat Led to the Emergence of Bridge Man of India
+*(Excerpt from The New Indian Express)*
 
-# Embed the URL in an iframe with scrolling enabled
-components.html(
-    f"""
-    <iframe src="{url}" width="100%" height="600" style="border:none; overflow:auto;"></iframe>
-    """,
-    height=600,
-    scrolling=True
-)
+Girish Bharadwaj, known as the "Bridge Man of India," has transformed rural connectivity in India by building over 130 bridges across various states, including Karnataka, Kerala, Telangana, and Odisha. His journey began in 1989 when residents of Aramburu village, tired of relying on a boat that frequently broke down, approached him to construct a footbridge. Despite being a mechanical engineer with no prior experience in bridge construction, Bharadwaj was inspired by the villagers' determination and decided to help.
+
+He designed a low-cost hanging bridge with assistance from engineering friends and local villagers, completing the project for under ₹2 lakh. This initial success led to government collaboration, expanding his efforts to connect isolated communities. Bharadwaj's bridges are notable for their cost-effectiveness and durability, often surpassing their intended lifespan of 10-20 years.
+
+His innovative approach draws inspiration from famous suspension bridges like San Francisco's Golden Gate Bridge while adapting designs to local needs. He has received recognition for his contributions, including the Padma Shri award in 2017. Now, his son continues his legacy as demand shifts towards larger structures due to increased vehicle use. Bharadwaj’s work not only improved infrastructure but also empowered rural communities by connecting them to broader opportunities.
+
+...
+
+For more details, please refer to the [full article on The New Indian Express](https://www.newindianexpress.com/good-news/2020/Nov/15/girish-bharadwajhow-a-hole-in-a-boat-led-to-the-emergence-of-bridge-man-of-india-2223737.html).
+"""
+
+st.markdown(article_content)
 
 st.markdown("""---------------------------------""")
 
