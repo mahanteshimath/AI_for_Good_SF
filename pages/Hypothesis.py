@@ -11,35 +11,27 @@ st.logo(
     icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
 )
 
-# HTML and CSS for rotating words
-html_code = """
-<div style="display: flex; justify-content: center; align-items: center; height: 300px;">
-    <div style="position: relative; width: 200px; height: 50px; overflow: hidden;">
-        <div style="animation: rotate 8s infinite; font-size: 2.5em; font-weight: bold; text-align: center; line-height: 50px;">
-            <div style="height: 50px;">INDIAN</div>
-            <div style="height: 50px;">INFRA</div>
-            <div style="height: 50px;">AI</div>
-            <div style="height: 50px;">INSIGHTS</div>
-        </div>
-    </div>
-</div>
 
-<style>
-@keyframes rotate {
-    0% { transform: translateY(0); }
-    25% { transform: translateY(-50px); }
-    50% { transform: translateY(-100px); }
-    75% { transform: translateY(-150px); }
-    100% { transform: translateY(0); }
-}
-</style>
-"""
+def add_custom_css():
+    st.markdown("""
+        <style>
+        .flashing-title {
+            font-size: 4em;
+            font-weight: bold;
+            color: #4CAF50;
+            animation: flash 2s infinite;
+        }
+        @keyframes flash {
+            0% { opacity: 1; }
+            30% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
-# Streamlit app
-st.title("CSS Animated Word Rotate Effect")
+add_custom_css()
 
-# Display the animated rotating words
-st.markdown(html_code, unsafe_allow_html=True)
+st.markdown('<div class="flashing-title">❄️INDIAN-INFRA-AI-INSIGHTS❄️</div>', unsafe_allow_html=True)
 
 
 col1, col2 = st.columns(2, gap="small")
