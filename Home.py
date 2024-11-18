@@ -44,9 +44,9 @@ project_1_page = st.Page(
 )
 
 project_2_page = st.Page(
-    "pages/Ports_prediction.py",
-    title="Ports prediction",
-    icon=":material/sailing:",
+    "pages/Petrol_Need_prediction.py",
+    title="Petrol Need prediction",
+    icon=":material/oil_barrel:",
 )
 
 
