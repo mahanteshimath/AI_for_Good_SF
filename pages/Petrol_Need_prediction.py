@@ -60,7 +60,7 @@ st.markdown(
 
 footer="""<style>
 a:link , a:visited{
-color: blue;
+color: white;
 background-color: transparent;
 text-decoration: underline;
 }
