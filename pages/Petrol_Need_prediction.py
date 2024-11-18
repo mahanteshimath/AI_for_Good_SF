@@ -65,28 +65,13 @@ st.markdown(
 )
 
 footer="""<style>
-a:link , a:visited{
-color: blue;
-background-color: transparent;
-text-decoration: underline;
-}
-
-a:hover,  a:active {
-color: red;
-background-color: transparent;
-text-decoration: underline;
-}
-
-.footer {
-position: fixed;
-left: 0;
-bottom: 0;
-width: 100%;
-background-color: white;
-color: black;
-text-align: center;
-}
-</style>
+    .footer {
+        background-color: #2C1E5B;  /* Match the background color */
+        color: white;  /* Adjust text color for visibility */
+        padding: 10px;
+        text-align: center;
+    }
+    </style>
 <div class="footer">
 <p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
 </div>
