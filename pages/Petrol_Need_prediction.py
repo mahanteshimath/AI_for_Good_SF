@@ -1,12 +1,9 @@
 import streamlit as st
 import snowflake.connector
 import pandas as pd
-import altair as alt
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import seaborn as sns
-
-
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import numpy as np
 
 
 
@@ -34,12 +31,129 @@ def execute_query(query):
         return None
     
 st.title(":blue[⛽ Petrol Need Prediction Till 2050 ]" )
-Q1='''SELECT * FROM IND_DB.IND_SCH.V01_IND_OIL_DEPENDENCY_FORECAST_2050'''
+Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
 R1 = execute_query(Q1)
 r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
 R1_DF.index = R1_DF.index + 1
 r1_expander.write(R1_DF)
+
+
+df=R1_DF
+# Key Metrics
+st.header("Key Metrics (2023)")
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.metric("Domestic Production", f"{df['DOMESTIC_CRUDE_OIL_PRODUCTION'].iloc[-1]} MMT")
+with col2:
+    st.metric("Oil Imports", f"{df['IMPORTS_OF_CRUDE_OIL'].iloc[-1]} MMT")
+with col3:
+    st.metric("Total Oil Need", f"{df['OIL_NEED_OF_INDIA'].iloc[-1]} MMT")
+with col4:
+    st.metric("Import Dependency", f"{df['RATIO'].iloc[-1]:.1f}%")
+
+# Time Series Plot
+st.header("Oil Production and Imports Over Time")
+fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+fig.add_trace(
+    go.Scatter(x=df['DATE'], y=df['DOMESTIC_CRUDE_OIL_PRODUCTION'],
+               name="Domestic Production", line=dict(color='green')),
+    secondary_y=False
+)
+
+fig.add_trace(
+    go.Scatter(x=df['DATE'], y=df['IMPORTS_OF_CRUDE_OIL'],
+               name="Imports", line=dict(color='red')),
+    secondary_y=False
+)
+
+fig.add_trace(
+    go.Scatter(x=df['DATE'], y=df['RATIO'],
+               name="Import Dependency Ratio", line=dict(color='orange', dash='dot')),
+    secondary_y=True
+)
+
+fig.update_layout(
+    title="Oil Production, Imports, and Import Dependency Ratio",
+    xaxis_title="Year",
+    yaxis_title="Million Metric Tonnes (MMT)",
+    yaxis2_title="Import Dependency Ratio (%)",
+    height=600
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+# Analysis and Insights
+st.header("📊 Key Insights")
+
+st.markdown("""
+1. **Increasing Import Dependency**
+   - Import dependency has risen from 54.8% in 1999 to 88.9% in 2023
+   - Domestic production has declined from 33 MMT to 29 MMT in the same period
+   
+2. **Production Trends**
+   - Domestic production peaked at 38 MMT during 2011-2014
+   - There's been a consistent decline in domestic production since 2014
+   
+3. **Import Growth**
+   - Imports have increased significantly from 40 MMT in 1999 to 233 MMT in 2023
+   - Brief decline in imports during 2020-21 (COVID-19 impact)
+   
+4. **Total Consumption**
+   - Overall oil need has grown from 73 MMT to 262 MMT (259% increase)
+   - Average annual growth rate of 5.4% in total consumption
+""")
+
+# Recommendations
+st.header("💡 Recommendations")
+
+st.markdown("""
+1. **Diversify Energy Sources**
+   - Invest in renewable energy infrastructure
+   - Promote electric vehicles and public transportation
+   - Develop alternative fuel sources like biofuels
+
+2. **Boost Domestic Production**
+   - Invest in exploration of new oil fields
+   - Implement enhanced oil recovery techniques
+   - Modernize existing production infrastructure
+
+3. **Strategic Reserves**
+   - Expand strategic petroleum reserves
+   - Develop better storage infrastructure
+   - Implement smart inventory management
+
+4. **Policy Measures**
+   - Implement energy efficiency programs
+   - Provide incentives for clean energy adoption
+   - Develop long-term energy security strategy
+
+5. **International Cooperation**
+   - Diversify import sources to reduce dependency on specific regions
+   - Develop strategic partnerships with oil-producing nations
+   - Invest in overseas oil assets
+""")
+
+# Trend Analysis
+st.header("📈 Trend Analysis")
+
+# Calculate year-over-year changes
+df['Production_Change'] = df['DOMESTIC_CRUDE_OIL_PRODUCTION'].pct_change() * 100
+df['Import_Change'] = df['IMPORTS_OF_CRUDE_OIL'].pct_change() * 100
+
+# Recent trends
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Recent Production Trend")
+    recent_prod = df['Production_Change'].iloc[-5:]
+    st.line_chart(recent_prod)
+
+with col2:
+    st.subheader("Recent Import Trend")
+    recent_imp = df['Import_Change'].iloc[-5:]
+    st.line_chart(recent_imp)
 
 
 st.markdown(
