@@ -84,6 +84,147 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
+
+
+
+
+
+
+
+
+Q1='''SELECT * FROM IND_DB.IND_SCH.V01_IND_OIL_DEPENDENCY_FORECAST_2050'''
+R1 = execute_query(Q1)
+r1_expander = st.expander("Data sets used in this entire analysis.")
+R1_DF = pd.DataFrame(R1)
+R1_DF.index = R1_DF.index + 1
+r1_expander.write(R1_DF)
+
+
+df=R1_DF
+
+# Title
+st.title("🛢️ India's Oil Demand Forecast Analysis (1999-2050)")
+
+# Key Metrics
+st.header("Key Metrics")
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric("Current Demand (2023)", 
+              f"{df['ACTUAL'].iloc[-1]:.0f} MMT",
+              f"{df['ACTUAL'].iloc[-1] - df['ACTUAL'].iloc[-2]:.1f} MMT")
+
+with col2:
+    forecast_2030 = df[df['DATE'].dt.year == 2030]['FORECAST'].values[0]
+    st.metric("Projected Demand (2030)", 
+              f"{forecast_2030:.0f} MMT",
+              f"{forecast_2030 - df['ACTUAL'].iloc[-1]:.1f} MMT")
+
+with col3:
+    forecast_2040 = df[df['DATE'].dt.year == 2040]['FORECAST'].values[0]
+    st.metric("Projected Demand (2040)", 
+              f"{forecast_2040:.0f} MMT",
+              f"{forecast_2040 - forecast_2030:.1f} MMT")
+
+with col4:
+    forecast_2050 = df[df['DATE'].dt.year == 2050]['FORECAST'].values[0]
+    st.metric("Projected Demand (2050)", 
+              f"{forecast_2050:.0f} MMT",
+              f"{forecast_2050 - forecast_2040:.1f} MMT")
+
+# Main Plot
+st.header("Historical Data and Forecast Visualization")
+
+fig = go.Figure()
+
+# Historical Data
+fig.add_trace(go.Scatter(
+    x=df['DATE'][df['ACTUAL'].notna()],
+    y=df['ACTUAL'][df['ACTUAL'].notna()],
+    name='Historical Demand',
+    line=dict(color='blue', width=2)
+))
+
+# Forecast
+fig.add_trace(go.Scatter(
+    x=df['DATE'][df['FORECAST'].notna()],
+    y=df['FORECAST'][df['FORECAST'].notna()],
+    name='Forecast',
+    line=dict(color='red', width=2, dash='dash')
+))
+
+# Confidence Interval
+fig.add_trace(go.Scatter(
+    x=df['DATE'][df['UPPER_BOUND'].notna()],
+    y=df['UPPER_BOUND'][df['UPPER_BOUND'].notna()],
+    fill=None,
+    mode='lines',
+    line_color='rgba(255,0,0,0)',
+    showlegend=False
+))
+
+fig.add_trace(go.Scatter(
+    x=df['DATE'][df['LOWER_BOUND'].notna()],
+    y=df['LOWER_BOUND'][df['LOWER_BOUND'].notna()],
+    fill='tonexty',
+    mode='lines',
+    line_color='rgba(255,0,0,0)',
+    name='95% Confidence Interval',
+    fillcolor='rgba(255,0,0,0.1)'
+))
+
+fig.update_layout(
+    title="India's Oil Demand: Historical Data and Future Projections",
+    xaxis_title="Year",
+    yaxis_title="Oil Demand (MMT)",
+    height=600,
+    hovermode='x unified'
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+# Analysis and Insights
+st.header("📊 Key Insights")
+
+st.markdown("""
+1. **Historical Growth (1999-2023)**
+   - Demand increased from 73 MMT to 262 MMT
+   - Average annual growth rate: ~5.2%
+   - Notable dip during 2020-21 (COVID-19 impact)
+
+2. **Short-term Forecast (2024-2030)**
+   - Projected demand in 2030: 321.1 MMT
+   - Expected average annual growth rate: ~2.9%
+   - More conservative growth compared to historical trends
+
+3. **Long-term Forecast (2030-2050)**
+   - Projected demand in 2050: 470.75 MMT
+   - Expected average annual growth rate: ~1.9%
+   - Wider confidence intervals indicating increased uncertainty
+
+4. **Uncertainty Analysis**
+   - Confidence interval widens over time
+   - By 2050, the range spans from 342.15 to 563.34 MMT
+   - Reflects increasing uncertainty in long-term projections
+""")
+
+# Growth Rate Analysis
+st.header("📈 Growth Rate Analysis")
+
+# Calculate growth rates
+historical_growth = (df['ACTUAL'].iloc[-1] / df['ACTUAL'].iloc[0]) ** (1/24) - 1
+forecast_growth = (df['FORECAST'].iloc[-1] / df['ACTUAL'].iloc[-1]) ** (1/27) - 1
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Historical Growth Rate (1999-2023)")
+    st.metric("Annual Average", f"{historical_growth*100:.1f}%")
+
+with col2:
+    st.subheader("Projected Growth Rate (2024-2050)")
+    st.metric("Annual Average", f"{forecast_growth*100:.1f}%")
+
 # Analysis and Insights
 st.header("📊 Key Insights")
 
