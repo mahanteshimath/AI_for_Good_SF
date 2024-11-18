@@ -33,6 +33,8 @@ def execute_query(query):
 st.title(":blue[⛽ Petrol Need Prediction ]" )
 
 
+
+
 def main():
         Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
         R1 = execute_query(Q1)
@@ -49,19 +51,19 @@ if __name__ == "__main__":
 
 
 
-st.markdown(
-    """
-    <style>
-    .footer {
-        background-color: #2C1E5B;  /* Match the background color */
-        color: white;  /* Adjust text color for visibility */
-        padding: 10px;
-        text-align: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# st.markdown(
+#     """
+#     <style>
+#     .footer {
+#         background-color: #2C1E5B;  /* Match the background color */
+#         color: white;  /* Adjust text color for visibility */
+#         padding: 10px;
+#         text-align: center;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 
-st.markdown('<div class="footer">Developed with ❤️ by <a href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></div>', unsafe_allow_html=True)
+# st.markdown('<div class="footer">Developed with ❤️ by <a href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></div>', unsafe_allow_html=True)
