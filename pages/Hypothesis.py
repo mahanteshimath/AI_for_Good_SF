@@ -11,7 +11,6 @@ st.logo(
     icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
 )
 
-
 def add_custom_css():
     st.markdown("""
         <style>
@@ -30,7 +29,6 @@ def add_custom_css():
         """, unsafe_allow_html=True)
 
 add_custom_css()
-
 st.markdown('<div class="flashing-title">❄️INDIAN-INFRA-AI-INSIGHTS❄️</div>', unsafe_allow_html=True)
 
 
