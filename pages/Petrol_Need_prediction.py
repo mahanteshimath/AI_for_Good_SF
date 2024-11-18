@@ -56,21 +56,13 @@ def execute_query(query):
         return None
     
 st.title(":blue[⛽ Petrol Need Prediction ]" )
-st.title(":blue[⛽ Petrol Need Prediction ]" )
+Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
+R1 = execute_query(Q1)
+r1_expander = st.expander("Data sets used in this entire analysis.")
+R1_DF = pd.DataFrame(R1)
+R1_DF.index = R1_DF.index + 1
+r1_expander.write(R1_DF)
 
-def main():
-    Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
-    R1 = execute_query(Q1)
-    r1_expander = st.expander("Data sets used in this entire analysis.")
-    R1_DF = pd.DataFrame(R1)
-    R1_DF.index = R1_DF.index + 1
-    r1_expander.write(R1_DF)
-
-
-
-                    
-if __name__ == "__main__":
-    main()
 
 
 
