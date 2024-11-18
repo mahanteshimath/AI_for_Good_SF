@@ -8,6 +8,18 @@ st.logo(
     icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
 )
 
+# HTML and CSS for vertical rotation with an icon
+html_code = """
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <div style="writing-mode: vertical-rl; transform: rotate(180deg); font-size: 36px; font-weight: bold; color: #4CAF50;">
+        🏗️ INDIAN INFRA AI INSIGHTS
+    </div>
+</div>
+"""
+
+# Render the HTML
+st.markdown(html_code, unsafe_allow_html=True)
+
 col1, col2 = st.columns(2, gap="small")
 with col1:
     st.image("./src/India.jpeg")
