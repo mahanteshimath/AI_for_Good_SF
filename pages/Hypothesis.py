@@ -11,24 +11,20 @@ st.logo(
     icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
 )
 words = ["INDIAN", "INFRA", "AI", "INSIGHTS"]
-placeholder = st.empty()
+with st.container():
+    # Placeholder for word rotation
+    placeholder = st.empty()
 
-# Infinite loop for rotating words
-while True:
-    for word in words:
-        placeholder.markdown(f"<h1 style='text-align: center;'>{word}</h1>", unsafe_allow_html=True)
-        time.sleep(1)  
-# # HTML and CSS for vertical rotation with an icon
-# html_code = """
-# <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-#     <div style="writing-mode: vertical-rl; transform: rotate(180deg); font-size: 36px; font-weight: bold; color: #4CAF50;">
-#         🏗️ INDIAN INFRA AI INSIGHTS
-#     </div>
-# </div>
-# """
+    # Infinite loop for rotating words
+    while True:
+        for word in words:
+            # Display each word in bold and centered style
+            placeholder.markdown(
+                f"<h1 style='text-align: center; font-size: 3em; font-weight: bold;'>{word}</h1>",
+                unsafe_allow_html=True
+            )
+            time.sleep(1)  
 
-# Render the HTML
-st.markdown(html_code, unsafe_allow_html=True)
 
 col1, col2 = st.columns(2, gap="small")
 with col1:
