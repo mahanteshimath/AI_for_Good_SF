@@ -98,7 +98,7 @@ position: fixed;
 left: 0;
 bottom: 0;
 width: 100%;
-background-color: white;
+background-color: blue;
 color: black;
 text-align: center;
 }
