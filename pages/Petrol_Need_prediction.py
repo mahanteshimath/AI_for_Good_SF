@@ -66,19 +66,19 @@ r1_expander.write(R1_DF)
 
 
 
-# st.markdown(
-#     """
-#     <style>
-#     .footer {
-#         background-color: #2C1E5B;  /* Match the background color */
-#         color: white;  /* Adjust text color for visibility */
-#         padding: 10px;
-#         text-align: center;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True,
-# )
+st.markdown(
+    """
+    <style>
+    .footer {
+        background-color: #2C1E5B;  /* Match the background color */
+        color: white;  /* Adjust text color for visibility */
+        padding: 10px;
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
-# st.markdown('<div class="footer">Developed with ❤️ by <a href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></div>', unsafe_allow_html=True)
+st.markdown('<div class="footer">Developed with ❤️ by <a href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></div>', unsafe_allow_html=True)
