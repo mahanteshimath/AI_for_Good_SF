@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
+
 
 
 st.logo(
@@ -8,15 +10,22 @@ st.logo(
     link="https://www.linkedin.com/in/mahantesh-hiremath/",
     icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
 )
+words = ["INDIAN", "INFRA", "AI", "INSIGHTS"]
+placeholder = st.empty()
 
-# HTML and CSS for vertical rotation with an icon
-html_code = """
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-    <div style="writing-mode: vertical-rl; transform: rotate(180deg); font-size: 36px; font-weight: bold; color: #4CAF50;">
-        🏗️ INDIAN INFRA AI INSIGHTS
-    </div>
-</div>
-"""
+# Infinite loop for rotating words
+while True:
+    for word in words:
+        placeholder.markdown(f"<h1 style='text-align: center;'>{word}</h1>", unsafe_allow_html=True)
+        time.sleep(1)  
+# # HTML and CSS for vertical rotation with an icon
+# html_code = """
+# <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+#     <div style="writing-mode: vertical-rl; transform: rotate(180deg); font-size: 36px; font-weight: bold; color: #4CAF50;">
+#         🏗️ INDIAN INFRA AI INSIGHTS
+#     </div>
+# </div>
+# """
 
 # Render the HTML
 st.markdown(html_code, unsafe_allow_html=True)
