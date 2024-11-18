@@ -64,27 +64,6 @@ R1_DF.index = R1_DF.index + 1
 r1_expander.write(R1_DF)
 
 
-
-
-st.markdown(
-    """
-    <style>
-    .footer {
-        background-color: #2C1E5B;  /* Match the background color */
-        color: white;  /* Adjust text color for visibility */
-        padding: 10px;
-        text-align: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-
-st.markdown('<div class="footer">Developed with ❤️ by <a href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></div>', unsafe_allow_html=True)
-
-
-
 st.markdown(
     '''
     <style>
@@ -104,13 +83,13 @@ st.markdown(
 footer="""<style>
 a:link , a:visited{
 color: blue;
-background-color: white;
+background-color: transparent;
 text-decoration: underline;
 }
 
 a:hover,  a:active {
 color: red;
-background-color: blue;
+background-color: transparent;
 text-decoration: underline;
 }
 
