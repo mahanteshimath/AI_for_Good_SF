@@ -22,17 +22,19 @@ st.set_page_config(
 ) 
 
 # --- PAGE SETUP ---
-Architecture_page = st.Page(
-    "pages/Architecture.py",
-    title="Architecture",
-    icon=":material/home:",
-    default=True,
-)
 Hypothesis_page = st.Page(
     "pages/Hypothesis.py",
     title="Hypothesis",
-    icon=":material/cognition:"
+    icon=":material/cognition:",
+    default=True,
 )
+Architecture_page = st.Page(
+    "pages/Architecture.py",
+    title="Architecture",
+    icon=":material/home:"
+
+)
+
 
 #"SF-MP Social impact"
 project_1_page = st.Page(
