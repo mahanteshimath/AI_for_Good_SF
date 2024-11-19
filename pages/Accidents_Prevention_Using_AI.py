@@ -32,8 +32,6 @@ def get_forecast_data(city):
     except Exception as e:
         st.error(f"Forecast Data Error: {e}")
         return None
-
-def main():
     st.set_page_config(page_title="India Weather Dashboard", layout="wide")
     st.title("🌍 Comprehensive Weather & Climate Dashboard")
     
@@ -119,6 +117,3 @@ def main():
             )])
             fig.update_layout(title='Climate Radar')
             st.plotly_chart(fig)
-
-if __name__ == "__main__":
-    main()
