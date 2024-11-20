@@ -111,13 +111,13 @@ st.write("Forecasting passenger trends using Snowflake ML...")
 # except Exception as e:
 #     st.error(f"Error fetching forecast data: {e}")
 
-# Recommendations
-st.title("Recommendations")
-if max_growth_year["Year"] > 2018:
-    st.write("**Recent Growth Spike:** Leverage marketing campaigns to maintain momentum.")
-if min_growth_year["Year"] < 2010:
-    st.write("**Historical Decline:** Investigate reasons for the decline and address operational issues.")
-st.write("**General Recommendations:** Consider using new routes or improving customer services to boost passenger numbers.")
+# # Recommendations
+# st.title("Recommendations")
+# if max_growth_year["Year"] > 2018:
+#     st.write("**Recent Growth Spike:** Leverage marketing campaigns to maintain momentum.")
+# if min_growth_year["Year"] < 2010:
+#     st.write("**Historical Decline:** Investigate reasons for the decline and address operational issues.")
+# st.write("**General Recommendations:** Consider using new routes or improving customer services to boost passenger numbers.")
 
 
 
