@@ -100,7 +100,7 @@ R1_DF.index = R1_DF.index + 1
 r1_expander.write(R1_DF)
 
 
-df=R1_DF
+df1=R1_DF
 
 # Title
 st.title("🛢️ India's Oil Demand Forecast Analysis (1999-2050)")
@@ -112,22 +112,22 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric("Current Demand (2023)", 
               f"{df['ACTUAL'].iloc[-1]:.0f} MMT",
-              f"{df['ACTUAL'].iloc[-1] - df['ACTUAL'].iloc[-2]:.1f} MMT")
+              f"{df['ACTUAL'].iloc[-1] - df1['ACTUAL'].iloc[-2]:.1f} MMT")
 
 with col2:
-    forecast_2030 = df[df['DATE'].dt.year == 2030]['FORECAST'].values[0]
+    forecast_2030 = df1[df1['DATE'].dt.year == 2030]['FORECAST'].values[0]
     st.metric("Projected Demand (2030)", 
               f"{forecast_2030:.0f} MMT",
-              f"{forecast_2030 - df['ACTUAL'].iloc[-1]:.1f} MMT")
+              f"{forecast_2030 - df1['ACTUAL'].iloc[-1]:.1f} MMT")
 
 with col3:
-    forecast_2040 = df[df['DATE'].dt.year == 2040]['FORECAST'].values[0]
+    forecast_2040 = df1[df1['DATE'].dt.year == 2040]['FORECAST'].values[0]
     st.metric("Projected Demand (2040)", 
               f"{forecast_2040:.0f} MMT",
               f"{forecast_2040 - forecast_2030:.1f} MMT")
 
 with col4:
-    forecast_2050 = df[df['DATE'].dt.year == 2050]['FORECAST'].values[0]
+    forecast_2050 = df1[df1['DATE'].dt.year == 2050]['FORECAST'].values[0]
     st.metric("Projected Demand (2050)", 
               f"{forecast_2050:.0f} MMT",
               f"{forecast_2050 - forecast_2040:.1f} MMT")
