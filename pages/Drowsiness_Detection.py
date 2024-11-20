@@ -87,4 +87,4 @@ def create_accident_visualization():
         percent_change = ((yearly_totals.iloc[-1,1] - yearly_totals.iloc[0,1]) / 
                          yearly_totals.iloc[0,1] * 100)
         st.metric("Change 2019 to 2022", f"{percent_change:.1f}%")
-    create_accident_visualization()
+create_accident_visualization()
