@@ -42,7 +42,7 @@ def create_accident_visualization():
                        value_name='Injuries')
 
     # Create the visualization
-    st.title('Road Accidents Injuries on State Highways (2019-2022)')
+    st.title('🚗 Road Accident Injuries Analysis (2019-2022)')
 
     # Create animated bar chart
     fig = px.bar(df_melted, 
