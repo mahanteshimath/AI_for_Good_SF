@@ -279,6 +279,16 @@ st.markdown("""
 # Trend Analysis
 st.header("📈 Trend Analysis")
 
+Q1='''SELECT * FROM IND_DB.IND_SCH.V01_IND_OIL_DEPENDENCY_FORECAST_2050'''
+R1 = execute_query(Q1)
+r1_expander = st.expander("Data sets used in this entire analysis.")
+R1_DF = pd.DataFrame(R1)
+R1_DF.index = R1_DF.index + 1
+r1_expander.write(R1_DF)
+
+
+df=R1_DF
+
 # Calculate year-over-year changes
 df['Production_Change'] = df['DOMESTIC_CRUDE_OIL_PRODUCTION'].pct_change() * 100
 df['Import_Change'] = df['IMPORTS_OF_CRUDE_OIL'].pct_change() * 100
