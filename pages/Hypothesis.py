@@ -98,7 +98,7 @@ def add_custom_css():
     st.markdown("""
         <style>
         .flashing-title {
-            font-size: 1.5em;
+            font-size: 2em;
             font-weight: bold;
             color: #4CAF50;
             animation: flash 2s infinite;
