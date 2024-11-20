@@ -43,6 +43,75 @@ r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
 R1_DF.index = R1_DF.index + 1
 r1_expander.write(R1_DF)
+aviation_data =R1_DF
+
+categories = aviation_data["CIVIL_AVIATION_PASSENGER_CATEGORY"].unique()
+selected_category = st.selectbox("Select Passenger Category", categories)
+
+# Filter data by selected category
+filtered_data = aviation_data[aviation_data["CIVIL_AVIATION_PASSENGER_CATEGORY"] == selected_category]
+
+# Line chart for trends
+st.title(f"Trend Analysis for {selected_category}")
+fig = px.line(filtered_data, x="Year", y="Value", title="Yearly Trend", markers=True)
+st.plotly_chart(fig)
+
+# Insights: Calculate Year-over-Year Growth
+filtered_data["YoY Growth (%)"] = filtered_data["Value"].pct_change() * 100
+st.subheader(f"Insights for {selected_category}")
+max_growth_year = filtered_data.loc[filtered_data["YoY Growth (%)"].idxmax()]
+min_growth_year = filtered_data.loc[filtered_data["YoY Growth (%)"].idxmin()]
+
+st.write(f"**Highest Growth:** {max_growth_year['YoY Growth (%)']:.2f}% in {int(max_growth_year['Year'])}")
+st.write(f"**Lowest Growth:** {min_growth_year['YoY Growth (%)']:.2f}% in {int(min_growth_year['Year'])}")
+
+# Heatmap for all categories
+st.title("Heatmap of Passenger Metrics Across Years")
+pivot_data = aviation_data.pivot(index="CIVIL_AVIATION_PASSENGER_CATEGORY", columns="Year", values="Value")
+fig_heatmap = px.imshow(pivot_data, aspect="auto", color_continuous_scale="Viridis", title="Heatmap")
+st.plotly_chart(fig_heatmap)
+
+# Predict Future Trends Using Snowflake
+st.title("Future Predictions")
+st.write("Forecasting passenger trends using Snowflake ML...")
+
+
+# # Forecast Query
+# def get_forecast_results(category):
+#     conn = get_snowflake_connection()
+#     query = f"""
+#         SELECT PREDICTED_VALUE, LOWER_BOUND, UPPER_BOUND, TIME 
+#         FROM TABLE(SNOWFLAKE.ML.FORECAST(
+#             SELECT VALUE, YEAR AS TIME 
+#             FROM YOUR_TABLE 
+#             WHERE CIVIL_AVIATION_PASSENGER_CATEGORY = '{category}',
+#             OUTPUT_FUTURE_LENGTH => 10
+#         ));
+#     """
+#     return pd.read_sql(query, conn)
+
+# # Fetch predictions for the selected category
+# try:
+#     forecast_data = get_forecast_results(selected_category)
+#     forecast_fig = px.line(
+#         forecast_data,
+#         x="TIME",
+#         y="PREDICTED_VALUE",
+#         title=f"Forecast for {selected_category}",
+#         error_y="UPPER_BOUND",
+#         error_y_minus="LOWER_BOUND"
+#     )
+#     st.plotly_chart(forecast_fig)
+# except Exception as e:
+#     st.error(f"Error fetching forecast data: {e}")
+
+# Recommendations
+st.title("Recommendations")
+if max_growth_year["Year"] > 2018:
+    st.write("**Recent Growth Spike:** Leverage marketing campaigns to maintain momentum.")
+if min_growth_year["Year"] < 2010:
+    st.write("**Historical Decline:** Investigate reasons for the decline and address operational issues.")
+st.write("**General Recommendations:** Consider using new routes or improving customer services to boost passenger numbers.")
 
 
 
