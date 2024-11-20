@@ -49,6 +49,13 @@ project_2_page = st.Page(
     icon=":material/oil_barrel:",
 )
 
+project_3_page = st.Page(
+    "pages/Civil_Aviation_Analysis_Prediction.py",
+    title="Civil Aviation Analysis Prediction",
+    icon=":material/flight:",
+)
+
+
 
  #"Open Government Data"
 road_page = st.Page(
@@ -81,7 +88,7 @@ chatbot = st.Page(
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "SF-MP Social impact Data": [project_1_page,project_2_page],
+        "SF-MP Social impact Data": [project_1_page,project_2_page,project_3_page],
         "Open Government Data":[road_page, safety_page,Drowsiness,PMAY,chatbot],
     }
 )
