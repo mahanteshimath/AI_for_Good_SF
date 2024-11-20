@@ -279,7 +279,7 @@ st.markdown("""
 # Trend Analysis
 st.header("📈 Trend Analysis")
 
-Q1='''SELECT * FROM IND_DB.IND_SCH.V01_IND_OIL_DEPENDENCY_FORECAST_2050'''
+Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
 R1 = execute_query(Q1)
 r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
