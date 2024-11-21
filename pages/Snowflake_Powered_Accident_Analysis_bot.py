@@ -115,27 +115,27 @@ if session:
 
     st.divider()
 
-    init_messages()
+init_messages()
 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-    if question := st.chat_input("Chat with any docs"):
-        st.session_state.messages.append({"role": "user", "content": question})
+if question := st.chat_input("Chat with any docs"):
+    st.session_state.messages.append({"role": "user", "content": question})
 
-        with st.chat_message("user"):
-            st.markdown(question)
+with st.chat_message("user"):
+    st.markdown(question)
 
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty()
-            question = question.replace("'", "")
-            with st.spinner(f"{st.session_state.model_name} thinking..."):
-                response = complete(session, question)
-                res_text = response[0].RESPONSE.replace("'", "")
-                message_placeholder.markdown(res_text)
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        question = question.replace("'", "")
+        with st.spinner(f"{st.session_state.model_name} thinking..."):
+            response = complete(session, question)
+            res_text = response[0].RESPONSE.replace("'", "")
+            message_placeholder.markdown(res_text)
 
-        st.session_state.messages.append({"role": "assistant", "content": res_text})
+    st.session_state.messages.append({"role": "assistant", "content": res_text})
 
 
 
