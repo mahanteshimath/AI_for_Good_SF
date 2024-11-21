@@ -124,37 +124,7 @@ r1_expander.write(R1_DF)
 
 df=R1_DF
 
-
-# year = st.selectbox("Select Year", sorted(df["YEAR"].unique()))
-# title = st.selectbox("Select Registration Type", df["TITLE"].unique())
-
-# # Filter DataFrame based on selection
-# filtered_df = df[(df["YEAR"] == year) & (df["TITLE"] == title)]
-# st.write("### Filtered Data")
-# st.dataframe(filtered_df)
-# ''''''
-# # Visualizations
-# st.write("### Visualizations")
-
-# # Line Chart of All-India Registrations Over Years
-# st.write("#### All-India Registrations Over the Years")
-# line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend")
-# st.plotly_chart(line_chart)
-
-# # Bar Chart for Selected Year and States
-# st.write("#### State-wise Registrations")
-# bar_chart = px.bar(
-#     filtered_df.melt(id_vars=["TITLE", "YEAR"], var_name="STATE", value_name="REGISTRATIONS"),
-#     x="STATE", y="REGISTRATIONS", title=f"State-wise Registrations for {year}: {title}",
-#     labels={"REGISTRATIONS": "Registrations", "STATE": "State"}
-# )
-# st.plotly_chart(bar_chart)
-
-
-
-
-# Streamlit App
-st.title("Vehicle Registration Data Viewer with Animated Visualizations")
+st.title("Different Vehicle Registrations 2018-2021")
 
 # Display the DataFrame
 st.write("### Full Dataset")
@@ -166,11 +136,6 @@ title = st.selectbox("Select Registration Type", df["TITLE"].unique())
 
 # Filter DataFrame based on selection
 filtered_df = df[df["TITLE"] == title]
-
-# Visualizations
-st.write("### Animated Visualizations")
-
-# Animated Bar Chart for State-wise Registrations Over Years
 st.write("#### Animated State-wise Registrations Over Years")
 bar_chart = px.bar(
     filtered_df.melt(id_vars=["TITLE", "YEAR"], var_name="STATE", value_name="REGISTRATIONS"),
