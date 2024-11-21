@@ -132,7 +132,7 @@ filtered_df = df
 # if state_filter:
 #     filtered_df = filtered_df[filtered_df['State'].isin(state_filter)]
 if vehicle_type_filter:
-    filtered_df = filtered_df[filtered_df['Vehicle Type'].isin(vehicle_type_filter)]
+    filtered_df = filtered_df[filtered_df['TITLE'].isin(vehicle_type_filter)]
 if year_filter:
     filtered_df = filtered_df[(filtered_df['YEAR'] >= year_filter[0]) & (filtered_df['YEAR'] <= year_filter[1])]
 
