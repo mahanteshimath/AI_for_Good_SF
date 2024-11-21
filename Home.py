@@ -85,8 +85,8 @@ PMAY = st.Page(
     icon=":material/house:",
 )
 chatbot = st.Page(
-    "pages/Snowflake_chatbot.py",
-    title="Snowflake chatbot",
+    "pages/Snowflake_Powered_Accident_Analysis_bot.py",
+    title="Snowflake Powered Accident Analysis bot.py",
     icon=":material/smart_toy:",
 )
 
@@ -94,7 +94,7 @@ pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "SF-MP Social impact Data": [project_4_page,project_1_page,project_3_page,project_2_page],
-        "Open Government Data":[road_page, safety_page,Drowsiness,PMAY,chatbot],
+        "Open Government Data":[Drowsiness,chatbot,road_page, safety_page,PMAY],
     }
 )
 
