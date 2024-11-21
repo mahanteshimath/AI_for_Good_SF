@@ -2,9 +2,6 @@ import streamlit as st
 import pandas as pd
 import requests
 
-# Set up the Streamlit page
-st.set_page_config(page_title="India AQI Dashboard", layout="wide")
-
 # Function to fetch AQI data
 def get_aqi_data(city, api_key):
     url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={city}&aqi=yes"
