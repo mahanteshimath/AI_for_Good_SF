@@ -150,13 +150,7 @@ df=R1_DF
 # )
 # st.plotly_chart(bar_chart)
 
-# # Pie Chart for State-Wise Contribution
-# st.write("#### State-Wise Contribution to Registrations")
-# pie_chart = px.pie(
-#     filtered_df.melt(id_vars=["TITLE", "YEAR"], var_name="STATE", value_name="REGISTRATIONS"),
-#     names="STATE", values="REGISTRATIONS", title=f"State Contribution for {year}: {title}"
-# )
-# st.plotly_chart(pie_chart)
+
 
 
 # Streamlit App
@@ -201,6 +195,8 @@ st.plotly_chart(line_chart)
 st.write("#### All-India Registrations Over the Years")
 line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend")
 st.plotly_chart(line_chart)
+
+
 
 
 
