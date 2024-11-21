@@ -36,52 +36,51 @@ def get_snowflake_session():
 # Title and intro
 st.title(":blue[📈Analysis with Snowflake Cortex & RAG ] :speech_balloon:")
 
-def main():
+
     # Get active Snowflake session
-    session = get_snowflake_session()
+session = get_snowflake_session()
     
-    if session is None:
-        return
+
 
     # Create columns for layout
-    col1, col2, col3 = st.columns([1, 0.05, 1])
+col1, col2, col3 = st.columns([1, 0.05, 1])
 
-    with col1:
-        st.write("### Configuration Options")
-        config_options()
-        # Add custom CSS to style the button
-        st.markdown(
-            """
-            <style>
-            .glowing-button {
-                background-color: red;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                cursor: pointer;
-                border-radius: 8px;
-                box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
-                transition: box-shadow 0.3s ease-in-out;
-            }
-            .glowing-button:hover {
-                box-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+with col1:
+    st.write("### Configuration Options")
+    config_options()
+    # Add custom CSS to style the button
+    st.markdown(
+        """
+        <style>
+        .glowing-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .glowing-button:hover {
+            box-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-        @st.dialog("How RAG works in Snowflake?")
-        def show_dialog():
-            markdown_content = '''
-                ![rag in snowflake](https://publish-p57963-e462109.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--7e5d3595-a32c-44de-86ca-cfa2883d475e/rag1.png?preferwebp=true&width=1440&quality=85)
-            '''
-            st.markdown(markdown_content)
+    @st.dialog("How RAG works in Snowflake?")
+    def show_dialog():
+        markdown_content = '''
+            ![rag in snowflake](https://publish-p57963-e462109.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--7e5d3595-a32c-44de-86ca-cfa2883d475e/rag1.png?preferwebp=true&width=1440&quality=85)
+        '''
+        st.markdown(markdown_content)
 
         # Create a button using Streamlit
         if st.button("How RAG works in Snowflake?", key="rag_button",type="secondary"):
@@ -163,8 +162,6 @@ def config_options():
 
     # Show session state
     # st.expander("Session State").write(st.session_state)
-    icons = {"assistant": "❄️", "user": "👤"}
-
 # Initialize chat history
 def init_messages():
     if st.session_state.clear_conversation or "messages" not in st.session_state:
