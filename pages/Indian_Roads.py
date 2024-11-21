@@ -129,8 +129,8 @@ year_filter = st.slider("Select Year Range", int(df['YEAR'].min()), int(df['YEAR
 
 # Filter the data based on user selections
 filtered_df = df
-if state_filter:
-    filtered_df = filtered_df[filtered_df['State'].isin(state_filter)]
+# if state_filter:
+#     filtered_df = filtered_df[filtered_df['State'].isin(state_filter)]
 if vehicle_type_filter:
     filtered_df = filtered_df[filtered_df['Vehicle Type'].isin(vehicle_type_filter)]
 if year_filter:
