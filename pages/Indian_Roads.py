@@ -190,7 +190,7 @@ st.plotly_chart(bar_chart)
 st.write("#### Animated All-India Registrations Over Years")
 line_chart = px.line(
     filtered_df, x="YEAR", y="INDIA", title=f"All-India Registrations Over Years: {title}",
-    labels={"YEAR": "Year", "INDIA": "Registrations"},
+    labels={"YEAR": "YEAR", "INDIA": "Registrations"},
     animation_frame="YEAR"
 )
 st.plotly_chart(line_chart)
@@ -200,7 +200,7 @@ st.write("#### Animated State-Wise Contribution Over Years")
 pie_chart = px.pie(
     filtered_df.melt(id_vars=["TITLE", "YEAR"], var_name="STATE", value_name="REGISTRATIONS"),
     names="STATE", values="REGISTRATIONS",
-    #animation_frame="YEAR", 
+    animation_frame="YEAR", 
     title=f"State Contribution Over Years: {title}"
 )
 st.plotly_chart(pie_chart)
