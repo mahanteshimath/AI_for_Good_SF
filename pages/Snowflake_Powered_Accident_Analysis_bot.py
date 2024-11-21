@@ -9,7 +9,16 @@ pd.set_option("max_colwidth", None)
 # Default values for the chat assistant
 num_chunks = 3
 slide_window = 7
+# Configuration options (now on the main page)
+def config_options():
+    st.selectbox('Select your model:', (
+        'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
+        'llama3-8b', 'llama3-70b', 'reka-flash', 
+        'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name")
 
+st.checkbox('Do you want that I remember the chat history?', key="use_chat_history", value=True)
+st.checkbox('Debug: Click to see summary generated of previous conversation', key="debug", value=True)
+st.button("Start Over", key="clear_conversation")
 
 # Establish a Snowflake session using Snowpark
 def get_snowflake_session():
@@ -128,16 +137,7 @@ if session:
 
         st.session_state.messages.append({"role": "assistant", "content": res_text})
 
-# Configuration options (now on the main page)
-def config_options():
-    st.selectbox('Select your model:', (
-        'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
-        'llama3-8b', 'llama3-70b', 'reka-flash', 
-        'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name")
 
-    st.checkbox('Do you want that I remember the chat history?', key="use_chat_history", value=True)
-    st.checkbox('Debug: Click to see summary generated of previous conversation', key="debug", value=True)
-    st.button("Start Over", key="clear_conversation")
 
 def init_messages():
     if st.session_state.clear_conversation or "messages" not in st.session_state:
