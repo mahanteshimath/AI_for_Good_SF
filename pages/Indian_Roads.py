@@ -83,9 +83,9 @@ R1_DF.index = R1_DF.index + 1
 r1_expander.write(R1_DF)
 
 df=R1_DF
+state_filter = st.multiselect("Select State",df.columns[3:], )
 
-state_filter = st.multiselect("Select State(s)", df['State'].unique())
-vehicle_type_filter = st.multiselect("Select Vehicle Type(s)", df['Vehicle Type'].unique())
+vehicle_type_filter = st.multiselect("Select Vehicle Type(s)", df['TITLE'].unique())
 year_filter = st.slider("Select Year Range", int(df['Year'].min()), int(df['Year'].max()), (int(df['Year'].min()), int(df['Year'].max())))
 
 # Filter the data based on user selections
