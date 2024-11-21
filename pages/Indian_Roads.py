@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import snowflake.connector
 
-
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 
@@ -35,7 +35,7 @@ def execute_query(query):
     
 
 
-
+st.title(":blue[🚂 🚆 Indian Road development (in KM)]")
 Q1=f'''SELECT INDIAN_ROAD_CATEGORY, "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023" FROM IND_DB.IND_SCH.T01_INDIAN_ROADS'''
 R1 = execute_query(Q1)
 r1_expander = st.expander("Data sets used in this entire analysis.")
@@ -64,14 +64,63 @@ filtered_data = road_data_long[
 ]
 
 # Trend Line Chart
-st.title(f"Trend Analysis for {selected_category}")
+st.title(f"Trend Analysis for {selected_category} (in KM)")
 fig = px.line(filtered_data, x="Year", y="Value", title="Yearly Trend", markers=True)
 st.plotly_chart(fig)
 
 
 
 
+st.title("Vehicle Registration Analysis")
 
+
+st.title(":blue[🚂 🚆 Indian Road development (in KM)]")
+Q1=f'''select TITLE, DATE, INDIA, ANDHRAPRADESH, ARUNACHALPRADESH, ASSAM, BIHAR, CHHATTISGARH, GOA, GUJARAT, HARYANA, HIMACHALPRADESH, JAMMUANDKASHMIR, JHARKHAND, KARNATAKA, KERALA, MADHYAPRADESH, MAHARASHTRA, MANIPUR, MEGHALAYA, MIZORAM, NAGALAND, ODISHA, PUNJAB, RAJASTHAN, SIKKIM, TAMILNADU,TRIPURA, UTTARPRADESH, UTTARAKHAND, WESTBENGAL, ANDAMANANDNICOBARISLANDS, CHANDIGARH, DELHI, PUDUCHERRY  from IND_DB.IND_SCH.T01_IND_AUTOMOBILE_REGISTRATION'''
+R1 = execute_query(Q1)
+r1_expander = st.expander("Data sets used in this entire analysis.")
+R1_DF = pd.DataFrame(R1)
+R1_DF.index = R1_DF.index + 1
+r1_expander.write(R1_DF)
+
+df=R1_DF
+
+state_filter = st.multiselect("Select State(s)", df['State'].unique())
+vehicle_type_filter = st.multiselect("Select Vehicle Type(s)", df['Vehicle Type'].unique())
+year_filter = st.slider("Select Year Range", int(df['Year'].min()), int(df['Year'].max()), (int(df['Year'].min()), int(df['Year'].max())))
+
+# Filter the data based on user selections
+filtered_df = df
+if state_filter:
+    filtered_df = filtered_df[filtered_df['State'].isin(state_filter)]
+if vehicle_type_filter:
+    filtered_df = filtered_df[filtered_df['Vehicle Type'].isin(vehicle_type_filter)]
+if year_filter:
+    filtered_df = filtered_df[(filtered_df['Year'] >= year_filter[0]) & (filtered_df['Year'] <= year_filter[1])]
+
+# Display filtered data
+st.dataframe(filtered_df)
+
+# Visualizations
+st.header("Visualizations")
+
+# Line chart for overall trend
+st.subheader("Overall Registration Trend")
+fig, ax = plt.subplots()
+sns.lineplot(x='Month', y='Registrations', hue='Vehicle Type', data=filtered_df, ax=ax)
+st.pyplot(fig)
+
+# Bar chart for state-wise comparison
+st.subheader("State-wise Registrations")
+fig, ax = plt.subplots()
+sns.barplot(x='State', y='Registrations', hue='Vehicle Type', data=filtered_df, ax=ax)
+st.pyplot(fig)
+
+# Heatmap for monthly registrations
+st.subheader("Monthly Registrations Heatmap")
+heatmap_data = filtered_df.pivot_table(values='Registrations', index='Month', columns='Year')
+fig, ax = plt.subplots()
+sns.heatmap(heatmap_data, annot=True, fmt='d', cmap='coolwarm', ax=ax)
+st.pyplot(fig)
 
 
 
