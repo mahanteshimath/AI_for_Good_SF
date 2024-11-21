@@ -65,8 +65,4 @@ plotly
 matplotlib
 seaborn
 requests
-chardet
-opencv-python
-tensorflow 
-keras 
-pygame
+
