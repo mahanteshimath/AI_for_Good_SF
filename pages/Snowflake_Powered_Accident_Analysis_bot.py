@@ -16,7 +16,7 @@ def get_snowflake_session():
     try:
         # Define your connection parameters
         connection_parameters = {
-            "account":st.session_state.account,
+            "account": 'iafmlte-gvb15101',
             "user": st.session_state.user,
             "password": st.session_state.password,
             "role": st.session_state.role,
@@ -24,7 +24,6 @@ def get_snowflake_session():
             "database": 'CC_QUICKSTART_CORTEX_DOCS',
             "schema": 'DATA',
         }
-
         # Create a new session
         session = Session.builder.configs(connection_parameters).create()
         return session
@@ -35,20 +34,16 @@ def get_snowflake_session():
 # Title and intro
 st.title(":blue[📈Analysis with Snowflake Cortex & RAG ] :speech_balloon:")
 
-def main():
-    # Get active Snowflake session
-    session = get_snowflake_session()
-    
-    if session is None:
-        return
+# Get active Snowflake session
+session = get_snowflake_session()
 
+if session:
     # Create columns for layout
     col1, col2, col3 = st.columns([1, 0.05, 1])
 
     with col1:
         st.write("### Configuration Options")
         config_options()
-        # Add custom CSS to style the button
         st.markdown(
             """
             <style>
@@ -82,8 +77,7 @@ def main():
             '''
             st.markdown(markdown_content)
 
-        # Create a button using Streamlit
-        if st.button("How RAG works in Snowflake?", key="rag_button",type="secondary"):
+        if st.button("How RAG works in Snowflake?", key="rag_button", type="secondary"):
             show_dialog()
 
     with col2:
@@ -106,65 +100,45 @@ def main():
         st.write("### Documents Available")
         st.write("This is the list of documents you already have and that will be used to answer your questions:")
 
-        # Query to list available documents
         docs_available = session.sql("ls @docs").collect()
-        list_docs = []
-        for doc in docs_available:
-            list_docs.append(doc["name"])
+        list_docs = [doc["name"] for doc in docs_available]
         st.dataframe(list_docs)
 
     st.divider()
 
     init_messages()
 
-    # Display chat messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # Accept user input for questions
     if question := st.chat_input("Chat with any docs"):
-        # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": question})
 
-        # Display user message in chat message container
         with st.chat_message("user"):
             st.markdown(question)
 
-        # Display assistant response in chat message container
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             question = question.replace("'", "")
             with st.spinner(f"{st.session_state.model_name} thinking..."):
                 response = complete(session, question)
-                res_text = response[0].RESPONSE
-                res_text = res_text.replace("'", "")
+                res_text = response[0].RESPONSE.replace("'", "")
                 message_placeholder.markdown(res_text)
 
         st.session_state.messages.append({"role": "assistant", "content": res_text})
 
 # Configuration options (now on the main page)
 def config_options():
-    # Model selection
     st.selectbox('Select your model:', (
         'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
         'llama3-8b', 'llama3-70b', 'reka-flash', 
         'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name")
 
-    # Chat history usage
     st.checkbox('Do you want that I remember the chat history?', key="use_chat_history", value=True)
-
-    # Debug option
     st.checkbox('Debug: Click to see summary generated of previous conversation', key="debug", value=True)
-
-    # Button to start a new conversation
     st.button("Start Over", key="clear_conversation")
 
-    # Show session state
-    # st.expander("Session State").write(st.session_state)
-    icons = {"assistant": "❄️", "user": "👤"}
-
-# Initialize chat history
 def init_messages():
     if st.session_state.clear_conversation or "messages" not in st.session_state:
         st.session_state.messages = []
@@ -261,7 +235,6 @@ def complete(session, myquestion):
 
 
 
-
 st.markdown(
     '''
     <style>
@@ -294,4 +267,4 @@ text-align: center;
 <p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
 </div>
 """
-st.markdown(footer,unsafe_allow_html=True)  
+st.markdown(footer,unsafe_allow_html=True) 
