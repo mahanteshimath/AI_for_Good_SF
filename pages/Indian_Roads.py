@@ -76,7 +76,7 @@ st.title("Vehicle Registration Analysis")
 
 st.title(":blue[Indian Road development (in KM)]")
 Q1=f'''SELECT
-    TITLE,
+    replace (TITLE,  '(Month ex Telangana)','') TITLE,
     YEAR(DATE) AS YEAR,
     SUM(INDIA) AS INDIA,
     SUM(ANDHRAPRADESH) AS ANDHRAPRADESH,
@@ -122,44 +122,41 @@ R1_DF.index = R1_DF.index + 1
 r1_expander.write(R1_DF)
 
 df=R1_DF
-state_filter = st.multiselect("Select State",df.columns[3:], )
 
-vehicle_type_filter = st.multiselect("Select Vehicle Type(s)", df['TITLE'].unique())
-year_filter = st.slider("Select Year Range", int(df['YEAR'].min()), int(df['YEAR'].max()), (int(df['YEAR'].min()), int(df['YEAR'].max())))
 
-# Filter the data based on user selections
-filtered_df = df
-# if state_filter:
-#     filtered_df = filtered_df[filtered_df['State'].isin(state_filter)]
-if vehicle_type_filter:
-    filtered_df = filtered_df[filtered_df['TITLE'].isin(vehicle_type_filter)]
-if year_filter:
-    filtered_df = filtered_df[(filtered_df['YEAR'] >= year_filter[0]) & (filtered_df['YEAR'] <= year_filter[1])]
+year = st.selectbox("Select Year", sorted(df["YEAR"].unique()))
+title = st.selectbox("Select Registration Type", df["TITLE"].unique())
 
-# Display filtered data
+# Filter DataFrame based on selection
+filtered_df = df[(df["YEAR"] == year) & (df["TITLE"] == title)]
+st.write("### Filtered Data")
 st.dataframe(filtered_df)
 
 # Visualizations
-st.header("Visualizations")
+st.write("### Visualizations")
 
-# Line chart for overall trend
-st.subheader("Overall Registration Trend")
-fig, ax = plt.subplots()
-sns.lineplot(x='Month', y='Registrations', hue='Vehicle Type', data=filtered_df, ax=ax)
-st.pyplot(fig)
+# Line Chart of All-India Registrations Over Years
+st.write("#### All-India Registrations Over the Years")
+line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend")
+st.plotly_chart(line_chart)
 
-# Bar chart for state-wise comparison
-st.subheader("State-wise Registrations")
-fig, ax = plt.subplots()
-sns.barplot(x='State', y='Registrations', hue='Vehicle Type', data=filtered_df, ax=ax)
-st.pyplot(fig)
+# Bar Chart for Selected Year and States
+st.write("#### State-wise Registrations")
+bar_chart = px.bar(
+    filtered_df.melt(id_vars=["TITLE", "YEAR"], var_name="STATE", value_name="REGISTRATIONS"),
+    x="STATE", y="REGISTRATIONS", title=f"State-wise Registrations for {year}: {title}",
+    labels={"REGISTRATIONS": "Registrations", "STATE": "State"}
+)
+st.plotly_chart(bar_chart)
 
-# Heatmap for monthly registrations
-st.subheader("Yearly Registrations Heatmap")
-heatmap_data = filtered_df.pivot_table(values='Registrations', index='Month', columns='YEAR')
-fig, ax = plt.subplots()
-sns.heatmap(heatmap_data, annot=True, fmt='d', cmap='coolwarm', ax=ax)
-st.pyplot(fig)
+# Pie Chart for State-Wise Contribution
+st.write("#### State-Wise Contribution to Registrations")
+pie_chart = px.pie(
+    filtered_df.melt(id_vars=["TITLE", "YEAR"], var_name="STATE", value_name="REGISTRATIONS"),
+    names="STATE", values="REGISTRATIONS", title=f"State Contribution for {year}: {title}"
+)
+st.plotly_chart(pie_chart)
+
 
 
 
