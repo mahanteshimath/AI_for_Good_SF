@@ -134,7 +134,7 @@ if state_filter:
 if vehicle_type_filter:
     filtered_df = filtered_df[filtered_df['Vehicle Type'].isin(vehicle_type_filter)]
 if year_filter:
-    filtered_df = filtered_df[(filtered_df['Year'] >= year_filter[0]) & (filtered_df['Year'] <= year_filter[1])]
+    filtered_df = filtered_df[(filtered_df['YEAR'] >= year_filter[0]) & (filtered_df['YEAR'] <= year_filter[1])]
 
 # Display filtered data
 st.dataframe(filtered_df)
@@ -155,8 +155,8 @@ sns.barplot(x='State', y='Registrations', hue='Vehicle Type', data=filtered_df, 
 st.pyplot(fig)
 
 # Heatmap for monthly registrations
-st.subheader("Monthly Registrations Heatmap")
-heatmap_data = filtered_df.pivot_table(values='Registrations', index='Month', columns='Year')
+st.subheader("Yearly Registrations Heatmap")
+heatmap_data = filtered_df.pivot_table(values='Registrations', index='Month', columns='YEAR')
 fig, ax = plt.subplots()
 sns.heatmap(heatmap_data, annot=True, fmt='d', cmap='coolwarm', ax=ax)
 st.pyplot(fig)
