@@ -66,4 +66,7 @@ matplotlib
 seaborn
 requests
 chardet
-textblob
+opencv-python
+tensorflow 
+keras 
+pygame
