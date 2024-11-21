@@ -181,16 +181,6 @@ bar_chart = px.bar(
 )
 st.plotly_chart(bar_chart)
 
-# Animated Line Chart for All-India Registrations Over Years
-st.write("#### Animated All-India Registrations Over Years")
-line_chart = px.line(
-    filtered_df, x="YEAR", y="INDIA", title=f"All-India Registrations Over Years: {title}",
-    labels={"YEAR": "YEAR", "INDIA": "Registrations"},
-    animation_frame="YEAR"
-)
-st.plotly_chart(line_chart)
-
-
 # Line Chart of All-India Registrations Over Years
 st.write("#### All-India Registrations Over the Years")
 line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend")
