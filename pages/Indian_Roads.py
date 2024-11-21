@@ -125,7 +125,7 @@ df=R1_DF
 state_filter = st.multiselect("Select State",df.columns[3:], )
 
 vehicle_type_filter = st.multiselect("Select Vehicle Type(s)", df['TITLE'].unique())
-year_filter = st.slider("Select Year Range", int(df['YEAR'].min()), int(df['YEAR'].max()), (int(df['Year'].min()), int(df['YEAR'].max())))
+year_filter = st.slider("Select Year Range", int(df['YEAR'].min()), int(df['YEAR'].max()), (int(df['YEAR'].min()), int(df['YEAR'].max())))
 
 # Filter the data based on user selections
 filtered_df = df
