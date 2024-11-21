@@ -130,6 +130,8 @@ col1, col2 = st.columns(2)
 col1.metric(label="State with Best Air Quality (PM2.5)", value=lowest_pm25["State"], delta=f"{lowest_pm25['PM2.5 (μg/m³)']} μg/m³")
 col2.metric(label="State with Worst Air Quality (PM2.5)", value=highest_pm25["State"], delta=f"{highest_pm25['PM2.5 (μg/m³)']} μg/m³")
 
+df = pd.DataFrame(state_aqi_data)
+
 # Bar chart visualization for PM2.5
 st.subheader("PM2.5 Levels by State (μg/m³)")
 alt_chart = (
