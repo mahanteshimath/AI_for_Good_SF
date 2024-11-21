@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
+import altair as alt
 
 # Function to fetch AQI data
 def get_aqi_data(city, api_key):
@@ -131,7 +132,20 @@ col2.metric(label="State with Worst Air Quality (PM2.5)", value=highest_pm25["St
 
 # Bar chart visualization for PM2.5
 st.subheader("PM2.5 Levels by State (μg/m³)")
-st.bar_chart(data=df, x="State", y="PM2.5 (μg/m³)", use_container_width=True)
+alt_chart = (
+    alt.Chart(df)
+    .mark_bar()
+    .encode(
+        x=alt.X("PM2.5 (μg/m³):Q", title="PM2.5 (μg/m³)"),
+        y=alt.Y("State:O", sort="-x", title="State"),
+        color=alt.Color("PM2.5 (μg/m³):Q", scale=alt.Scale(scheme="blues")),
+        tooltip=["State", "PM2.5 (μg/m³)", "PM2.5 Category (DEFRA)"],
+    )
+    .properties(width=800, height=500, title="PM2.5 Levels by State")
+)
+
+# Display the chart
+st.altair_chart(alt_chart, use_container_width=True)
 
 # Detailed Table
 st.subheader("Detailed Pollutant Data with DEFRA Categories")
