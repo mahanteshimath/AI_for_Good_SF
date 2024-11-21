@@ -196,91 +196,13 @@ line_chart = px.line(
 )
 st.plotly_chart(line_chart)
 
-# Animated Pie Chart for State-Wise Contribution Over Years
-st.write("#### Animated State-Wise Contribution Over Years")
-pie_chart = px.pie(
-    filtered_df.melt(id_vars=["TITLE", "YEAR"], var_name="STATE", value_name="REGISTRATIONS"),
-    names="STATE", values="REGISTRATIONS",
-   # animation_frame="YEAR", 
-    title=f"State Contribution Over Years: {title}"
-)
-st.plotly_chart(pie_chart)
+
+# Line Chart of All-India Registrations Over Years
+st.write("#### All-India Registrations Over the Years")
+line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend")
+st.plotly_chart(line_chart)
 
 
-
-
-
-years = df["YEAR"].unique()
-
-# Create the figure
-fig = go.Figure()
-
-# Add the initial pie chart (for the first year)
-initial_data = df[df["YEAR"] == years[0]]
-fig.add_trace(
-    go.Pie(
-        labels=initial_data["STATE"],
-        values=initial_data["REGISTRATIONS"],
-        name=str(years[0]),
-    )
-)
-
-# Add frames for each year
-frames = []
-for year in years:
-    year_data = df[df["YEAR"] == year]
-    frame = go.Frame(
-        data=[
-            go.Pie(
-                labels=year_data["STATE"],
-                values=year_data["REGISTRATIONS"],
-                name=str(year),
-            )
-        ],
-        name=str(year),
-    )
-    frames.append(frame)
-
-fig.frames = frames
-
-# Add Play and Pause buttons
-fig.update_layout(
-    title="Animated Pie Chart: State-Wise Registrations Over Years",
-    updatemenus=[
-        {
-            "buttons": [
-                {
-                    "args": [None, {"frame": {"duration": 1000, "redraw": True}, "fromcurrent": True}],
-                    "label": "Play",
-                    "method": "animate",
-                },
-                {
-                    "args": [[None], {"frame": {"duration": 0, "redraw": True}, "mode": "immediate", "transition": {"duration": 0}}],
-                    "label": "Pause",
-                    "method": "animate",
-                },
-            ],
-            "direction": "left",
-            "pad": {"r": 10, "t": 87},
-            "showactive": False,
-            "type": "buttons",
-            "x": 0.1,
-            "xanchor": "right",
-            "y": 0,
-            "yanchor": "top",
-        }
-    ],
-)
-
-# Set layout for the pie chart
-fig.update_layout(
-    width=800,
-    height=600,
-    template="plotly_dark",
-)
-
-# Show the chart
-fig.show()
 
 st.markdown(
     '''
