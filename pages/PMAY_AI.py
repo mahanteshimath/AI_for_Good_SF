@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-import plotly.express as px
+
 
 
 # Function to fetch AQI data
@@ -45,7 +45,6 @@ state_city_mapping = {
     "Uttarakhand": "Dehradun",
     "West Bengal": "Kolkata",
 }
-
 # WeatherAPI Key
 db_credentials = st.secrets["db_credentials"]
 api_key =db_credentials["weatherapi_key"]  # Replace with your WeatherAPI key
@@ -59,69 +58,51 @@ for state, city in state_city_mapping.items():
         state_aqi_data.append({
             "State": state,
             "City": city,
+            "PM2.5 (μg/m3)": air_quality.get("pm2_5", "N/A"),
+            "PM10 (μg/m3)": air_quality.get("pm10", "N/A"),
+            "CO (μg/m3)": air_quality.get("co", "N/A"),
+            "O3 (μg/m3)": air_quality.get("o3", "N/A"),
+            "NO2 (μg/m3)": air_quality.get("no2", "N/A"),
+            "SO2 (μg/m3)": air_quality.get("so2", "N/A"),
             "US-EPA Index": air_quality.get("us-epa-index", "N/A"),
         })
     else:
         state_aqi_data.append({
             "State": state,
             "City": city,
+            "PM2.5 (μg/m3)": "N/A",
+            "PM10 (μg/m3)": "N/A",
+            "CO (μg/m3)": "N/A",
+            "O3 (μg/m3)": "N/A",
+            "NO2 (μg/m3)": "N/A",
+            "SO2 (μg/m3)": "N/A",
             "US-EPA Index": "N/A",
         })
 
 # Convert data to DataFrame
 df = pd.DataFrame(state_aqi_data)
 
-# Clean and categorize data
-df = df[df["US-EPA Index"] != "N/A"]  # Remove "N/A" values
+# Sorting data by US-EPA Index for better visualization
+df = df[df["US-EPA Index"] != "N/A"]  # Remove any "N/A" values
 df["US-EPA Index"] = pd.to_numeric(df["US-EPA Index"])
-df["Air Quality"] = df["US-EPA Index"].map({
-    1: "Good",
-    2: "Moderate",
-    3: "Unhealthy for Sensitive Groups",
-    4: "Unhealthy",
-    5: "Very Unhealthy",
-    6: "Hazardous"
-})
+df = df.sort_values(by="US-EPA Index", ascending=True)
 
-# Assign colors for heatmap
-color_scale = {
-    "Good": "green",
-    "Moderate": "yellow",
-    "Unhealthy for Sensitive Groups": "orange",
-    "Unhealthy": "red",
-    "Very Unhealthy": "purple",
-    "Hazardous": "maroon",
-}
+# Displaying the AQI data
+st.title("India AQI Dashboard 🌍")
+st.write("Real-time Air Quality Index (AQI) across Indian states. Data includes detailed pollutant levels.")
 
-df["Color"] = df["Air Quality"].map(color_scale)
+# Metrics for highest and lowest AQI
+highest_aqi = df.iloc[-1]
+lowest_aqi = df.iloc[0]
+st.subheader("Highlights")
+col1, col2 = st.columns(2)
+col1.metric(label="State with Best Air Quality", value=lowest_aqi["State"], delta=f"US-EPA Index: {lowest_aqi['US-EPA Index']}")
+col2.metric(label="State with Worst Air Quality", value=highest_aqi["State"], delta=f"US-EPA Index: {highest_aqi['US-EPA Index']}")
 
-# Display the AQI data
-st.title("India AQI Heatmap 🌍")
-st.write("Real-time Air Quality Index (AQI) across Indian states based on US-EPA standards.")
-
-# Heatmap visualization
-fig = px.choropleth(
-    df,
-    locationmode="country names",
-    locations="State",
-    color="Air Quality",
-    title="Air Quality Levels Across India",
-    color_discrete_map=color_scale,
-    scope="asia",
-    labels={"Air Quality": "US-EPA Standard"},
-)
-
-fig.update_geos(
-    visible=False,
-    resolution=50,
-    showcountries=True,
-    countrycolor="Black",
-    showcoastlines=True,
-    coastlinecolor="LightGray",
-)
-
-st.plotly_chart(fig, use_container_width=True)
+# Bar chart visualization for US-EPA Index
+st.subheader("Air Quality Levels by State (US-EPA Index)")
+st.bar_chart(data=df, x="State", y="US-EPA Index", use_container_width=True)
 
 # Detailed Table
-st.subheader("Detailed US-EPA Data")
+st.subheader("Detailed Pollutant Data")
 st.dataframe(df.reset_index(drop=True), use_container_width=True)
