@@ -48,7 +48,7 @@ state_city_mapping = {
 }
 
 # WeatherAPI Key
-api_key = "YOUR_API_KEY"  # Replace with your WeatherAPI key
+api_key =db_credentials["weatherapi_key"]  # Replace with your WeatherAPI key
 
 # Fetch AQI data for all states
 state_aqi_data = []
