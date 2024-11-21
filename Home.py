@@ -38,9 +38,9 @@ Architecture_page = st.Page(
 
 #"SF-MP Social impact"
 project_1_page = st.Page(
-    "pages/Fleet_Monitoring_and_Prediction.py",
-    title="Fleet Monitoring and Prediction",
-    icon=":material/road:",
+    "pages/Train_Passengers_and_Prediction.py",
+    title="Train Passengers and Prediction",
+    icon=":material/train:",
 )
 
 project_2_page = st.Page(
@@ -55,7 +55,12 @@ project_3_page = st.Page(
     icon=":material/flight:",
 )
 
-
+#"SF-MP Social impact"
+project_4_page = st.Page(
+    "pages/Indian_Roads.py",
+    title="Indian Roads",
+    icon=":material/road:",
+)
 
  #"Open Government Data"
 road_page = st.Page(
@@ -88,7 +93,7 @@ chatbot = st.Page(
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "SF-MP Social impact Data": [project_1_page,project_2_page,project_3_page],
+        "SF-MP Social impact Data": [project_4_page,project_1_page,project_3_page,project_2_page],
         "Open Government Data":[road_page, safety_page,Drowsiness,PMAY,chatbot],
     }
 )
