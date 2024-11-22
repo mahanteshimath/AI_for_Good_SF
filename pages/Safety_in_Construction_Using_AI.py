@@ -9,7 +9,7 @@ st.markdown("""
         padding: 2rem;
     }
     div[data-testid="metric-container"] {
-        background-color: #EEE8AA;
+        background-color: #F0F8FF;
         padding: 1rem;
         border-radius: 0.5rem;
         margin: 0.5rem 0;
