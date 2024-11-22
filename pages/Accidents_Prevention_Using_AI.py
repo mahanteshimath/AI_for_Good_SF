@@ -14,7 +14,7 @@ if 'google_api_key' not in st.session_state:
     st.session_state.google_api_key = db_credentials["google_api_key"]
 
 
-genai.configure(api_key=st.secrets['google_api_key'])
+genai.configure(api_key=st.session_state.google_api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 
