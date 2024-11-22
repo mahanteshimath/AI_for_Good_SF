@@ -10,14 +10,18 @@ pd.set_option("max_colwidth", None)
 num_chunks = 3
 slide_window = 7
 
-
+st.logo(
+    image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg",
+    link="https://www.linkedin.com/in/mahantesh-hiremath/",
+    icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
+)
 
 # Establish a Snowflake session using Snowpark
 def get_snowflake_session():
     try:
         # Define your connection parameters
         connection_parameters = {
-            "account":st.session_state.account,
+            "account": 'iafmlte-gvb15101',
             "user": st.session_state.user,
             "password": st.session_state.password,
             "role": st.session_state.role,
@@ -36,125 +40,153 @@ def get_snowflake_session():
 # Title and intro
 st.title(":blue[📈Analysis with Snowflake Cortex & RAG ] :speech_balloon:")
 
-# Get active Snowflake session
-session = get_snowflake_session()
+def main():
+    # Get active Snowflake session
+    session = get_snowflake_session()
+    
+    if session is None:
+        return
 
-if session is None:
-    st.stop()
+    # Create columns for layout
+    col1, col2, col3 = st.columns([1, 0.05, 1])
 
-# Create columns for layout
-col1, col2, col3 = st.columns([1, 0.05, 1])
+    with col1:
+        st.write("### Configuration Options")
+        config_options()
+        # Add custom CSS to style the button
+        st.markdown(
+            """
+            <style>
+            .glowing-button {
+                background-color: red;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 8px;
+                box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+                transition: box-shadow 0.3s ease-in-out;
+            }
+            .glowing-button:hover {
+                box-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
-with col1:
-    st.write("### Configuration Options")
-    # Add custom CSS to style the button
-    st.markdown(
-        """
-        <style>
-        .glowing-button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+        @st.dialog("How RAG works in Snowflake?")
+        def show_dialog():
+            markdown_content = '''
+                ![rag in snowflake](https://publish-p57963-e462109.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--7e5d3595-a32c-44de-86ca-cfa2883d475e/rag1.png?preferwebp=true&width=1440&quality=85)
+            '''
+            st.markdown(markdown_content)
 
-    # Create a button using Streamlit
-    if st.button("How RAG works in Snowflake?", key="rag_button", type="secondary"):
-        show_dialog()
+        # Create a button using Streamlit
+        if st.button("How RAG works in Snowflake?", key="rag_button",type="secondary"):
+            show_dialog()
 
-with col2:
-    st.markdown(
-        """
-        <style>
-        .divider {
-            height: 100%;
-            width: 1px;
-            background-color: #e0e0e0;
-            margin: 0 10px;
-        }
-        </style>
-        <div class="divider"></div>
-        """,
-        unsafe_allow_html=True
-    )
+    with col2:
+        st.markdown(
+            """
+            <style>
+            .divider {
+                height: 100%;
+                width: 1px;
+                background-color: #e0e0e0;
+                margin: 0 10px;
+            }
+            </style>
+            <div class="divider"></div>
+            """,
+            unsafe_allow_html=True
+        )
 
-with col3:
-    st.write("### Documents Available")
-    st.write("This is the list of documents you already have and that will be used to answer your questions:")
+    with col3:
+        st.write("### Documents Available")
+        st.write("This is the list of documents you already have and that will be used to answer your questions:")
 
-    # Query to list available documents
-    docs_available = session.sql("ls @docs").collect()
-    list_docs = []
-    for doc in docs_available:
-        list_docs.append(doc["name"])
-    st.dataframe(list_docs)
+        # Query to list available documents
+        docs_available = session.sql("ls @docs").collect()
+        list_docs = []
+        for doc in docs_available:
+            list_docs.append(doc["name"])
+        st.dataframe(list_docs)
 
-st.divider()
+    st.divider()
+
+    init_messages()
+
+    # Display chat messages from history on app rerun
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # Accept user input for questions
+    if question := st.chat_input("Chat with any docs"):
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": question})
+
+        # Display user message in chat message container
+        with st.chat_message("user"):
+            st.markdown(question)
+
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            question = question.replace("'", "")
+            with st.spinner(f"{st.session_state.model_name} thinking..."):
+                response = complete(session, question)
+                res_text = response[0].RESPONSE
+                res_text = res_text.replace("'", "")
+                message_placeholder.markdown(res_text)
+
+        st.session_state.messages.append({"role": "assistant", "content": res_text})
+
+# Configuration options (now on the main page)
+def config_options():
+    # Model selection
+    st.selectbox('Select your model:', (
+        'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
+        'llama3-8b', 'llama3-70b', 'reka-flash', 
+        'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name")
+
+    # Chat history usage
+    st.checkbox('Do you want that I remember the chat history?', key="use_chat_history", value=True)
+
+    # Debug option
+    st.checkbox('Debug: Click to see summary generated of previous conversation', key="debug", value=True)
+
+    # Button to start a new conversation
+    st.button("Start Over", key="clear_conversation")
+
+    # Show session state
+    # st.expander("Session State").write(st.session_state)
+    icons = {"assistant": "❄️", "user": "👤"}
 
 # Initialize chat history
 def init_messages():
     if st.session_state.clear_conversation or "messages" not in st.session_state:
         st.session_state.messages = []
 
-init_messages()
-
-# Display chat messages from history on app rerun
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-# Accept user input for questions
-if question := st.chat_input("Chat with any docs"):
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": question})
-
-    # Display user message in chat message container
-    with st.chat_message("user"):
-        st.markdown(question)
-
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        question = question.replace("'", "")
-        with st.spinner(f"{st.session_state.model_name} thinking..."):
-            response = complete(session, question)
-            res_text = response[0].RESPONSE
-            res_text = res_text.replace("'", "")
-            message_placeholder.markdown(res_text)
-
-        st.session_state.messages.append({"role": "assistant", "content": res_text})
-
-# Configuration options
-st.checkbox('Use chat history for context', key="use_chat_history", value=True)
-
-# Debug option
-st.checkbox('Debug: Click to see summary generated of previous conversation', key="debug", value=True)
-
-# Button to start a new conversation
-st.button("Start Over", key="clear_conversation")
-
-# Show session state
-# st.expander("Session State").write(st.session_state)
-
 # Get similar chunks based on the question
 def get_similar_chunks(session, question):
     cmd = """
-    WITH results AS (
-        SELECT RELATIVE_PATH,
-        VECTOR_COSINE_SIMILARITY(docs_chunks_table.chunk_vec,
-        SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', ?)) AS similarity
-        FROM docs_chunks_table
-        ORDER BY similarity DESC
-        LIMIT ?
-    )
-    SELECT chunk, relative_path FROM results
+        WITH results AS (
+            SELECT RELATIVE_PATH,
+                   VECTOR_COSINE_SIMILARITY(docs_chunks_table.chunk_vec,
+                    SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', ?)) AS similarity,
+                   chunk
+            FROM docs_chunks_table
+            ORDER BY similarity DESC
+            LIMIT ?
+        )
+        SELECT chunk, relative_path FROM results
     """
     df_chunks = session.sql(cmd, params=[question, num_chunks]).to_pandas()
     similar_chunks = " ".join(df_chunks['CHUNK'].tolist())
@@ -171,14 +203,16 @@ def get_chat_history():
 # Summarize the question along with chat history for context
 def summarize_question_with_history(session, chat_history, question):
     prompt = f"""
-    Based on the chat history below and the question, generate a query that extends the question 
-    with the chat history provided:
-    <chat_history>
-    {chat_history}
-    </chat_history>
-    <question>
-    {question}
-    </question>
+        Based on the chat history below and the question, generate a query that extends the question 
+        with the chat history provided. The query should be in natural language. 
+        Answer with only the query. Do not add any explanation.
+        
+        <chat_history>
+        {chat_history}
+        </chat_history>
+        <question>
+        {question}
+        </question>
     """
     cmd = "SELECT snowflake.cortex.complete(?, ?) AS response"
     df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
@@ -200,21 +234,25 @@ def create_prompt(session, myquestion):
     else:
         prompt_context = get_similar_chunks(session, myquestion)
         chat_history = ""
-
+  
     prompt = f"""
-    You are an expert chat assistance that extracts information from the CONTEXT provided
-    between <context> and </context> tags. You offer a chat experience considering the information included in the CHAT HISTORY
-    provided between <chat_history> and </chat_history> tags. When answering the question contained between <question> and </question> tags
-    be concise and do not hallucinate. If you don’t have the information just say so. <chat_history>
-    {chat_history}
-    </chat_history>
-    <context>
-    {prompt_context}
-    </context>
-    <question>
-    {myquestion}
-    </question>
-    Answer:
+        You are an expert chat assistance that extracts information from the CONTEXT provided
+        between <context> and </context> tags.
+        You offer a chat experience considering the information included in the CHAT HISTORY
+        provided between <chat_history> and </chat_history> tags.
+        When answering the question contained between <question> and </question> tags
+        be concise and do not hallucinate. If you don’t have the information just say so.
+        
+        <chat_history>
+        {chat_history}
+        </chat_history>
+        <context>
+        {prompt_context}
+        </context>
+        <question>
+        {myquestion}
+        </question>
+        Answer:
     """
     return prompt
 
@@ -224,6 +262,9 @@ def complete(session, myquestion):
     cmd = "SELECT snowflake.cortex.complete(?, ?) AS response"
     df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
     return df_response
+
+if __name__ == "__main__":
+    main()
 
 st.markdown(
     '''
