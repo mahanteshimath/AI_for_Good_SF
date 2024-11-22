@@ -8,10 +8,11 @@ import fitz  # PyMuPDF for PDF processing
 
 
 
-# Initialize Gemini
-if 'google_api_key' not in st.session_state.google_api_key:
-    st.error("Please add your Google API key to the secrets.")
-    st.stop()
+# Accessing the database credentials
+db_credentials = st.secrets["db_credentials"]
+if 'google_api_key' not in st.session_state:
+    st.session_state.google_api_key = db_credentials["google_api_key"]
+
 
 genai.configure(api_key=st.secrets['google_api_key'])
 model = genai.GenerativeModel('gemini-1.5-flash')
