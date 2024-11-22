@@ -50,6 +50,40 @@ def init_messages():
     if st.session_state.get("clear_conversation") or "messages" not in st.session_state:
         st.session_state["messages"] = []
 
+# Get similar chunks based on the question
+def get_similar_chunks(session, question):
+    cmd = """
+    WITH results AS (
+        SELECT RELATIVE_PATH,
+               VECTOR_COSINE_SIMILARITY(docs_chunks_table.chunk_vec,
+               SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', ?)) AS similarity
+        FROM docs_chunks_table
+        ORDER BY similarity DESC
+        LIMIT ?
+    )
+    SELECT chunk, relative_path FROM results
+    """
+    df_chunks = session.sql(cmd, params=[question, num_chunks]).to_pandas()
+    similar_chunks = " ".join(df_chunks['CHUNK'].tolist())
+    return similar_chunks.replace("'", "")
+
+# Create the final prompt
+def create_prompt(session, myquestion):
+    prompt_context = get_similar_chunks(session, myquestion)
+    chat_history = st.session_state.get("messages", [])
+    prompt = f"""
+    <context>{prompt_context}</context>
+    <question>{myquestion}</question>
+    """
+    return prompt
+
+# Send prompt to Snowflake Cortex for completion
+def complete(session, myquestion):
+    prompt = create_prompt(session, myquestion)
+    cmd = "SELECT SNOWFLAKE.CORTEX.COMPLETE(?)"
+    response = session.sql(cmd, params=[prompt]).collect()
+    return response
+
 # Title and intro
 st.title(":blue[📈 Analysis with Snowflake Cortex & RAG] :speech_balloon:")
 
@@ -87,8 +121,13 @@ with col1:
             cursor: pointer;
             border-radius: 8px;
             box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .glowing-button:hover {
+            box-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red;
         }
         </style>
+        <button class="glowing-button">Glowing Button</button>
         """,
         unsafe_allow_html=True
     )
@@ -130,26 +169,23 @@ for message in st.session_state.get("messages", []):
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Function to handle user input and generate responses
-def handle_user_input():
-    question = st.text_input("Ask a question:")
-    if question:
-        st.session_state.messages.append({"role": "user", "content": question})
+# Accept user input for questions
+if question := st.chat_input("Chat with any docs"):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": question})
 
-        # Display user message in chat message container
-        with st.chat_message("user"):
-            st.markdown(question)
+    # Display user message in chat message container
+    with st.chat_message("user"):
+        st.markdown(question)
 
-        # Display assistant response in chat message container
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty()
-            question = question.replace("'", "")
-            with st.spinner(f"{st.session_state.model_name} thinking..."):
-                response = complete(session, question)
-                res_text = response[0].RESPONSE
-                res_text = res_text.replace("'", "")
-                message_placeholder.markdown(res_text)
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        question = question.replace("'", "")
+        with st.spinner(f"{st.session_state.model_name} thinking..."):
+            response = complete(session, question)
+            res_text = response[0].RESPONSE
+            res_text = res_text.replace("'", "")
+            message_placeholder.markdown(res_text)
 
-        st.session_state.messages.append({"role": "assistant", "content": res_text})
-
-handle_user_input()
+    st.session_state.messages.append({"role": "assistant", "content": res_text})
