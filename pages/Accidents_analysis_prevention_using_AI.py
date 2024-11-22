@@ -233,8 +233,7 @@ with col2:
     """)
 # Footer
 st.markdown("---")
-st.image("./src/AC5.png", caption="Traffic Management System")
-
+st.image("./src/AC5.PNG", caption="Traffic Management System")
 def add_custom_css():
     st.markdown("""
         <style>
