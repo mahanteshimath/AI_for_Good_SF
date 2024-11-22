@@ -233,7 +233,7 @@ with col2:
     """)
 # Footer
 st.markdown("---")
-
+st.image("./src/AC5.png", caption="2023 Accidents", use_column_width=True)
 
 def add_custom_css():
     st.markdown("""
@@ -254,9 +254,7 @@ def add_custom_css():
 
 add_custom_css()
 st.markdown('<div class="flashing-title">❄️RECOMMENDATIONS TO PREVENT ACCIDENTS WITH AI❄️</div>', unsafe_allow_html=True)
-import streamlit as st
 
-# Section 1: AI-powered Traffic Management Systems
 st.markdown("### AI-Powered Traffic Management Systems")
 col1, col2 = st.columns([3, 1])
 
@@ -305,3 +303,71 @@ with col5:
         '''
     )
 
+
+st.divider()  # Add a divider for separation
+col6, col7 = st.columns([1, 3])
+
+with col6:
+    st.markdown(
+        '''
+        **Deploy AI-powered surveillance cameras:**  
+        Install AI-enabled surveillance cameras at accident-prone areas to detect and alert authorities of potential hazards in real-time.
+
+        **Create AI-driven emergency response systems:**  
+        Develop AI-powered emergency response systems that can quickly respond to accidents, providing critical care and reducing response times.
+
+        **Implement AI-based driver behavior analysis:**  
+        Use AI to analyze driver behavior and identify high-risk drivers, enabling targeted interventions to improve road safety.
+
+        **Develop AI-powered road maintenance systems:**  
+        Utilize AI to identify and prioritize road maintenance needs, ensuring that roads are safe and well-maintained.
+
+        **Integrate AI with existing safety infrastructure:**  
+        Combine AI with existing safety infrastructure, such as crash barriers and guardrails, to enhance their effectiveness.
+
+        **Create AI-driven public awareness campaigns:**  
+        Develop AI-powered public awareness campaigns to educate road users about safe driving practices and the risks of accidents.
+
+        **Establish AI-based accident investigation systems:**  
+        Use AI to analyze accident data and identify root causes, enabling more effective accident prevention strategies.
+        '''
+    )
+
+with col7:
+    st.image("./src/AC4.png", caption="Enhancing road safety with AI", use_column_width=True)
+
+
+
+st.markdown(
+    '''
+    <style>
+    .streamlit-expanderHeader {
+        background-color: blue;
+        color: white; # Adjust this for expander header color
+    }
+    .streamlit-expanderContent {
+        background-color: blue;
+        color: white; # Expander content color
+    }
+    </style>
+    ''',
+    unsafe_allow_html=True
+)
+
+footer="""<style>
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: #2C1E5B;
+color: white;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)  
