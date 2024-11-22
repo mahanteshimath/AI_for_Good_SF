@@ -74,10 +74,10 @@ Accidents_page = st.Page(
     title="Accidents analysis prevention using AI",
     icon=":material/car_crash:",
 )
-PMAY = st.Page(
-    "pages/PMAY_AI.py",
-    title="PMAY Analysis Using AI",
-    icon=":material/house:",
+AQI = st.Page(
+    "pages/Realtime_AQI_Across_India.py",
+    title="Realtime AQI AcrossIndia",
+    icon=":material/aq:",
 )
 chatbot = st.Page(
     "pages/Snowflake_Powered_Accident_Analysis_bot.py",
@@ -87,8 +87,8 @@ chatbot = st.Page(
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
-        "SF-MP Social impact Data": [project_4_page,project_1_page,project_3_page,project_2_page],
-        "Open Government Data":[chatbot,road_page,Accidents_page,PMAY],
+        "SF-MP Social impact Data": [project_4_page,project_1_page,project_3_page,project_2_page,AQI],
+        "Open Government Data":[chatbot,road_page,Accidents_page],
     }
 )
 
