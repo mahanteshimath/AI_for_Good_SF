@@ -36,7 +36,6 @@ def categorize_pm25_defra(pm25_value):
     else:
         return "Very High (10)"
 
-# Database query execution function
 def execute_query(query):
     try:
         conn = snowflake.connector.connect(
@@ -51,9 +50,14 @@ def execute_query(query):
         )
         cursor = conn.cursor()
         cursor.execute(query)
+        result = cursor.fetchall()
+        columns = [col[0] for col in cursor.description] 
         conn.close()
+        result_df = pd.DataFrame(result, columns=columns)
+        return result_df
     except Exception as e:
         st.error(f"Error executing query: {str(e)}")
+        return None
 
 # Create Snowflake table
 def create_table():
