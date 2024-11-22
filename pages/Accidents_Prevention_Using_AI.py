@@ -15,10 +15,10 @@ import fitz  # PyMuPDF for PDF processing
 
 
 db_credentials = st.secrets["db_credentials"]
-google_api_key = st.secrets["google_api_key"]
+google_api_key =st.session_state.google_api_key
 
 
-genai.configure(api_key=st.secrets['google_api_key'])
+genai.configure(api_key=st.session_state.google_api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 def extract_text_from_pdf(pdf_file):
