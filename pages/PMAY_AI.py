@@ -10,7 +10,7 @@ current_time_ist = datetime.now(ist_timezone)
 
 
 
-st.write("Current IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S")) 
+# st.write("Current IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S")) 
 
 # Function to fetch AQI data
 def get_aqi_data(city, api_key):
@@ -113,7 +113,7 @@ def insert_data_to_snowflake(dataframe):
                 row["SO2 (μg/m³)"], row["US-EPA Index"]
             ))
         conn.commit()
-        st.success(f"AQI table fetched latest data on IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S"))
+        st.success(f"AQI data fetched as on IST Time:"{current_time_ist})
         conn.close()
     except Exception as e:
         st.error(f"Error inserting data to Snowflake: {str(e)}")
