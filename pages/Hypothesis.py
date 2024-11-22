@@ -32,6 +32,8 @@ if 'password' not in st.session_state:
     st.session_state.password = db_credentials["password"]
 if 'weatherapi_key' not in st.session_state:
     st.session_state.weatherapi_key = db_credentials["weatherapi_key"]
+if 'google_api_key' not in st.session_state:
+    st.session_state.google_api_key = db_credentials["google_api_key"]
     
 
 def store_credentials():
