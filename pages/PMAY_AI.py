@@ -3,6 +3,14 @@ import pandas as pd
 import requests
 import altair as alt
 import snowflake.connector
+from datetime import datetime
+import pytz
+ist_timezone = pytz.timezone('Asia/Kolkata')
+current_time_ist = datetime.now(ist_timezone)
+
+
+
+st.write("Current IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S")) 
 
 # Function to fetch AQI data
 def get_aqi_data(city, api_key):
@@ -105,7 +113,7 @@ def insert_data_to_snowflake(dataframe):
                 row["SO2 (μg/m³)"], row["US-EPA Index"]
             ))
         conn.commit()
-        st.success("Data pushed to Snowflake successfully.")
+        st.success(f"AQI table fetched latest data on IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S"))
         conn.close()
     except Exception as e:
         st.error(f"Error inserting data to Snowflake: {str(e)}")
@@ -177,11 +185,11 @@ df = df[df["PM2.5 (μg/m³)"] != "N/A"]
 df["PM2.5 (μg/m³)"] = pd.to_numeric(df["PM2.5 (μg/m³)"])
 
 # Visualization
-st.title("India AQI Dashboard 🌍")
-st.write("Real-time Air Quality Index (AQI) across Indian states.")
+st.title(":blue[ India LIVE AQI Dashboard 🌍]")
+st.subheader(":blue[Real-time Air Quality Index (AQI) across Indian states.]")
 
 st.subheader("Refresh data from weatherapi ")
-if st.button("Push Data to snowflake"):
+if st.button("Fetch and push latest AQI Data to snowflake"):
     create_table()
     insert_data_to_snowflake(df)
 
@@ -235,7 +243,7 @@ filtered_data = df[(df["STATE"] == state_filter)]
 if not filtered_data.empty:
     # Metrics Section
     latest_entry = filtered_data.iloc[-1]
-    st.subheader(f"Air Quality Metrics for  {state_filter}")
+    st.subheader(f"Air Quality Metrics for  {state_filter} as of Current IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S"))
     
     metric_html = f"""
         <div class="metric-container">
@@ -255,7 +263,7 @@ if not filtered_data.empty:
     st.dataframe(filtered_data)
     
     # Visualizations
-    st.write("### Visualizations")
+    st.write("### Trend all AQI metrix")
     st.line_chart(filtered_data.set_index("INSRT_TIMESTAMP")[["PM25", "PM10", "CO", "O3", "NO2", "SO2"]])
 else:
     st.warning("No data available for the selected filters.")
