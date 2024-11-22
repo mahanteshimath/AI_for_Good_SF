@@ -10,18 +10,13 @@ pd.set_option("max_colwidth", None)
 num_chunks = 3
 slide_window = 7
 
-st.logo(
-    image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg",
-    link="https://www.linkedin.com/in/mahantesh-hiremath/",
-    icon_image="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg"
-)
 
 # Establish a Snowflake session using Snowpark
 def get_snowflake_session():
     try:
         # Define your connection parameters
         connection_parameters = {
-            "account": 'iafmlte-gvb15101',
+            "account":  st.session_state.account,
             "user": st.session_state.user,
             "password": st.session_state.password,
             "role": st.session_state.role,
