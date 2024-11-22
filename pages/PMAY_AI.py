@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import altair as alt
+import snowflake.connector
 
 # Function to fetch AQI data
 def get_aqi_data(city, api_key):
@@ -34,6 +35,77 @@ def categorize_pm25_defra(pm25_value):
         return "High (9)"
     else:
         return "Very High (10)"
+
+# Database query execution function
+def execute_query(query):
+    try:
+        conn = snowflake.connector.connect(
+            account=st.session_state.account,
+            role=st.session_state.role,
+            warehouse=st.session_state.warehouse,
+            database=st.session_state.database,
+            schema=st.session_state.schema,
+            user=st.session_state.user,
+            password=st.session_state.password,
+            client_session_keep_alive=True
+        )
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.close()
+    except Exception as e:
+        st.error(f"Error executing query: {str(e)}")
+
+# Create Snowflake table
+def create_table():
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS T01_AQI_FOR_INDIAN_STATES (
+        State VARCHAR,
+        City VARCHAR,
+        PM25 FLOAT,
+        PM25_Category VARCHAR,
+        PM10 FLOAT,
+        CO FLOAT,
+        O3 FLOAT,
+        NO2 FLOAT,
+        SO2 FLOAT,
+        US_EPA_Index FLOAT,
+        INSRT_TIMESTAMP TIMESTAMP_NTZ DEFAULT CONVERT_TIMEZONE('Asia/Kolkata', CURRENT_TIMESTAMP)
+    )
+    """
+    execute_query(create_table_query)
+
+# Insert data into Snowflake
+def insert_data_to_snowflake(dataframe):
+    try:
+        conn = snowflake.connector.connect(
+            account=st.session_state.account,
+            role=st.session_state.role,
+            warehouse=st.session_state.warehouse,
+            database=st.session_state.database,
+            schema=st.session_state.schema,
+            user=st.session_state.user,
+            password=st.session_state.password,
+            client_session_keep_alive=True
+        )
+        cursor = conn.cursor()
+        insert_query = """
+        INSERT INTO T01_AQI_FOR_INDIAN_STATES (
+            State, City, PM25, PM25_Category, PM10, CO, O3, NO2, SO2, US_EPA_Index
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        for _, row in dataframe.iterrows():
+            cursor.execute(insert_query, (
+                row["State"], row["City"], row["PM2.5 (μg/m³)"],
+                row["PM2.5 Category (DEFRA)"], row["PM10 (μg/m³)"],
+                row["CO (μg/m³)"], row["O3 (μg/m³)"], row["NO2 (μg/m³)"],
+                row["SO2 (μg/m³)"], row["US-EPA Index"]
+            ))
+        conn.commit()
+        st.success("Data pushed to Snowflake successfully.")
+        conn.close()
+    except Exception as e:
+        st.error(f"Error inserting data to Snowflake: {str(e)}")
+
 
 # List of Indian states and their representative cities
 state_city_mapping = {
@@ -68,11 +140,11 @@ state_city_mapping = {
     "West Bengal": "Kolkata",
 }
 
-# WeatherAPI Key
+# API Key
 db_credentials = st.secrets["db_credentials"]
-api_key = db_credentials["weatherapi_key"]  # Replace with your WeatherAPI key
+api_key = db_credentials["weatherapi_key"]
 
-# Fetch AQI data for all states
+# Fetch AQI data
 state_aqi_data = []
 for state, city in state_city_mapping.items():
     aqi_response = get_aqi_data(city, api_key)
@@ -85,9 +157,7 @@ for state, city in state_city_mapping.items():
         else:
             defra_category = "N/A"
         state_aqi_data.append({
-            "State": state,
-            "City": city,
-            "PM2.5 (μg/m³)": pm25_value,
+            "State": state, "City": city, "PM2.5 (μg/m³)": pm25_value,
             "PM2.5 Category (DEFRA)": defra_category,
             "PM10 (μg/m³)": air_quality.get("pm10", "N/A"),
             "CO (μg/m³)": air_quality.get("co", "N/A"),
@@ -96,59 +166,30 @@ for state, city in state_city_mapping.items():
             "SO2 (μg/m³)": air_quality.get("so2", "N/A"),
             "US-EPA Index": air_quality.get("us-epa-index", "N/A"),
         })
-    else:
-        state_aqi_data.append({
-            "State": state,
-            "City": city,
-            "PM2.5 (μg/m³)": "N/A",
-            "PM2.5 Category (DEFRA)": "N/A",
-            "PM10 (μg/m³)": "N/A",
-            "CO (μg/m³)": "N/A",
-            "O3 (μg/m³)": "N/A",
-            "NO2 (μg/m³)": "N/A",
-            "SO2 (μg/m³)": "N/A",
-            "US-EPA Index": "N/A",
-        })
 
-# Convert data to DataFrame
+# Convert to DataFrame
 df = pd.DataFrame(state_aqi_data)
-
-# Sorting data by PM2.5 for better visualization
-df = df[df["PM2.5 (μg/m³)"] != "N/A"]  # Remove any "N/A" values
+df = df[df["PM2.5 (μg/m³)"] != "N/A"]
 df["PM2.5 (μg/m³)"] = pd.to_numeric(df["PM2.5 (μg/m³)"])
-df = df.sort_values(by="PM2.5 (μg/m³)", ascending=True)
 
-# Displaying the AQI data
+# Visualization
 st.title("India AQI Dashboard 🌍")
-st.write("Real-time Air Quality Index (AQI) across Indian states. Data includes detailed pollutant levels and DEFRA PM2.5 categories.")
+st.write("Real-time Air Quality Index (AQI) across Indian states.")
 
-# Metrics for highest and lowest PM2.5
-highest_pm25 = df.iloc[-1]
-lowest_pm25 = df.iloc[0]
-st.subheader("Highlights")
-col1, col2 = st.columns(2)
-col1.metric(label="State with Best Air Quality (PM2.5)", value=lowest_pm25["State"], delta=f"{lowest_pm25['PM2.5 (μg/m³)']} μg/m³")
-col2.metric(label="State with Worst Air Quality (PM2.5)", value=highest_pm25["State"], delta=f"{highest_pm25['PM2.5 (μg/m³)']} μg/m³")
-
-df = pd.DataFrame(state_aqi_data)
-
-# Bar chart visualization for PM2.5
-st.subheader("PM2.5 Levels by State (μg/m³)")
+st.subheader("PM2.5 Levels by State")
 alt_chart = (
     alt.Chart(df)
     .mark_bar()
     .encode(
-        x=alt.X("PM2.5 (μg/m³):Q", title="PM2.5 (μg/m³)"),
-        y=alt.Y("State:O", sort="-x", title="State"),
-        color=alt.Color("PM2.5 (μg/m³):Q", scale=alt.Scale(scheme="blues")),
-        tooltip=["State", "PM2.5 (μg/m³)", "PM2.5 Category (DEFRA)"],
+        x="PM2.5 (μg/m³):Q",
+        y="State:O",
+        color="PM2.5 (μg/m³):Q",
+        tooltip=["State", "PM2.5 (μg/m³)", "PM2.5 Category (DEFRA)"]
     )
-    .properties(width=800, height=500, title="PM2.5 Levels by State")
 )
-
-# Display the chart
 st.altair_chart(alt_chart, use_container_width=True)
 
-# Detailed Table
-st.subheader("Detailed Pollutant Data with DEFRA Categories")
-st.dataframe(df.reset_index(drop=True), use_container_width=True)
+st.subheader("Push Data to Snowflake")
+if st.button("Push Data"):
+    create_table()
+    insert_data_to_snowflake(df)
