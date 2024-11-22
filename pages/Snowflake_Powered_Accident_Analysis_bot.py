@@ -56,7 +56,8 @@ def get_similar_chunks(session, question):
     WITH results AS (
         SELECT RELATIVE_PATH,
                VECTOR_COSINE_SIMILARITY(docs_chunks_table.chunk_vec,
-               SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', ?)) AS similarity
+               SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', ?)) AS similarity,
+               chunk
         FROM docs_chunks_table
         ORDER BY similarity DESC
         LIMIT ?
@@ -72,17 +73,17 @@ def create_prompt(session, myquestion):
     prompt_context = get_similar_chunks(session, myquestion)
     chat_history = st.session_state.get("messages", [])
     prompt = f"""
-    <context>{prompt_context}</context>
-    <question>{myquestion}</question>
+        <context>{prompt_context}</context>
+        <question>{myquestion}</question>
     """
     return prompt
 
 # Send prompt to Snowflake Cortex for completion
 def complete(session, myquestion):
     prompt = create_prompt(session, myquestion)
-    cmd = "SELECT SNOWFLAKE.CORTEX.COMPLETE(?)"
-    response = session.sql(cmd, params=[prompt]).collect()
-    return response
+    cmd = "SELECT SNOWFLAKE.CORTEX.COMPLETE(?, ?)"
+    df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
+    return df_response
 
 # Title and intro
 st.title(":blue[📈 Analysis with Snowflake Cortex & RAG] :speech_balloon:")
@@ -127,10 +128,17 @@ with col1:
             box-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red;
         }
         </style>
-        <button class="glowing-button">Glowing Button</button>
         """,
         unsafe_allow_html=True
     )
+
+    # Button for RAG information
+    if st.button("How RAG works in Snowflake?"):
+        st.image(
+            "https://www.snowflake.com/wp-content/uploads/2021/06/Screen-Shot-2021-06-15-at-1.58.30-PM.png",
+            caption="RAG in Snowflake",
+            use_column_width=True,
+        )
 
 with col2:
     st.markdown(
@@ -188,4 +196,4 @@ if question := st.chat_input("Chat with any docs"):
             res_text = res_text.replace("'", "")
             message_placeholder.markdown(res_text)
 
-    st.session_state.messages.append({"role": "assistant", "content": res_text})
+        st.session_state.messages.append({"role": "assistant", "content": res_text})
