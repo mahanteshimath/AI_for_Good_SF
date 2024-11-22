@@ -205,7 +205,7 @@ st.markdown("""
         margin: 1rem 0;
     }
     .metric-box {
-        background-color: #f9f9f9;
+        background-color: black;
         border: 2px solid #ddd;
         border-radius: 8px;
         padding: 10px;
@@ -251,6 +251,6 @@ if not filtered_data.empty:
     
     # Visualizations
     st.write("### Visualizations")
-    st.line_chart(filtered_data.set_index("Insert_Timestamp")[["PM25", "PM10", "CO", "O3", "NO2", "SO2"]])
+    st.line_chart(filtered_data.set_index("INSRT_TIMESTAMP")[["PM25", "PM10", "CO", "O3", "NO2", "SO2"]])
 else:
     st.warning("No data available for the selected filters.")
