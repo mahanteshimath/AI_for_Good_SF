@@ -254,3 +254,13 @@ def add_custom_css():
 
 add_custom_css()
 st.markdown('<div class="flashing-title">❄️RECOMMENDATIONS TO PREVENT ACCIDENTS WITH AI❄️</div>', unsafe_allow_html=True)
+
+col1, col2 = st.columns(2, gap="small")
+with col1:
+    st.image("./src/AC1.png")
+
+with col2:
+    st.write(
+        '''Implement AI-powered traffic management systems: Utilize AI to analyze real-time traffic data and optimize traffic signal timings to reduce congestion and prevent accidents.'''
+    )
+    st.write("\n")

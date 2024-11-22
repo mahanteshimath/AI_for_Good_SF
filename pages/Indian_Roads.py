@@ -152,8 +152,7 @@ st.plotly_chart(bar_chart)
 st.write("#### All-India Registrations Over the Years")
 line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend")
 st.plotly_chart(line_chart)
-st.write("### Full Dataset")
-st.dataframe(df)
+
 
 
 
