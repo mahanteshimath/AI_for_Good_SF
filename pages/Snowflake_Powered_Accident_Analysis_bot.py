@@ -11,12 +11,13 @@ num_chunks = 3
 slide_window = 7
 
 
+
 # Establish a Snowflake session using Snowpark
 def get_snowflake_session():
     try:
         # Define your connection parameters
         connection_parameters = {
-            "account":  st.session_state.account,
+            "account": st.session_state.account,
             "user": st.session_state.user,
             "password": st.session_state.password,
             "role": st.session_state.role,
@@ -35,20 +36,32 @@ def get_snowflake_session():
 # Title and intro
 st.title(":blue[📈Analysis with Snowflake Cortex & RAG ] :speech_balloon:")
 
-def main():
-    # Get active Snowflake session
-    session = get_snowflake_session()
-    
-    if session is None:
-        return
+# Get active Snowflake session
+session = get_snowflake_session()
 
+if session is not None:
     # Create columns for layout
     col1, col2, col3 = st.columns([1, 0.05, 1])
 
     with col1:
         st.write("### Configuration Options")
-        config_options()
-        # Add custom CSS to style the button
+        
+        # Model selection
+        st.selectbox('Select your model:', (
+            'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
+            'llama3-8b', 'llama3-70b', 'reka-flash', 
+            'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name")
+
+        # Chat history usage
+        st.checkbox('Do you want that I remember the chat history?', key="use_chat_history", value=True)
+
+        # Debug option
+        st.checkbox('Debug: Click to see summary generated of previous conversation', key="debug", value=True)
+
+        # Button to start a new conversation
+        st.button("Start Over", key="clear_conversation")
+
+        # Add custom CSS for glowing button
         st.markdown(
             """
             <style>
@@ -83,7 +96,7 @@ def main():
             st.markdown(markdown_content)
 
         # Create a button using Streamlit
-        if st.button("How RAG works in Snowflake?", key="rag_button",type="secondary"):
+        if st.button("How RAG works in Snowflake?", key="rag_button", type="secondary"):
             show_dialog()
 
     with col2:
@@ -115,12 +128,98 @@ def main():
 
     st.divider()
 
-    init_messages()
+    # Initialize chat messages if needed
+    if st.session_state.clear_conversation or "messages" not in st.session_state:
+        st.session_state.messages = []
 
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+
+    def get_similar_chunks(question):
+        cmd = """
+            WITH results AS (
+                SELECT RELATIVE_PATH,
+                       VECTOR_COSINE_SIMILARITY(docs_chunks_table.chunk_vec,
+                        SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', ?)) AS similarity,
+                       chunk
+                FROM docs_chunks_table
+                ORDER BY similarity DESC
+                LIMIT ?
+            )
+            SELECT chunk, relative_path FROM results
+        """
+        df_chunks = session.sql(cmd, params=[question, num_chunks]).to_pandas()
+        similar_chunks = " ".join(df_chunks['CHUNK'].tolist())
+        return similar_chunks.replace("'", "")
+
+    def get_chat_history():
+        chat_history = []
+        start_index = max(0, len(st.session_state.messages) - slide_window)
+        for i in range(start_index, len(st.session_state.messages) - 1):
+            chat_history.append(st.session_state.messages[i])
+        return chat_history
+
+    def summarize_question_with_history(chat_history, question):
+        prompt = f"""
+            Based on the chat history below and the question, generate a query that extends the question 
+            with the chat history provided. The query should be in natural language. 
+            Answer with only the query. Do not add any explanation.
+            
+            <chat_history>
+            {chat_history}
+            </chat_history>
+            <question>
+            {question}
+            </question>
+        """
+        cmd = "SELECT snowflake.cortex.complete(?, ?) AS response"
+        df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
+        summary = df_response[0].RESPONSE
+        if st.session_state.debug:
+            st.text("Summary to be used to find similar chunks in the docs:")
+            st.caption(summary)
+        return summary.replace("'", "")
+
+    def create_prompt(myquestion):
+        if st.session_state.use_chat_history:
+            chat_history = get_chat_history()
+            if chat_history:
+                question_summary = summarize_question_with_history(chat_history, myquestion)
+                prompt_context = get_similar_chunks(question_summary)
+            else:
+                prompt_context = get_similar_chunks(myquestion)
+        else:
+            prompt_context = get_similar_chunks(myquestion)
+            chat_history = ""
+      
+        prompt = f"""
+            You are an expert chat assistance that extracts information from the CONTEXT provided
+            between <context> and </context> tags.
+            You offer a chat experience considering the information included in the CHAT HISTORY
+            provided between <chat_history> and </chat_history> tags.
+            When answering the question contained between <question> and </question> tags
+            be concise and do not hallucinate. If you don't have the information just say so.
+            
+            <chat_history>
+            {chat_history}
+            </chat_history>
+            <context>
+            {prompt_context}
+            </context>
+            <question>
+            {myquestion}
+            </question>
+            Answer:
+        """
+        return prompt
+
+    def complete(myquestion):
+        prompt = create_prompt(myquestion)
+        cmd = "SELECT snowflake.cortex.complete(?, ?) AS response"
+        df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
+        return df_response
 
     # Accept user input for questions
     if question := st.chat_input("Chat with any docs"):
@@ -136,130 +235,12 @@ def main():
             message_placeholder = st.empty()
             question = question.replace("'", "")
             with st.spinner(f"{st.session_state.model_name} thinking..."):
-                response = complete(session, question)
+                response = complete(question)
                 res_text = response[0].RESPONSE
                 res_text = res_text.replace("'", "")
                 message_placeholder.markdown(res_text)
 
         st.session_state.messages.append({"role": "assistant", "content": res_text})
-
-# Configuration options (now on the main page)
-def config_options():
-    # Model selection
-    st.selectbox('Select your model:', (
-        'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
-        'llama3-8b', 'llama3-70b', 'reka-flash', 
-        'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name")
-
-    # Chat history usage
-    st.checkbox('Do you want that I remember the chat history?', key="use_chat_history", value=True)
-
-    # Debug option
-    st.checkbox('Debug: Click to see summary generated of previous conversation', key="debug", value=True)
-
-    # Button to start a new conversation
-    st.button("Start Over", key="clear_conversation")
-
-    # Show session state
-    # st.expander("Session State").write(st.session_state)
-    icons = {"assistant": "❄️", "user": "👤"}
-
-# Initialize chat history
-def init_messages():
-    if st.session_state.clear_conversation or "messages" not in st.session_state:
-        st.session_state.messages = []
-
-# Get similar chunks based on the question
-def get_similar_chunks(session, question):
-    cmd = """
-        WITH results AS (
-            SELECT RELATIVE_PATH,
-                   VECTOR_COSINE_SIMILARITY(docs_chunks_table.chunk_vec,
-                    SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', ?)) AS similarity,
-                   chunk
-            FROM docs_chunks_table
-            ORDER BY similarity DESC
-            LIMIT ?
-        )
-        SELECT chunk, relative_path FROM results
-    """
-    df_chunks = session.sql(cmd, params=[question, num_chunks]).to_pandas()
-    similar_chunks = " ".join(df_chunks['CHUNK'].tolist())
-    return similar_chunks.replace("'", "")
-
-# Get chat history based on the slide window
-def get_chat_history():
-    chat_history = []
-    start_index = max(0, len(st.session_state.messages) - slide_window)
-    for i in range(start_index, len(st.session_state.messages) - 1):
-        chat_history.append(st.session_state.messages[i])
-    return chat_history
-
-# Summarize the question along with chat history for context
-def summarize_question_with_history(session, chat_history, question):
-    prompt = f"""
-        Based on the chat history below and the question, generate a query that extends the question 
-        with the chat history provided. The query should be in natural language. 
-        Answer with only the query. Do not add any explanation.
-        
-        <chat_history>
-        {chat_history}
-        </chat_history>
-        <question>
-        {question}
-        </question>
-    """
-    cmd = "SELECT snowflake.cortex.complete(?, ?) AS response"
-    df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
-    summary = df_response[0].RESPONSE
-    if st.session_state.debug:
-        st.text("Summary to be used to find similar chunks in the docs:")
-        st.caption(summary)
-    return summary.replace("'", "")
-
-# Create the final prompt
-def create_prompt(session, myquestion):
-    if st.session_state.use_chat_history:
-        chat_history = get_chat_history()
-        if chat_history:
-            question_summary = summarize_question_with_history(session, chat_history, myquestion)
-            prompt_context = get_similar_chunks(session, question_summary)
-        else:
-            prompt_context = get_similar_chunks(session, myquestion)
-    else:
-        prompt_context = get_similar_chunks(session, myquestion)
-        chat_history = ""
-  
-    prompt = f"""
-        You are an expert chat assistance that extracts information from the CONTEXT provided
-        between <context> and </context> tags.
-        You offer a chat experience considering the information included in the CHAT HISTORY
-        provided between <chat_history> and </chat_history> tags.
-        When answering the question contained between <question> and </question> tags
-        be concise and do not hallucinate. If you don’t have the information just say so.
-        
-        <chat_history>
-        {chat_history}
-        </chat_history>
-        <context>
-        {prompt_context}
-        </context>
-        <question>
-        {myquestion}
-        </question>
-        Answer:
-    """
-    return prompt
-
-# Send prompt to Snowflake Cortex for completion
-def complete(session, myquestion):
-    prompt = create_prompt(session, myquestion)
-    cmd = "SELECT snowflake.cortex.complete(?, ?) AS response"
-    df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
-    return df_response
-
-if __name__ == "__main__":
-    main()
 
 st.markdown(
     '''
