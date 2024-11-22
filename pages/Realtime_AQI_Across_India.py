@@ -7,7 +7,7 @@ from datetime import datetime
 import pytz
 ist_timezone = pytz.timezone('Asia/Kolkata')
 current_time_ist = datetime.now(ist_timezone)
-
+current_time_ist = current_time_ist.strftime("%Y-%m-%d %H:%M:%S")
 
 
 # st.write("Current IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S")) 
@@ -234,16 +234,16 @@ default_state = "Andhra Pradesh"
 default_city = "Vijayawada"
 
 # Sidebar Filters
-state_filter = st.selectbox("Select State", df["STATE"].unique(), index=df["STATE"].unique().tolist().index(default_state))
+state_filter = st.selectbox("Select CITY", df["default_city"].unique(), index=df["CITY"].unique().tolist().index(default_city))
 
 # Filter Data
-filtered_data = df[(df["STATE"] == state_filter)]
+filtered_data = df[(df["CITY"] == state_filter)]
 
 
 if not filtered_data.empty:
     # Metrics Section
     latest_entry = filtered_data.iloc[-1]
-    st.subheader(f"Air Quality Metrics for  {state_filter} as of Current IST Time:  {current_time_ist}")
+    st.subheader(f"Air Quality Metrics for  {state_filter} as of :  {current_time_ist}")
     
     metric_html = f"""
         <div class="metric-container">
