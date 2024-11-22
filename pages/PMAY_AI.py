@@ -222,15 +222,15 @@ default_city = "Vijayawada"
 
 # Sidebar Filters
 state_filter = st.selectbox("Select State", df["STATE"].unique(), index=df["STATE"].unique().tolist().index(default_state))
-city_filter = st.selectbox("Select City", df[df["STATE"] == state_filter]["CITY"].unique(), index=df[df["STATE"] == state_filter]["CITY"].unique().tolist().index(default_city))
 
 # Filter Data
-filtered_data = df[(df["STATE"] == state_filter) & (df["CITY"] == city_filter)]
+filtered_data = df[(df["STATE"] == state_filter)]
+
 
 if not filtered_data.empty:
     # Metrics Section
     latest_entry = filtered_data.iloc[-1]
-    st.subheader(f"Air Quality Metrics for {city_filter}, {state_filter}")
+    st.subheader(f"Air Quality Metrics for  {state_filter}")
     
     metric_html = f"""
         <div class="metric-container">
