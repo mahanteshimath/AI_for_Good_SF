@@ -206,12 +206,14 @@ st.markdown("""
     }
     .metric-box {
         background-color: black;
-        border: 2px solid #ddd;
+        border: 3px solid #ddd;
         border-radius: 8px;
         padding: 10px;
         text-align: center;
         width: 150px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+;
     }
     </style>
 """, unsafe_allow_html=True)
