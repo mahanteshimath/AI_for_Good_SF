@@ -73,15 +73,15 @@ def create_prompt(session, myquestion):
     prompt_context = get_similar_chunks(session, myquestion)
     chat_history = st.session_state.get("messages", [])
     prompt = f"""
-        <context>{prompt_context}</context>
-        <question>{myquestion}</question>
+    <context>{prompt_context}</context>
+    <question>{myquestion}</question>
     """
     return prompt
 
 # Send prompt to Snowflake Cortex for completion
 def complete(session, myquestion):
     prompt = create_prompt(session, myquestion)
-    cmd = "SELECT SNOWFLAKE.CORTEX.COMPLETE(?, ?)"
+    cmd = "SELECT SNOWFLAKE.CORTEX.COMPLETE(?, ?) AS RESPONSE"
     df_response = session.sql(cmd, params=[st.session_state.model_name, prompt]).collect()
     return df_response
 
@@ -132,44 +132,7 @@ with col1:
         unsafe_allow_html=True
     )
 
-    # Button for RAG information
-    if st.button("How RAG works in Snowflake?"):
-        st.image(
-            "https://www.snowflake.com/wp-content/uploads/2021/06/Screen-Shot-2021-06-15-at-1.58.30-PM.png",
-            caption="RAG in Snowflake",
-            use_column_width=True,
-        )
-
-with col2:
-    st.markdown(
-        """
-        <style>
-        .divider {
-            height: 100%;
-            width: 1px;
-            background-color: #e0e0e0;
-            margin: 0 10px;
-        }
-        </style>
-        <div class="divider"></div>
-        """,
-        unsafe_allow_html=True
-    )
-
-with col3:
-    st.write("### Documents Available")
-    st.write("This is the list of documents you already have and that will be used to answer your questions:")
-
-    # Query to list available documents
-    try:
-        docs_available = session.sql("LIST @docs").collect()
-        list_docs = [doc["name"] for doc in docs_available]
-        st.dataframe(list_docs)
-    except Exception as e:
-        st.error(f"Error fetching documents: {str(e)}")
-
-st.divider()
-
+# Initialize chat history
 init_messages()
 
 # Display chat messages from history on app rerun
@@ -196,4 +159,25 @@ if question := st.chat_input("Chat with any docs"):
             res_text = res_text.replace("'", "")
             message_placeholder.markdown(res_text)
 
-        st.session_state.messages.append({"role": "assistant", "content": res_text})
+    st.session_state.messages.append({"role": "assistant", "content": res_text})
+
+# Footer
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #2C1E5B;
+        color: white;
+        text-align: center;
+    }
+    </style>
+    <div class="footer">
+    <p>Developed with ❤️ by <a href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">Mahantesh Hiremath</a></p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
