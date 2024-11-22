@@ -71,7 +71,7 @@ road_page = st.Page(
 
 Accidents_page = st.Page(
     "pages/Accidents_analysis_prevention_using_AI.py",
-    title="Accidents analysis prevention using AI.py",
+    title="Accidents analysis prevention using AI",
     icon=":material/car_crash:",
 )
 PMAY = st.Page(
@@ -81,7 +81,7 @@ PMAY = st.Page(
 )
 chatbot = st.Page(
     "pages/Snowflake_Powered_Accident_Analysis_bot.py",
-    title="Snowflake Powered Accident Analysis bot.py",
+    title="Snowflake Powered Accident Analysis bot",
     icon=":material/smart_toy:",
 )
 pg = st.navigation(
