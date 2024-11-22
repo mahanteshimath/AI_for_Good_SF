@@ -33,7 +33,7 @@ def execute_query(query):
     
 
 
-
+st.title(":blue[🚗 Road Accidents Analysis in India (2019-2022)]")
 
 def create_accident_visualization():
     Q1=f'''SELECT * FROM IND_DB.IND_SCH.T01_ROAD_ACC_2019_2022'''
@@ -49,9 +49,6 @@ def create_accident_visualization():
     df_melted = df.melt(id_vars=['State'], 
                        var_name='Year', 
                        value_name='Injuries')
-
-    # Create the visualization
-    st.title('🚗 Road Accident Injuries Analysis (2019-2022)')
     r1_expander.write(R1_DF)
 
     # Create animated bar chart
@@ -74,6 +71,34 @@ def create_accident_visualization():
     # Display the plot
     st.plotly_chart(fig, use_container_width=True)
 create_accident_visualization()
+
+
+# Title and introduction
+st.title(":blue[🚗 Road Accidents Analysis in India (2019-2022)]")
+st.subheader(":blue[🚗This info collected from Snowflake_Powered_Accident_Analysis_bot]")
+st.markdown("---")
+
+# Create yearly comparison data
+yearly_data = pd.DataFrame({
+    'Year': [2019, 2022],
+    'Total Accidents': [437396, 394163],
+    'Fatalities': [151113, 131714],
+    'Injuries': [469418, 380596]
+})
+
+# Create data for causes
+causes_2019 = pd.DataFrame({
+    'Cause': ['Overspeeding', 'Other Causes', 'Dangerous Driving', 'Poor Weather', 'Vehicle Defects'],
+    'Percentage': [34.4, 25.6, 24.8, 8.7, 6.5]
+})
+
+# Create peak hours data
+peak_hours_data = pd.DataFrame({
+    'Time Period': ['6 PM - 9 PM', '3 PM - 6 PM', '9 PM - 12 AM', '12 PM - 3 PM', 'Others'],
+    'Accidents': [122829, 89756, 76543, 68432, 79836]
+})
+
+
 # Custom CSS styling
 st.markdown("""
 <style>
@@ -105,32 +130,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
-# Title and introduction
-st.title(":blue[🚗 Road Accidents Analysis in India (2019-2022)]")
-st.subheader(":blue[🚗This info collected from Snowflake_Powered_Accident_Analysis_bot]")
-st.markdown("---")
-
-# Create yearly comparison data
-yearly_data = pd.DataFrame({
-    'Year': [2019, 2022],
-    'Total Accidents': [437396, 394163],
-    'Fatalities': [151113, 131714],
-    'Injuries': [469418, 380596]
-})
-
-# Create data for causes
-causes_2019 = pd.DataFrame({
-    'Cause': ['Overspeeding', 'Other Causes', 'Dangerous Driving', 'Poor Weather', 'Vehicle Defects'],
-    'Percentage': [34.4, 25.6, 24.8, 8.7, 6.5]
-})
-
-# Create peak hours data
-peak_hours_data = pd.DataFrame({
-    'Time Period': ['6 PM - 9 PM', '3 PM - 6 PM', '9 PM - 12 AM', '12 PM - 3 PM', 'Others'],
-    'Accidents': [122829, 89756, 76543, 68432, 79836]
-})
-
 # Key Metrics in 2022
 st.subheader("Key Metrics (2022)")
 col1, col2, col3, col4 = st.columns(4)
