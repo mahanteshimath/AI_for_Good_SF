@@ -44,6 +44,10 @@ def load_data():
 
 yearly_stats, state_data = load_data()
 
+# Main dashboard
+st.title("🚗 Road Accidents in India Interactive Dashboard")
+
+
 # Sidebar for global filters
 st.sidebar.header("📊 Dashboard Controls")
 
@@ -62,8 +66,6 @@ selected_metrics = st.multiselect(
     default=["Total Accidents", "Fatalities", "Injuries"]
 )
 
-# Main dashboard
-st.title("🚗 Road Accidents in India Interactive Dashboard")
 st.markdown(f"### Analysis Period: {selected_years[0]} - {selected_years[1]}")
 
 # Top metrics with animation
@@ -269,3 +271,40 @@ with col2:
 # Footer with last update time
 st.markdown("---")
 st.markdown(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
+
+
+
+st.markdown(
+    '''
+    <style>
+    .streamlit-expanderHeader {
+        background-color: blue;
+        color: white; # Adjust this for expander header color
+    }
+    .streamlit-expanderContent {
+        background-color: blue;
+        color: white; # Expander content color
+    }
+    </style>
+    ''',
+    unsafe_allow_html=True
+)
+
+footer="""<style>
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: #2C1E5B;
+color: white;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True) 
