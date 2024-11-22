@@ -113,7 +113,7 @@ def insert_data_to_snowflake(dataframe):
                 row["SO2 (μg/m³)"], row["US-EPA Index"]
             ))
         conn.commit()
-        st.success(f'''AQI data fetched as on IST Time:'''{current_time_ist})
+        st.success(f"AQI data fetched as on IST Time: {current_time_ist}")
         conn.close()
     except Exception as e:
         st.error(f"Error inserting data to Snowflake: {str(e)}")
