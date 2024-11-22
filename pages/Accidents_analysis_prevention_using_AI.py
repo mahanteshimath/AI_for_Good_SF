@@ -254,31 +254,54 @@ def add_custom_css():
 
 add_custom_css()
 st.markdown('<div class="flashing-title">❄️RECOMMENDATIONS TO PREVENT ACCIDENTS WITH AI❄️</div>', unsafe_allow_html=True)
+import streamlit as st
 
+# Section 1: AI-powered Traffic Management Systems
+st.markdown("### AI-Powered Traffic Management Systems")
 col1, col2 = st.columns([3, 1])
+
 with col1:
-    st.image("./src/AC1.png")
+    st.image("./src/AC1.png", caption="Traffic Management System", use_column_width=True)
 
 with col2:
-    st.write(
-        '''Implement AI-powered traffic management systems: Utilize AI to analyze real-time traffic data and optimize traffic signal timings to reduce congestion and prevent accidents.'''
+    st.markdown(
+        '''
+        **Implement AI-powered traffic management systems:**  
+        Utilize AI to analyze real-time traffic data and optimize traffic signal timings to reduce congestion and prevent accidents.
+        '''
     )
 
+st.divider()  # Add a divider for separation
+
+# Section 2: AI-Driven Vehicle Safety Features
+st.markdown("### AI-Driven Vehicle Safety Features")
 col3, col4 = st.columns([1, 3])
+
 with col3:
-    st.write(
-        '''Integrate AI-driven vehicle safety features: Equip vehicles with AI-powered safety features such as lane departure warning systems, automatic emergency braking, and collision avoidance systems.'''
-    )    
+    st.markdown(
+        '''
+        **Integrate AI-driven vehicle safety features:**  
+        Equip vehicles with AI-powered safety features such as lane departure warning systems, automatic emergency braking, and collision avoidance systems.
+        '''
+    )
+
 with col4:
-    st.image("./src/AC2.png")
+    st.image("./src/AC2.png", caption="Vehicle Safety Features", use_column_width=True)
 
+st.divider()  # Add a divider for separation
 
-
+# Section 3: AI-Based Predictive Accident Models
+st.markdown("### AI-Based Predictive Accident Models")
 col4, col5 = st.columns([3, 1])
-with col3:
-    st.image("./src/AC3.png")
+
+with col4:
+    st.image("./src/AC3.png", caption="Predictive Accident Models", use_column_width=True)
 
 with col5:
-    st.write(
-        '''Develop AI-based predictive accident models: Use machine learning algorithms to analyze historical accident data and predict high-risk areas, enabling proactive measures to prevent accidents.'''
+    st.markdown(
+        '''
+        **Develop AI-based predictive accident models:**  
+        Use machine learning algorithms to analyze historical accident data and predict high-risk areas, enabling proactive measures to prevent accidents.
+        '''
     )
+
