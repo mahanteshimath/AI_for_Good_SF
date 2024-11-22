@@ -69,15 +69,10 @@ road_page = st.Page(
     icon=":material/car_crash:",
 )
 
-safety_page = st.Page(
-    "pages/Safety_in_Construction_Using_AI.py",
-    title="Safety in Construction Using AI",
-    icon=":material/health_and_safety:",
-)
-Drowsiness = st.Page(
-    "pages/Drowsiness_Detection.py",
-    title="Drowsiness Detection",
-    icon=":material/swap_driving_apps_wheel:",
+Accidents_page = st.Page(
+    "pages/Accidents_analysis_prevention_using_AI.py",
+    title="Accidents analysis prevention using AI.py",
+    icon=":material/car_crash:",
 )
 PMAY = st.Page(
     "pages/PMAY_AI.py",
@@ -89,12 +84,11 @@ chatbot = st.Page(
     title="Snowflake Powered Accident Analysis bot.py",
     icon=":material/smart_toy:",
 )
-
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
         "SF-MP Social impact Data": [project_4_page,project_1_page,project_3_page,project_2_page],
-        "Open Government Data":[Drowsiness,chatbot,road_page, safety_page,PMAY],
+        "Open Government Data":[chatbot,road_page,Accidents_page,PMAY],
     }
 )
 

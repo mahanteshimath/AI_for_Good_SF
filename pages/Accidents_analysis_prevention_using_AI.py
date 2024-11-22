@@ -233,4 +233,24 @@ with col2:
     """)
 # Footer
 st.markdown("---")
-st.markdown("Data Source: Road Accidents in India Reports (2019-2022)")
+
+
+def add_custom_css():
+    st.markdown("""
+        <style>
+        .flashing-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4CAF50;
+            animation: flash 2s infinite;
+        }
+        @keyframes flash {
+            0% { opacity: 1; }
+            30% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+add_custom_css()
+st.markdown('<div class="flashing-title">❄️RECOMMENDATIONS TO PREVENT ACCIDENTS WITH AI❄️</div>', unsafe_allow_html=True)
