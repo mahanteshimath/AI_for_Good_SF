@@ -103,11 +103,9 @@ def analyze_bridge_plan(plan_text, uploaded_images=None):
     try:
         return json.loads(response.text)
     except:
-        st.error("Error parsing AI response. Please try again.")
+        st.error(f"Error parsing AI response: {str(e)}")
         return None
 
-# (Rest of the display_analysis function remains the same)
-# ... (previous display_analysis function code)
 
 # App title and description
 st.title("🌉 Bridge Development Plan Analyzer")
