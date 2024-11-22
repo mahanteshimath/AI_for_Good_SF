@@ -2,6 +2,105 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import snowflake.connector
+
+
+
+
+
+def execute_query(query):
+    try:
+        conn = snowflake.connector.connect(
+            account=st.session_state.account,
+            role=st.session_state.role,
+            warehouse=st.session_state.warehouse,
+            database=st.session_state.database,
+            schema=st.session_state.schema,
+            user=st.session_state.user,
+            password=st.session_state.password,
+            client_session_keep_alive=True
+        )
+        cursor = conn.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        columns = [col[0] for col in cursor.description] 
+        conn.close()
+        result_df = pd.DataFrame(result, columns=columns)
+        return result_df
+    except Exception as e:
+        st.error(f"Error executing query: {str(e)}")
+        return None
+    
+
+
+
+
+def create_accident_visualization():
+    Q1=f'''SELECT * FROM IND_DB.IND_SCH.T01_ROAD_ACC_2019_2022'''
+    R1 = execute_query(Q1)
+    r1_expander = st.expander("Data sets used in this entire analysis.")
+    R1_DF = pd.DataFrame(R1)
+    R1_DF.index = R1_DF.index + 1
+    r1_expander.write(R1_DF)
+    data =R1_DF
+    # Convert to DataFrame
+    df = pd.DataFrame(data)
+
+
+    st.write(df)
+
+    # Melt the DataFrame for animation
+    df_melted = df.melt(id_vars=['State'], 
+                       var_name='Year', 
+                       value_name='Injuries')
+
+    # Create the visualization
+    st.title('🚗 Road Accident Injuries Analysis (2019-2022)')
+
+    # Create animated bar chart
+    fig = px.bar(df_melted, 
+                 x='State', 
+                 y='Injuries',
+                 animation_frame='Year',
+                 color='Injuries',
+                 range_y=[0, 25000],
+                 title='Number of Persons Injured in Road Accidents by State',
+                 color_continuous_scale='Reds')
+
+    # Update layout
+    fig.update_layout(
+        xaxis_tickangle=-45,
+        height=800,
+        showlegend=False
+    )
+
+    # Display the plot
+    st.plotly_chart(fig, use_container_width=True)
+
+    # Add summary statistics
+    st.subheader('Summary Statistics')
+    yearly_totals = pd.DataFrame({
+        'Year': ['2019', '2020', '2021', '2022'],
+        'Total Injuries': [110843, 87184, 92583, 106485]
+    })
+    
+    st.write("Yearly Totals:")
+    st.dataframe(yearly_totals)
+
+    # Calculate and display key insights
+    st.subheader('Key Insights')
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        max_state = df_melted.groupby('State')['Injuries'].mean().idxmax()
+        max_injuries = df_melted.groupby('State')['Injuries'].mean().max()
+        st.metric("State with Highest Average Injuries", max_state, f"{max_injuries:.0f}")
+    
+    with col2:
+        percent_change = ((yearly_totals.iloc[-1,1] - yearly_totals.iloc[0,1]) / 
+                         yearly_totals.iloc[0,1] * 100)
+        st.metric("Change 2019 to 2022", f"{percent_change:.1f}%")
+create_accident_visualization()
 # Custom CSS styling
 st.markdown("""
 <style>
@@ -35,7 +134,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Title and introduction
-st.title("🚗 Road Accidents Analysis in India (2019-2022)")
+st.title(":blue[🚗 Road Accidents Analysis in India (2019-2022)]")
+st.subheader(":blue[🚗This info collected from Snowflake_Powered_Accident_Analysis_bot]")
 st.markdown("---")
 
 # Create yearly comparison data
