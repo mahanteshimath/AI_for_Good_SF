@@ -188,8 +188,9 @@ alt_chart = (
     )
 )
 st.altair_chart(alt_chart, use_container_width=True)
-
-st.subheader("Push Data to Snowflake")
-if st.button("Push Data"):
-    create_table()
-    insert_data_to_snowflake(df)
+create_table()
+insert_data_to_snowflake(df)
+# st.subheader("Push Data to Snowflake")
+# if st.button("Push Data"):
+#     create_table()
+#     insert_data_to_snowflake(df)
