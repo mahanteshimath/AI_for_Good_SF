@@ -234,7 +234,7 @@ default_state = "Andhra Pradesh"
 default_city = "Vijayawada"
 
 # Sidebar Filters
-state_filter = st.selectbox("Select CITY", df["default_city"].unique(), index=df["CITY"].unique().tolist().index(default_city))
+state_filter = st.selectbox("Select CITY", df["CITY"].unique(), index=df["CITY"].unique().tolist().index(default_city))
 
 # Filter Data
 filtered_data = df[(df["CITY"] == state_filter)]
