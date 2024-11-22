@@ -13,13 +13,14 @@ import fitz  # PyMuPDF for PDF processing
 #     layout="wide"
 # )
 
+def initialize_gemini():
+    if 'google_api_key' not in st.session_state.google_api_key:
+        st.error("Please add your Google API key to the secrets.")
+        st.stop()
+    
+    genai.configure(api_key=st.session_state['google_api_key'])
+    return genai.GenerativeModel('gemini-1.5-flash')
 
-db_credentials = st.secrets["db_credentials"]
-google_api_key =st.session_state.google_api_key
-
-
-genai.configure(api_key=st.session_state.google_api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
 
 def extract_text_from_pdf(pdf_file):
     """Extract text from PDF file"""
