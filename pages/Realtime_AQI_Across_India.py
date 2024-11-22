@@ -118,40 +118,6 @@ def insert_data_to_snowflake(dataframe):
     except Exception as e:
         st.error(f"Error inserting data to Snowflake: {str(e)}")
 
-
-# List of Indian states and their representative cities
-# state_city_mapping = {
-#     "Andhra Pradesh": "Vijayawada",
-#     "Arunachal Pradesh": "Itanagar",
-#     "Assam": "Guwahati",
-#     "Bihar": "Patna",
-#     "Chhattisgarh": "Raipur",
-#     "Delhi": "New Delhi",
-#     "Goa": "Panaji",
-#     "Gujarat": "Ahmedabad",
-#     "Haryana": "Chandigarh",
-#     "Himachal Pradesh": "Shimla",
-#     "Jharkhand": "Ranchi",
-#     "Karnataka": "Bengaluru",
-#     "Kerala": "Thiruvananthapuram",
-#     "Madhya Pradesh": "Bhopal",
-#     "Maharashtra": "Mumbai",
-#     "Manipur": "Imphal",
-#     "Meghalaya": "Shillong",
-#     "Mizoram": "Aizawl",
-#     "Nagaland": "Kohima",
-#     "Odisha": "Bhubaneswar",
-#     "Punjab": "Amritsar",
-#     "Rajasthan": "Jaipur",
-#     "Sikkim": "Gangtok",
-#     "Tamil Nadu": "Chennai",
-#     "Telangana": "Hyderabad",
-#     "Tripura": "Agartala",
-#     "Uttar Pradesh": "Lucknow",
-#     "Uttarakhand": "Dehradun",
-#     "West Bengal": "Kolkata",
-# }
-
 state_city_mapping = {
     "Andhra Pradesh": "Vijayawada",
     "Arunachal Pradesh": "Itanagar",
@@ -186,7 +152,7 @@ state_city_mapping = {
     "Chandigarh": "Chandigarh",
     "Dadra and Nagar Haveli and Daman & Diu": "Daman",
     "Jammu & Kashmir": "Srinagar",
-	"Jammu & Kashmir": "Jammu",
+    "Jammu & Kashmir": "Jammu",
     "Ladakh": "Leh",
     "Lakshadweep": "Kavaratti",
     "Puducherry": "Puducherry",
