@@ -1,119 +1,251 @@
 import streamlit as st
-import requests
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+import json
+import google.generativeai as genai
+import pytesseract
+from PIL import Image
+import io
+import fitz  # PyMuPDF for PDF processing
 
-# Expanded Indian Cities List
-INDIAN_CITIES = [
-    "Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", 
-    "Hyderabad", "Pune", "Ahmedabad", "Surat", "Jaipur",
-    "Lucknow", "Bhopal", "Patna", "Indore", "Chandigarh", 
-    "Thiruvananthapuram", "Guwahati", "Bhubaneswar", "Ranchi", "Nagpur"
-]
+# Configure page settings
+st.set_page_config(
+    page_title="Bridge Development Plan Analyzer",
+    page_icon="🌉",
+    layout="wide"
+)
 
-# Weather API Configuration
-WEATHERAPI_KEY = st.session_state.weatherapi_key 
+# Initialize Gemini
+if 'GOOGLE_API_KEY' not in st.secrets:
+    st.error("Please add your Google API key to the secrets.")
+    st.stop()
 
-def get_weather_data(city):
-    weather_url = f"https://api.weatherapi.com/v1/current.json?key={WEATHERAPI_KEY}&q={city}"
+genai.configure(api_key=st.secrets['GOOGLE_API_KEY'])
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+def extract_text_from_pdf(pdf_file):
+    """Extract text from PDF file"""
     try:
-        response = requests.get(weather_url)
-        return response.json()
+        pdf_bytes = pdf_file.read()
+        doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+        text = ""
+        for page in doc:
+            text += page.get_text()
+        return text
     except Exception as e:
-        st.error(f"Weather Data Error: {e}")
+        st.error(f"Error processing PDF: {str(e)}")
         return None
 
-def get_forecast_data(city):
-    forecast_url = f"https://api.weatherapi.com/v1/forecast.json?key={WEATHERAPI_KEY}&q={city}&days=7"
+def extract_text_from_image(image_file):
+    """Extract text from image using OCR"""
     try:
-        response = requests.get(forecast_url)
-        return response.json()
+        image = Image.open(image_file)
+        text = pytesseract.image_to_string(image)
+        return text
     except Exception as e:
-        st.error(f"Forecast Data Error: {e}")
+        st.error(f"Error processing image: {str(e)}")
         return None
-    st.set_page_config(page_title="India Weather Dashboard", layout="wide")
-    st.title("🌍 Comprehensive Weather & Climate Dashboard")
+
+def analyze_bridge_plan(plan_text, image_data=None):
+    # Construct the prompt based on available data
+    base_prompt = """
+    As a civil engineering expert, analyze the following bridge development plan. 
+    Consider these key aspects:
+    1. Structural integrity and safety
+    2. Environmental impact
+    3. Cost efficiency
+    4. Construction timeline
+    5. Maintenance requirements
+    6. Potential risks and mitigation strategies
     
-    # City Selection with Enhanced Options
-    col1, col2 = st.columns(2)
+    Provide a detailed analysis with specific recommendations.
+    """
     
-    with col1:
-        selected_city = st.selectbox("Select City", INDIAN_CITIES, index=0)
+    if image_data:
+        base_prompt += "\nAnalysis includes visual inspection of provided bridge plan images."
     
-    with col2:
-        weather_type = st.radio("View Type", 
-            ["Current Weather", "7-Day Forecast", "Climate Details"]
-        )
+    base_prompt += f"\nBridge Plan:\n{plan_text}"
     
-    # Data Retrieval
-    weather_data = get_weather_data(selected_city)
-    forecast_data = get_forecast_data(selected_city)
+    base_prompt += """
+    Format the response as a JSON with the following structure:
+    {
+        "overall_assessment": "summary of analysis",
+        "structural_analysis": {
+            "strengths": [],
+            "concerns": [],
+            "recommendations": []
+        },
+        "environmental_impact": {
+            "positive_impacts": [],
+            "negative_impacts": [],
+            "mitigation_strategies": []
+        },
+        "cost_analysis": {
+            "efficiency_rating": "1-10",
+            "cost_saving_opportunities": [],
+            "budget_risks": []
+        },
+        "timeline_assessment": {
+            "estimated_duration": "",
+            "potential_delays": [],
+            "optimization_suggestions": []
+        },
+        "maintenance_plan": {
+            "frequency": "",
+            "key_requirements": [],
+            "estimated_costs": ""
+        },
+        "risk_assessment": {
+            "critical_risks": [],
+            "mitigation_strategies": [],
+            "contingency_plans": []
+        }
+    }
+    """
     
-    if weather_data and forecast_data:
-        # Current Weather Section
-        if weather_type == "Current Weather":
-            st.subheader(f"🌡️ Current Weather in {selected_city}")
+    response = model.generate_content(base_prompt)
+    try:
+        return json.loads(response.text)
+    except:
+        st.error("Error parsing AI response. Please try again.")
+        return None
+
+def display_analysis(analysis):
+    if not analysis:
+        return
+    
+    # Overall Assessment
+    st.header("Overall Assessment")
+    st.write(analysis["overall_assessment"])
+    
+    # Structural Analysis
+    with st.expander("Structural Analysis", expanded=True):
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.subheader("Strengths")
+            for strength in analysis["structural_analysis"]["strengths"]:
+                st.success(strength)
+        with col2:
+            st.subheader("Concerns")
+            for concern in analysis["structural_analysis"]["concerns"]:
+                st.warning(concern)
+        with col3:
+            st.subheader("Recommendations")
+            for rec in analysis["structural_analysis"]["recommendations"]:
+                st.info(rec)
+    
+    # Environmental Impact
+    with st.expander("Environmental Impact"):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Impacts")
+            for impact in analysis["environmental_impact"]["positive_impacts"]:
+                st.success(f"✓ {impact}")
+            for impact in analysis["environmental_impact"]["negative_impacts"]:
+                st.error(f"✗ {impact}")
+        with col2:
+            st.subheader("Mitigation Strategies")
+            for strategy in analysis["environmental_impact"]["mitigation_strategies"]:
+                st.info(strategy)
+    
+    # Cost Analysis
+    with st.expander("Cost Analysis"):
+        st.metric("Efficiency Rating", f"{analysis['cost_analysis']['efficiency_rating']}/10")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Cost Saving Opportunities")
+            for opp in analysis["cost_analysis"]["cost_saving_opportunities"]:
+                st.success(opp)
+        with col2:
+            st.subheader("Budget Risks")
+            for risk in analysis["cost_analysis"]["budget_risks"]:
+                st.warning(risk)
+    
+    # Timeline Assessment
+    with st.expander("Timeline Assessment"):
+        st.metric("Estimated Duration", analysis["timeline_assessment"]["estimated_duration"])
+        st.subheader("Potential Delays")
+        for delay in analysis["timeline_assessment"]["potential_delays"]:
+            st.warning(delay)
+        st.subheader("Optimization Suggestions")
+        for suggestion in analysis["timeline_assessment"]["optimization_suggestions"]:
+            st.info(suggestion)
+    
+    # Maintenance Plan
+    with st.expander("Maintenance Plan"):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Maintenance Frequency", analysis["maintenance_plan"]["frequency"])
+            st.metric("Estimated Costs", analysis["maintenance_plan"]["estimated_costs"])
+        with col2:
+            st.subheader("Key Requirements")
+            for req in analysis["maintenance_plan"]["key_requirements"]:
+                st.write(f"• {req}")
+    
+    # Risk Assessment
+    with st.expander("Risk Assessment"):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Critical Risks")
+            for risk in analysis["risk_assessment"]["critical_risks"]:
+                st.error(risk)
+        with col2:
+            st.subheader("Mitigation Strategies")
+            for strategy in analysis["risk_assessment"]["mitigation_strategies"]:
+                st.success(strategy)
+        st.subheader("Contingency Plans")
+        for plan in analysis["risk_assessment"]["contingency_plans"]:
+            st.info(plan)
+
+# App title and description
+st.title("🌉 Bridge Development Plan Analyzer")
+st.write("""
+This AI-powered tool analyzes bridge development plans and provides comprehensive 
+insights on structural integrity, environmental impact, costs, timeline, and risks.
+""")
+
+# File upload
+uploaded_files = st.file_uploader(
+    "Upload your bridge development plan (PDF, TXT, or JPEG)", 
+    type=["pdf", "txt", "jpeg", "jpg"],
+    accept_multiple_files=True
+)
+
+# Text input as alternative
+plan_text = st.text_area(
+    "Or paste your plan text here:",
+    height=200,
+    placeholder="Enter the bridge development plan details..."
+)
+
+if uploaded_files:
+    plan_text_parts = []
+    image_data = []
+    
+    for uploaded_file in uploaded_files:
+        if uploaded_file.type == "application/pdf":
+            pdf_text = extract_text_from_pdf(uploaded_file)
+            if pdf_text:
+                plan_text_parts.append(pdf_text)
+                
+        elif uploaded_file.type.startswith("image/"):
+            # Display the uploaded image
+            st.image(uploaded_file, caption="Uploaded Bridge Plan Image", use_column_width=True)
+            # Extract text from image
+            image_text = extract_text_from_image(uploaded_file)
+            if image_text:
+                plan_text_parts.append(image_text)
+            # Store image data for analysis
+            image_data.append(uploaded_file)
             
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("Temperature", f"{weather_data['current']['temp_c']}°C")
-                st.metric("Feels Like", f"{weather_data['current']['feelslike_c']}°C")
-            
-            with col2:
-                st.metric("Humidity", f"{weather_data['current']['humidity']}%")
-                st.metric("Wind Speed", f"{weather_data['current']['wind_kph']} km/h")
-            
-            with col3:
-                st.metric("Precipitation", f"{weather_data['current']['precip_mm']} mm")
-                st.metric("UV Index", str(weather_data['current']['uv']))
-            
-            # Condition Visualization
-            condition = weather_data['current']['condition']['text']
-            st.write(f"**Current Condition:** {condition}")
-        
-        # 7-Day Forecast
-        elif weather_type == "7-Day Forecast":
-            st.subheader(f"🌈 7-Day Weather Forecast for {selected_city}")
-            
-            forecast_df = pd.DataFrame([
-                {
-                    'Date': day['date'], 
-                    'Max Temp (°C)': day['day']['maxtemp_c'],
-                    'Min Temp (°C)': day['day']['mintemp_c'],
-                    'Condition': day['day']['condition']['text']
-                } for day in forecast_data['forecast']['forecastday']
-            ])
-            
-            fig = px.line(forecast_df, x='Date', y=['Max Temp (°C)', 'Min Temp (°C)'], 
-                          title='Temperature Trend')
-            st.plotly_chart(fig)
-            
-            st.dataframe(forecast_df)
-        
-        # Climate Details
-        else:
-            st.subheader(f"🌍 Climate Overview for {selected_city}")
-            
-            climate_data = {
-                'Average Max Temp': forecast_data['forecast']['forecastday'][0]['day']['maxtemp_c'],
-                'Average Min Temp': forecast_data['forecast']['forecastday'][0]['day']['mintemp_c'],
-                'Total Precipitation': forecast_data['forecast']['forecastday'][0]['day']['totalprecip_mm'],
-                'Max Wind Speed': weather_data['current']['wind_kph']
-            }
-            
-            for key, value in climate_data.items():
-                st.metric(key, str(value))
-            
-            # Radar Chart for Climate Parameters
-            fig = go.Figure(data=[go.Scatterpolar(
-                r=[climate_data['Average Max Temp'], 
-                   climate_data['Average Min Temp'], 
-                   climate_data['Total Precipitation'], 
-                   climate_data['Max Wind Speed']],
-                theta=['Max Temp', 'Min Temp', 'Precipitation', 'Wind Speed'],
-                fill='toself'
-            )])
-            fig.update_layout(title='Climate Radar')
-            st.plotly_chart(fig)
+        else:  # Text files
+            text_content = uploaded_file.getvalue().decode("utf-8")
+            plan_text_parts.append(text_content)
+    
+    # Combine all text parts
+    if plan_text_parts:
+        plan_text = "\n\n".join(plan_text_parts)
+
+if st.button("Analyze Plan", disabled=not (plan_text or uploaded_files)):
+    with st.spinner("Analyzing your bridge development plan..."):
+        analysis = analyze_bridge_plan(plan_text, image_data)
+        if analysis:
+            display_analysis(analysis)
