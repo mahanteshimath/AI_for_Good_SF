@@ -251,18 +251,39 @@ if not filtered_data.empty:
     latest_entry = filtered_data.iloc[-1]
     st.subheader(f"Air Quality Metrics for  {state_filter} as of :  {current_time_ist}")
     
+    # metric_html = f"""
+    #     <div class="metric-container">
+    #         <div class="metric-box"><strong>PM2.5</strong><br>{latest_entry['PM25']}<br><small>{latest_entry['PM25_CATEGORY']}</small></div>
+    #         <div class="metric-box"><strong>PM10</strong><br>{latest_entry['PM10']}</div>
+    #         <div class="metric-box"><strong>US EPA Index</strong><br>{latest_entry['US_EPA_INDEX']}</div>
+    #         <div class="metric-box"><strong>CO</strong><br>{latest_entry['CO']}</div>
+    #         <div class="metric-box"><strong>O3</strong><br>{latest_entry['O3']}</div>
+    #         <div class="metric-box"><strong>NO2</strong><br>{latest_entry['NO2']}</div>
+    #         <div class="metric-box"><strong>SO2</strong><br>{latest_entry['SO2']}</div>
+    #     </div>
+    # """
+    # st.markdown(metric_html, unsafe_allow_html=True)
+    us_epa_index_descriptions = {
+    1: 'Good',
+    2: 'Moderate',
+    3: 'Unhealthy for sensitive group',
+    4: 'Unhealthy',
+    5: 'Very Unhealthy',
+    6: 'Hazardous'
+    }
+
     metric_html = f"""
-        <div class="metric-container">
-            <div class="metric-box"><strong>PM2.5</strong><br>{latest_entry['PM25']}<br><small>{latest_entry['PM25_CATEGORY']}</small></div>
-            <div class="metric-box"><strong>PM10</strong><br>{latest_entry['PM10']}</div>
-            <div class="metric-box"><strong>US EPA Index</strong><br>{latest_entry['US_EPA_INDEX']}</div>
-            <div class="metric-box"><strong>CO</strong><br>{latest_entry['CO']}</div>
-            <div class="metric-box"><strong>O3</strong><br>{latest_entry['O3']}</div>
-            <div class="metric-box"><strong>NO2</strong><br>{latest_entry['NO2']}</div>
-            <div class="metric-box"><strong>SO2</strong><br>{latest_entry['SO2']}</div>
-        </div>
+    <div class="metric-container">
+        <div class="metric-box"><strong>PM2.5</strong><br>{latest_entry['PM25']}<br><small>{latest_entry['PM25_CATEGORY']}</small></div>
+        <div class="metric-box"><strong>PM10</strong><br>{latest_entry['PM10']}</div>
+        <div class="metric-box"><strong>US EPA Index</strong><br>{latest_entry['US_EPA_INDEX']}<br><small>{us_epa_index_descriptions.get(latest_entry['US_EPA_INDEX'], 'Unknown')}</small></div>
+        <div class="metric-box"><strong>CO</strong><br>{latest_entry['CO']}</div>
+        <div class="metric-box"><strong>O3</strong><br>{latest_entry['O3']}</div>
+        <div class="metric-box"><strong>NO2</strong><br>{latest_entry['NO2']}</div>
+        <div class="metric-box"><strong>SO2</strong><br>{latest_entry['SO2']}</div>
+    </div>
     """
-    st.markdown(metric_html, unsafe_allow_html=True)
+st.markdown(metric_html, unsafe_allow_html=True)
     
     # Historical Data Table
     st.write("### Historical Data")
