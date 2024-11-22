@@ -48,7 +48,7 @@ yearly_stats, state_data = load_data()
 st.sidebar.header("📊 Dashboard Controls")
 
 # Year range selector
-selected_years = st.sidebar.slider(
+selected_years = st.slider(
     "Select Year Range",
     min_value=2019,
     max_value=2022,
@@ -56,7 +56,7 @@ selected_years = st.sidebar.slider(
 )
 
 # Metric selector
-selected_metrics = st.sidebar.multiselect(
+selected_metrics = st.multiselect(
     "Select Metrics to Display",
     ["Total Accidents", "Fatalities", "Injuries"],
     default=["Total Accidents", "Fatalities", "Injuries"]
