@@ -19,7 +19,8 @@ def initialize_gemini():
         st.stop()
     
     genai.configure(api_key=st.session_state['google_api_key'])
-    return genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-1.5-flash')
+
 
 
 def extract_text_from_pdf(pdf_file):
