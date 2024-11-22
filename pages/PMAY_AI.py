@@ -176,21 +176,77 @@ df["PM2.5 (μg/m³)"] = pd.to_numeric(df["PM2.5 (μg/m³)"])
 st.title("India AQI Dashboard 🌍")
 st.write("Real-time Air Quality Index (AQI) across Indian states.")
 
-st.subheader("PM2.5 Levels by State")
-alt_chart = (
-    alt.Chart(df)
-    .mark_bar()
-    .encode(
-        x="PM2.5 (μg/m³):Q",
-        y="State:O",
-        color="PM2.5 (μg/m³):Q",
-        tooltip=["State", "PM2.5 (μg/m³)", "PM2.5 Category (DEFRA)"]
-    )
-)
-st.altair_chart(alt_chart, use_container_width=True)
-create_table()
-insert_data_to_snowflake(df)
-# st.subheader("Push Data to Snowflake")
-# if st.button("Push Data"):
-#     create_table()
-#     insert_data_to_snowflake(df)
+st.subheader("Refresh data from weatherapi ")
+if st.button("Push Data to snowflake"):
+    create_table()
+    insert_data_to_snowflake(df)
+
+
+Q1=f'''SELECT * FROM T01_AQI_FOR_INDIAN_STATES'''
+R1 = execute_query(Q1)
+r1_expander = st.expander("Data sets used in this entire analysis.")
+R1_DF = pd.DataFrame(R1)
+R1_DF.index = R1_DF.index + 1
+r1_expander.write(R1_DF)
+
+df=R1_DF
+
+# Custom CSS
+st.markdown("""
+    <style>
+    .metric-container {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-around;
+        margin: 1rem 0;
+    }
+    .metric-box {
+        background-color: #f9f9f9;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        width: 150px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Default Values
+default_state = "Andhra Pradesh"
+default_city = "Vijayawada"
+
+# Sidebar Filters
+state_filter = st.selectbox("Select State", df["STATE"].unique(), index=df["STATE"].unique().tolist().index(default_state))
+city_filter = st.selectbox("Select City", df[df["STATE"] == state_filter]["CITY"].unique(), index=df[df["STATE"] == state_filter]["CITY"].unique().tolist().index(default_city))
+
+# Filter Data
+filtered_data = df[(df["STATE"] == state_filter) & (df["CITY"] == city_filter)]
+
+if not filtered_data.empty:
+    # Metrics Section
+    latest_entry = filtered_data.iloc[-1]
+    st.subheader(f"Air Quality Metrics for {city_filter}, {state_filter}")
+    
+    metric_html = f"""
+        <div class="metric-container">
+            <div class="metric-box"><strong>PM2.5</strong><br>{latest_entry['PM25']}<br><small>{latest_entry['PM25_CATEGORY']}</small></div>
+            <div class="metric-box"><strong>PM10</strong><br>{latest_entry['PM10']}</div>
+            <div class="metric-box"><strong>US EPA Index</strong><br>{latest_entry['US_EPA_INDEX']}</div>
+            <div class="metric-box"><strong>CO</strong><br>{latest_entry['CO']}</div>
+            <div class="metric-box"><strong>O3</strong><br>{latest_entry['O3']}</div>
+            <div class="metric-box"><strong>NO2</strong><br>{latest_entry['NO2']}</div>
+            <div class="metric-box"><strong>SO2</strong><br>{latest_entry['SO2']}</div>
+        </div>
+    """
+    st.markdown(metric_html, unsafe_allow_html=True)
+    
+    # Historical Data Table
+    st.write("### Historical Data")
+    st.dataframe(filtered_data)
+    
+    # Visualizations
+    st.write("### Visualizations")
+    st.line_chart(filtered_data.set_index("Insert_Timestamp")[["PM25", "PM10", "CO", "O3", "NO2", "SO2"]])
+else:
+    st.warning("No data available for the selected filters.")
