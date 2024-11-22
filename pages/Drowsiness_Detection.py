@@ -36,6 +36,9 @@ def create_accident_visualization():
     # Convert to DataFrame
     df = pd.DataFrame(data)
 
+
+    st.write(df)
+
     # Melt the DataFrame for animation
     df_melted = df.melt(id_vars=['State'], 
                        var_name='Year', 
