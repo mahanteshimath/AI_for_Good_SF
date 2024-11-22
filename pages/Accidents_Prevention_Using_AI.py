@@ -102,9 +102,10 @@ def analyze_bridge_plan(plan_text, uploaded_images=None):
     response = model.generate_content(base_prompt)
     try:
         return json.loads(response.text)
-    except:
+    except Exception as e:
         st.error(f"Error parsing AI response: {str(e)}")
         return None
+
 
 
 # App title and description
