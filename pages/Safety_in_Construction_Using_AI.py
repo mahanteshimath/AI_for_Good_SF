@@ -41,14 +41,10 @@ def create_accident_visualization():
     r1_expander = st.expander("Data sets used in this entire analysis.")
     R1_DF = pd.DataFrame(R1)
     R1_DF.index = R1_DF.index + 1
-    r1_expander.write(R1_DF)
+    
     data =R1_DF
     # Convert to DataFrame
     df = pd.DataFrame(data)
-
-
-    st.write(df)
-
     # Melt the DataFrame for animation
     df_melted = df.melt(id_vars=['State'], 
                        var_name='Year', 
@@ -56,6 +52,7 @@ def create_accident_visualization():
 
     # Create the visualization
     st.title('🚗 Road Accident Injuries Analysis (2019-2022)')
+    r1_expander.write(R1_DF)
 
     # Create animated bar chart
     fig = px.bar(df_melted, 
@@ -76,30 +73,6 @@ def create_accident_visualization():
 
     # Display the plot
     st.plotly_chart(fig, use_container_width=True)
-
-    # Add summary statistics
-    st.subheader('Summary Statistics')
-    yearly_totals = pd.DataFrame({
-        'Year': ['2019', '2020', '2021', '2022'],
-        'Total Injuries': [110843, 87184, 92583, 106485]
-    })
-    
-    st.write("Yearly Totals:")
-    st.dataframe(yearly_totals)
-
-    # Calculate and display key insights
-    st.subheader('Key Insights')
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        max_state = df_melted.groupby('State')['Injuries'].mean().idxmax()
-        max_injuries = df_melted.groupby('State')['Injuries'].mean().max()
-        st.metric("State with Highest Average Injuries", max_state, f"{max_injuries:.0f}")
-    
-    with col2:
-        percent_change = ((yearly_totals.iloc[-1,1] - yearly_totals.iloc[0,1]) / 
-                         yearly_totals.iloc[0,1] * 100)
-        st.metric("Change 2019 to 2022", f"{percent_change:.1f}%")
 create_accident_visualization()
 # Custom CSS styling
 st.markdown("""
