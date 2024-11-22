@@ -18,8 +18,8 @@ def initialize_gemini():
         st.error("Please add your Google API key to the secrets.")
         st.stop()
     
-    genai.configure(api_key=st.session_state['google_api_key'])
-    model = genai.GenerativeModel('gemini-1.5-flash')
+genai.configure(api_key=st.session_state['google_api_key'])
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 
 
