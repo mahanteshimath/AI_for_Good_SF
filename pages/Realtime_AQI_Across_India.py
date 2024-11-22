@@ -283,7 +283,7 @@ if not filtered_data.empty:
         <div class="metric-box"><strong>SO2</strong><br>{latest_entry['SO2']}</div>
     </div>
     """
-st.markdown(metric_html, unsafe_allow_html=True)
+    st.markdown(metric_html, unsafe_allow_html=True)
     
     # Historical Data Table
     st.write("### Historical Data")
