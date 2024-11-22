@@ -76,7 +76,7 @@ Accidents_page = st.Page(
 )
 AQI = st.Page(
     "pages/Realtime_AQI_Across_India.py",
-    title="Realtime AQI AcrossIndia",
+    title="Realtime AQI Across India",
     icon=":material/aq:",
 )
 chatbot = st.Page(
