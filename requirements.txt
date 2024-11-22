@@ -66,3 +66,4 @@ matplotlib
 seaborn
 requests
 pytz
+google-generativeai
