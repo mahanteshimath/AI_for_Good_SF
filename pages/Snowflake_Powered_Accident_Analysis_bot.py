@@ -33,7 +33,16 @@ def get_snowflake_session():
 
 # Configuration options
 def config_options():
-    st.selectbox("Debug Mode", [True, False], key="debug", index=1)
+    st.selectbox(
+        'Select your model:',
+        (
+            'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
+            'llama3-8b', 'llama3-70b', 'reka-flash', 
+            'mistral-7b', 'llama2-70b-chat', 'gemma-7b'
+        ), 
+        key="model_name"
+    )
+    st.checkbox('Remember chat history?', key="debug", value=False)
     st.button("Start Over", key="clear_conversation")
 
 # Initialize chat history
@@ -43,6 +52,10 @@ def init_messages():
 
 # Title and intro
 st.title(":blue[📈 Analysis with Snowflake Cortex & RAG] :speech_balloon:")
+
+# Initialize session state variables
+if "model_name" not in st.session_state:
+    st.session_state["model_name"] = 'mixtral-8x7b'  # Default model name
 
 # Get active Snowflake session
 session = get_snowflake_session()
@@ -74,10 +87,6 @@ with col1:
             cursor: pointer;
             border-radius: 8px;
             box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
-            transition: box-shadow 0.3s ease-in-out;
-        }
-        .glowing-button:hover {
-            box-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red;
         }
         </style>
         """,
@@ -121,23 +130,26 @@ for message in st.session_state.get("messages", []):
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Accept user input for questions
-if question := st.chat_input("Chat with any docs"):
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": question})
+# Function to handle user input and generate responses
+def handle_user_input():
+    question = st.text_input("Ask a question:")
+    if question:
+        st.session_state.messages.append({"role": "user", "content": question})
 
-    # Display user message in chat message container
-    with st.chat_message("user"):
-        st.markdown(question)
+        # Display user message in chat message container
+        with st.chat_message("user"):
+            st.markdown(question)
 
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        question = question.replace("'", "")
-        with st.spinner(f"{st.session_state.model_name} thinking..."):
-            response = complete(session, question)
-            res_text = response[0].RESPONSE
-            res_text = res_text.replace("'", "")
-            message_placeholder.markdown(res_text)
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            question = question.replace("'", "")
+            with st.spinner(f"{st.session_state.model_name} thinking..."):
+                response = complete(session, question)
+                res_text = response[0].RESPONSE
+                res_text = res_text.replace("'", "")
+                message_placeholder.markdown(res_text)
 
-    st.session_state.messages.append({"role": "assistant", "content": res_text})
+        st.session_state.messages.append({"role": "assistant", "content": res_text})
+
+handle_user_input()
