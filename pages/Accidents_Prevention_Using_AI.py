@@ -6,12 +6,12 @@ from PIL import Image
 import io
 import fitz  # PyMuPDF for PDF processing
 
-# Configure page settings
-st.set_page_config(
-    page_title="Bridge Development Plan Analyzer",
-    page_icon="🌉",
-    layout="wide"
-)
+# # Configure page settings
+# st.set_page_config(
+#     page_title="Bridge Development Plan Analyzer",
+#     page_icon="🌉",
+#     layout="wide"
+# )
 
 
 db_credentials = st.secrets["db_credentials"]
