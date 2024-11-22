@@ -66,6 +66,6 @@ matplotlib
 seaborn
 requests
 google-generativeai
-pytesseract==0.3.10
+pytesseract
 PyMuPDF==1.23.26
 python-dotenv==1.0.1
