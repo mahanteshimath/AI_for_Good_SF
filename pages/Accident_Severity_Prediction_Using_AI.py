@@ -169,7 +169,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 # Main header
-st.markdown('<h1 class="main-header">Road Accidents Data Collection System</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Road Accidents Prection using AI</h1>', unsafe_allow_html=True)
 
 # Initialize connection to Snowflake
 def init_connection():
@@ -198,7 +198,15 @@ def insert_data(data):
         SPEED_LIMIT, JUNCTION_DETAIL, JUNCTION_CONTROL,
         PEDESTRIAN_CROSSING_HUMAN_CONTROL, PEDESTRIAN_CROSSING_PHYSICAL_FACILITIES,
         ROAD_CLASS, TIME_OF_DAY
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+
+    UPDATE T01_ROAD_ACCIDENTS TGT
+    SET 
+        TGT.ACCIDENT_PROBABILITY=SRC.PREDICTED_ACCIDENT_PROBABILITY,
+        TGT.ACCIDENT_SEVERITY=SRC.PREDICTED_SEVERITY,
+        TGT.OUTPUT=SRC.OUTPUT
+    FROM V01_PREDICTED_DATA SRC
+    WHERE SRC.VEHICLE_NUMBER = TGT.VEHICLE_NUMBER AND SRC.INSRT_TIMESTAMP=SRC.INSRT_TIMESTAMP;
     """
     
     cur.execute(query, (
