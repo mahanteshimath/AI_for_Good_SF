@@ -65,7 +65,6 @@ st.markdown("""
 # Reason 2: Design and Structural Flaws
 st.markdown('<div class="section-header">Reason 2: Design and Structural Flaws</div>', unsafe_allow_html=True)
 st.markdown("""
-<div class="markdown-text">
 - **Overview**: Poor design standards and subpar construction materials often lead to failures.
 - **Examples**:
   - *Pragati Maidan Tunnel*: Leakage and surface bumps despite repairs.
@@ -73,13 +72,11 @@ st.markdown("""
 - **Key References**:
   - [Economic Times](https://economictimes.indiatimes.com/news/india/bihar-rs-1700-cr-under-construction-bridge-collapsed-within-seconds)
   - [India Today](https://www.indiatoday.in/cities/delhi/story/pragati-maidan-tunnel-seepage-serious-design-flaws-delhi-pwd-notice-larsen-toubro-2498978-2024-02-07)
-</div>
-""", unsafe_allow_html=True)
+""")
 
 # Reason 3: Safety Audits
 st.markdown('<div class="section-header">Reason 3: Safety Audits</div>', unsafe_allow_html=True)
 st.markdown("""
-<div class="markdown-text">
 - **Overview**: Lack of routine and rigorous safety audits has resulted in preventable accidents.
 - **Examples**:
   - *Mumbai CST Bridge Collapse*: Declared fit for use but failed shortly after.
@@ -87,13 +84,13 @@ st.markdown("""
 - **Key References**:
   - [NDTV](https://www.ndtv.com/mumbai-news/3-arrested-in-less-than-a-month-after-mumbai-bridge-collapse-killed-6-2016849)
   - [Business Today](https://www.businesstoday.in/latest/economy-politics/story/mumbai-cst-bridge-collapse-audit-report-foot-over-bridge-bmc-mumbai-cst-bridge-collapse-structural-audit-report-deemed-foot-overbridge-fit-to-use-six-months-ago-178097-2019-03-15)
-</div>
-""", unsafe_allow_html=True)
+
+""")
 
 # Reason 4: Accountability
 st.markdown('<div class="section-header">Reason 4: Accountability</div>', unsafe_allow_html=True)
 st.markdown("""
-<div class="markdown-text">
+
 - **Overview**: Lack of accountability in governance and maintenance exacerbates infrastructure challenges.
 - **Examples**:
   - *Morbi Bridge Incident*: Highlighted systemic corruption and governance failures.
@@ -101,17 +98,16 @@ st.markdown("""
 - **Key References**:
   - [Times of India](https://timesofindia.indiatimes.com/city/ahmedabad/court-demands-accountability-for-maintenance-of-bridges/articleshow/98109045.cms)
   - [The Guardian](https://www.theguardian.com/world/2022/oct/31/indian-police-arrest-nine-people-after-footbridge-collapse-kills-at-least-134)
-</div>
-""", unsafe_allow_html=True)
+
+""")
 
 # Conclusion
 st.markdown('<div class="section-header">Conclusion</div>', unsafe_allow_html=True)
 st.markdown("""
-<div class="markdown-text">
 India’s infrastructure holds immense potential, but recurring issues in design, execution, and accountability hinder progress. 
 Addressing these challenges with transparency, stricter audits, and improved governance can lead to safer and more reliable infrastructure.
 </div>
-""", unsafe_allow_html=True)
+""")
 
 # Footer
 st.markdown('<div class="footer">**Sources:** Compiled from trusted publications such as The Wire, NDTV, Business Today, and The Guardian.</div>', unsafe_allow_html=True)
