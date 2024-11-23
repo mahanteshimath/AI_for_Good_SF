@@ -2,98 +2,125 @@ import streamlit as st
 import snowflake.connector
 from datetime import datetime
 import pytz
-
-# Custom CSS
+# Custom CSS with white theme and bold text
 st.markdown("""
     <style>
+        /* Global styles */
+        body {
+            background-color: #FFFFFF;
+        }
+        
         /* Main container styling */
         .main {
             padding: 2rem;
+            background-color: #FFFFFF;
         }
         
         /* Card styling */
         .stCard {
-            background-color: white;
+            background-color: #FFFFFF;
             padding: 2rem;
             border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 1rem;
+            border: 1px solid #F0F0F0;
         }
         
         /* Header styling */
         .main-header {
-            color: #1E3A8A;
+            color: #000000;
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 800;
             text-align: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid #E5E7EB;
+            border-bottom: 2px solid #F0F0F0;
         }
         
         .section-header {
-            color: #1E3A8A;
+            color: #000000;
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid #E5E7EB;
+            border-bottom: 1px solid #F0F0F0;
         }
         
-        /* Input field styling */
+        /* Label styling */
         .stSelectbox label, .stNumberInput label, .stTextInput label {
-            color: #4B5563;
-            font-weight: 500;
+            color: #000000;
+            font-weight: 600;
             font-size: 1rem;
         }
         
+        /* Input field styling */
         .stSelectbox > div > div, .stNumberInput > div > div, .stTextInput > div {
-            background-color: #F9FAFB;
+            background-color: #FFFFFF;
             border-radius: 0.5rem;
-            border: 1px solid #E5E7EB;
+            border: 2px solid #E0E0E0;
+            font-weight: 500;
         }
         
         .stSelectbox > div > div:hover, .stNumberInput > div > div:hover, .stTextInput > div:hover {
-            border-color: #3B82F6;
+            border-color: #000000;
         }
         
         /* Button styling */
         .stButton > button {
-            background-color: #2563EB;
-            color: white;
-            font-weight: 600;
+            background-color: #000000;
+            color: #FFFFFF;
+            font-weight: 700;
             padding: 0.75rem 2rem;
             border-radius: 0.5rem;
             border: none;
             width: 100%;
             transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
         .stButton > button:hover {
-            background-color: #1D4ED8;
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+            background-color: #333333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         /* Success/Error message styling */
-        .element-container .stSuccess, .element-container .stError {
+        .element-container .stSuccess {
+            background-color: #FFFFFF;
+            color: #00A36C;
+            border: 2px solid #00A36C;
             padding: 1rem;
             border-radius: 0.5rem;
             margin: 1rem 0;
-        }
-        
-        .element-container .stSuccess {
-            background-color: #D1FAE5;
-            color: #065F46;
-            border: 1px solid #34D399;
+            font-weight: 600;
         }
         
         .element-container .stError {
-            background-color: #FEE2E2;
-            color: #991B1B;
-            border: 1px solid #F87171;
+            background-color: #FFFFFF;
+            color: #DC2626;
+            border: 2px solid #DC2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            font-weight: 600;
         }
         
-        /* Responsive layout improvements */
+        /* Dropdown options styling */
+        .stSelectbox > div > div > div {
+            font-weight: 500;
+        }
+        
+        /* Number input styling */
+        .stNumberInput > div > div > div {
+            font-weight: 500;
+        }
+        
+        /* Text input styling */
+        .stTextInput > div > div {
+            font-weight: 500;
+        }
+        
+        /* Responsive layout */
         @media (max-width: 768px) {
             .main {
                 padding: 1rem;
