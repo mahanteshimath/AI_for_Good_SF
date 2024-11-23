@@ -392,7 +392,7 @@ with col3:
     
     vehicle_type = st.selectbox(
         "Vehicle Type",
-        ["Car", "Motorcycle", "Bus", "Truck", "Van", "Auto-Rickshaw", "Bicycle", "Pedestrian"]
+        ["Car", "Motorcycle", "Bus", "Truck", "Van", "Auto-Rickshaw", "Bicycle"]
     )
     
     vehicle_age = st.text_input("Vehicle Age")
