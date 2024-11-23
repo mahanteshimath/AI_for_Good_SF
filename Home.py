@@ -70,7 +70,7 @@ road_page = st.Page(
 )
 
 Accidents_page = st.Page(
-    "pages/Accidents_Analysis_Prevention_using_AI.py",
+    "pages/Accidents_Analysis_Prevention_Using_AI.py",
     title="Accidents Analysis Prevention Using AI",
     icon=":material/car_crash:",
 )
