@@ -168,8 +168,57 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
+
+
+
+
+# Add new CSS for the results card
+st.markdown("""
+    <style>
+        /* Existing CSS remains the same */
+        
+        /* Results card styling */
+        .results-card {
+            background-color: #220e06;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-top: 2rem;
+            border: 2px solid #c7e5b0;
+        }
+        
+        .results-header {
+            color: #cebde0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .result-item {
+            color: #c7e5b0;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-bottom: 1px solid #cebde0;
+        }
+        
+        .probability-high {
+            color: #ff6b6b;
+        }
+        
+        .probability-medium {
+            color: #ffd93d;
+        }
+        
+        .probability-low {
+            color: #6bff6b;
+        }
+    </style>
+""", unsafe_allow_html=True)
 # Main header
-st.markdown('<h1 class="main-header">Road Accidents Prection using AI</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Road Accidents Prediction and Prevention Using AI</h1>', unsafe_allow_html=True)
 
 # Initialize connection to Snowflake
 def init_connection():
@@ -223,6 +272,33 @@ def insert_data(data):
     conn.commit()
     cur.close()
     conn.close()
+
+
+
+# Function to get prediction results
+def get_prediction_results(vehicle_number):
+    conn = init_connection()
+    cur = conn.cursor()
+    
+    query = """
+    SELECT VEHICLE_NUMBER, INSRT_TIMESTAMP, ACCIDENT_PROBABILITY, 
+           ACCIDENT_SEVERITY, OUTPUT 
+    FROM T01_ROAD_ACCIDENTS 
+    WHERE (VEHICLE_NUMBER, INSRT_TIMESTAMP) IN (
+        SELECT VEHICLE_NUMBER, MAX(INSRT_TIMESTAMP) INSRT_TIMESTAMP  
+        FROM T01_ROAD_ACCIDENTS 
+        WHERE VEHICLE_NUMBER = %s 
+        GROUP BY ALL
+    )
+    """
+    
+    cur.execute(query, (vehicle_number,))
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+    
+    return result
+
 
 # Create three columns with cards
 col1, col2, col3 = st.columns(3)
@@ -355,7 +431,34 @@ if st.button("Submit Data to get prediction", key="submit"):
         
         try:
             insert_data(data)
-            st.success("Data successfully submitted to the database!")
+            st.success("Data successfully paased to AI to predict")
+            st.balloons()
+            prediction_results = get_prediction_results(vehicle_number)
+            
+            if prediction_results:
+                st.markdown('<div class="results-card">', unsafe_allow_html=True)
+                st.markdown('<h3 class="results-header">Prediction Results</h3>', unsafe_allow_html=True)
+                
+                veh_num, timestamp, probability, severity, output = prediction_results
+                
+                # Format timestamp
+                formatted_timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                
+                # Determine probability class for color coding
+                prob_class = "probability-high" if float(probability) > 0.7 else \
+                           "probability-medium" if float(probability) > 0.4 else \
+                           "probability-low"
+                
+                # Display results with formatting
+                st.markdown(f'<div class="result-item">Vehicle Number: {veh_num}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="result-item">Timestamp: {formatted_timestamp}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="result-item">Accident Probability: <span class="{prob_class}">{probability:.2%}</span></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="result-item">Accident Severity: {severity}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="result-item">AI Analysis: {output}</div>', unsafe_allow_html=True)
+                
+                st.markdown('</div>', unsafe_allow_html=True)
+            else:
+                st.warning("No prediction results found for the given vehicle number.")
         except Exception as e:
             st.error(f"Error submitting data: {str(e)}")
 st.markdown('</div>', unsafe_allow_html=True)
