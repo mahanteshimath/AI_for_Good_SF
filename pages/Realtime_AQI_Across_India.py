@@ -281,8 +281,8 @@ if not filtered_data.empty:
         <div class="metric-box"><strong>O3</strong><br>{latest_entry['O3']}</div>
         <div class="metric-box"><strong>NO2</strong><br>{latest_entry['NO2']}</div>
         <div class="metric-box"><strong>SO2</strong><br>{latest_entry['SO2']}</div>
-        <div class="metric-box"><strong>SO2</strong><br>{latest_entry['AQI']}</div>
-        <div class="metric-box"><strong>SO2</strong><br>{latest_entry['AIR_QUALITY']}</div>
+        <div class="metric-box"><strong>AQI</strong><br>{latest_entry['AQI']}</div>
+        <div class="metric-box"><strong>AIR_QUALITY</strong><br>{latest_entry['AIR_QUALITY']}</div>
     </div>
     """
     st.markdown(metric_html, unsafe_allow_html=True)
