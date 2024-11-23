@@ -34,7 +34,7 @@ def get_snowflake_session():
         return None
 
 # Title and intro
-st.title(":blue[📈Analysis with Snowflake Cortex & RAG ] :speech_balloon:")
+st.title(":blue[📈Road Accidents Analysis with Snowflake Cortex & RAG ] :speech_balloon:")
 
 # Get active Snowflake session
 session = get_snowflake_session()
