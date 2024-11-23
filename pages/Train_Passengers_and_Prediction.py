@@ -97,7 +97,7 @@ with col3:
 # Total Passengers Over Time
 st.subheader('Total Passenger Traffic Trend')
 fig1 = px.line(total_passengers, x='Year', y='Value',
-               title='Total Passengers Over Time (1971-2022)')
+               title='Total Passengers Over Time (1971-2022)', markers=True)
 fig1.update_layout(yaxis_title='Number of Passengers')
 fig1.update_traces(line_color='#1f77b4')
 st.plotly_chart(fig1, use_container_width=True)
@@ -110,7 +110,7 @@ fig2.add_trace(go.Scatter(x=suburban['Year'], y=suburban['Value'],
 fig2.add_trace(go.Scatter(x=non_suburban['Year'], y=non_suburban['Value'], 
                          name='Non-Suburban', fill='tonexty', line_color='#e74c3c'))
 fig2.update_layout(title='Suburban vs Non-Suburban Passenger Distribution',
-                  yaxis_title='Number of Passengers')
+                  yaxis_title='Number of Passengers', markers=True)
 st.plotly_chart(fig2, use_container_width=True)
 
 # Average Distance Travelled
