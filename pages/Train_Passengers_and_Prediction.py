@@ -110,7 +110,7 @@ fig2.add_trace(go.Scatter(x=suburban['Year'], y=suburban['Value'],
 fig2.add_trace(go.Scatter(x=non_suburban['Year'], y=non_suburban['Value'], 
                          name='Non-Suburban', fill='tonexty', line_color='#e74c3c'))
 fig2.update_layout(title='Suburban vs Non-Suburban Passenger Distribution',
-                  yaxis_title='Number of Passengers', markers=True)
+                  yaxis_title='Number of Passengers')
 st.plotly_chart(fig2, use_container_width=True)
 
 # Average Distance Travelled
