@@ -302,6 +302,13 @@ if not filtered_data.empty:
 
     # Display the plot
     st.plotly_chart(fig, use_container_width=True)
+
+    fig_aqi = px.line(filtered_data, x='INSRT_TIMESTAMP', y=["AQI"],
+                labels={"INSRT_TIMESTAMP": "Timestamp", "value": "AQI"},
+                title="Trend AQI  Over Time", markers=True)
+
+    # Display the plot
+    st.plotly_chart(fig_aqi, use_container_width=True)
 else:
     st.warning("No data available for the selected filters.")
 
