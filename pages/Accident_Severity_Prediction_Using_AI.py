@@ -299,6 +299,15 @@ def get_prediction_results(vehicle_number):
     
     return result
 
+    # Function to parse percentage string
+def parse_percentage(percentage_str):
+    if isinstance(percentage_str, str):
+        # Remove the % symbol and convert to float
+        return float(percentage_str.strip('%'))
+    return float(percentage_str)
+
+
+
 
 # Create three columns with cards
 col1, col2, col3 = st.columns(3)
@@ -443,11 +452,14 @@ if st.button("Submit Data to get prediction", key="submit"):
                 
                 # Format timestamp
                 formatted_timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+                prob_value = parse_percentage(probability)
                 
                 # Determine probability class for color coding
-                prob_class = "probability-high" if float(probability) > 0.7 else \
-                           "probability-medium" if float(probability) > 0.4 else \
+                prob_class = "probability-high" if prob_value > 70 else \
+                           "probability-medium" if prob_value > 40 else \
                            "probability-low"
+                
                 
                 # Display results with formatting
                 st.markdown(f'<div class="result-item">Vehicle Number: {veh_num}</div>', unsafe_allow_html=True)
