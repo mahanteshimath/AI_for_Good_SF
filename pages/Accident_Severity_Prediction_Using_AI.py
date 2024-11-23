@@ -198,15 +198,7 @@ def insert_data(data):
         SPEED_LIMIT, JUNCTION_DETAIL, JUNCTION_CONTROL,
         PEDESTRIAN_CROSSING_HUMAN_CONTROL, PEDESTRIAN_CROSSING_PHYSICAL_FACILITIES,
         ROAD_CLASS, TIME_OF_DAY
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-
-    UPDATE T01_ROAD_ACCIDENTS TGT
-    SET 
-        TGT.ACCIDENT_PROBABILITY=SRC.PREDICTED_ACCIDENT_PROBABILITY,
-        TGT.ACCIDENT_SEVERITY=SRC.PREDICTED_SEVERITY,
-        TGT.OUTPUT=SRC.OUTPUT
-    FROM V01_PREDICTED_DATA SRC
-    WHERE SRC.VEHICLE_NUMBER = TGT.VEHICLE_NUMBER AND SRC.INSRT_TIMESTAMP=SRC.INSRT_TIMESTAMP;
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
     cur.execute(query, (
@@ -218,7 +210,16 @@ def insert_data(data):
         data["ped_control"], data["ped_facilities"], data["road_class"],
         data["time_of_day"]
     ))
-    
+
+    query_upd = """UPDATE T01_ROAD_ACCIDENTS TGT
+    SET 
+        TGT.ACCIDENT_PROBABILITY=SRC.PREDICTED_ACCIDENT_PROBABILITY,
+        TGT.ACCIDENT_SEVERITY=SRC.PREDICTED_SEVERITY,
+        TGT.OUTPUT=SRC.OUTPUT
+    FROM V01_PREDICTED_DATA SRC
+    WHERE SRC.VEHICLE_NUMBER = TGT.VEHICLE_NUMBER AND SRC.INSRT_TIMESTAMP=SRC.INSRT_TIMESTAMP;
+    """
+    cur.execute(query_upd)
     conn.commit()
     cur.close()
     conn.close()
@@ -302,7 +303,7 @@ with col3:
     st.markdown('<div class="stCard">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-header">Vehicle & Driver Information</h2>', unsafe_allow_html=True)
     
-    num_vehicles = st.number_input("Number of Vehicles", min_value=1, max_value=10, value=1)
+    num_vehicles = st.number_input("Number of Vehicles", min_value=1, max_value=20, value=1)
     
     vehicle_type = st.selectbox(
         "Vehicle Type",
@@ -326,7 +327,7 @@ with col3:
 
 # Submit button container with styling
 st.markdown('<div class="stCard" style="text-align: center;">', unsafe_allow_html=True)
-if st.button("Submit Data", key="submit"):
+if st.button("Submit Data to get prediction", key="submit"):
     if not vehicle_number:
         st.error("Please enter a vehicle number")
     else:
