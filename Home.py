@@ -64,14 +64,14 @@ project_4_page = st.Page(
 
  #"Open Government Data"
 road_page = st.Page(
-    "pages/Accidents_Prevention_Using_AI.py",
-    title="Accidents Prevention Using AI",
+    "pages/Accident_Severity_Prediction_Using_AI.py",
+    title="Accident Severity Prediction_Using AI",
     icon=":material/car_crash:",
 )
 
 Accidents_page = st.Page(
-    "pages/Accidents_analysis_prevention_using_AI.py",
-    title="Accidents analysis prevention using AI",
+    "pages/Accidents_Analysis_Prevention_using_AI.py",
+    title="Accidents Analysis Prevention Using AI",
     icon=":material/car_crash:",
 )
 AQI = st.Page(
