@@ -27,6 +27,7 @@ st.markdown("""
         .markdown-text {
             font-size: 1.5rem;
             line-height: 1.6;
+            font-weight: bold;
         }
         .footer {
             font-size: 0.9rem;
