@@ -72,7 +72,7 @@ st.markdown("""
   - *Bihar Bridge Collapse*: Highlighted severe design and construction flaws.
 - **Key References**:
   - [Economic Times](https://economictimes.indiatimes.com/news/india/bihar-rs-1700-cr-under-construction-bridge-collapsed-within-seconds)
-  - [India Today](https://www.indiatoday.in/cities/delhi/story/pragati-maidan-tunnel-seepage-serious-design-flaws-delhi-pwd-notice-larsen-toubro-2498978-2024-02-07)
+  - [timesofindia](https://timesofindia.indiatimes.com/city/patna/bihars-10th-bridge-collapse-issue-attributed-to-design-and-cement/articleshow/111501543.cms)
 """)
 
 # Reason 3: Safety Audits
