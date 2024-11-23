@@ -2,73 +2,86 @@ import streamlit as st
 import snowflake.connector
 from datetime import datetime
 import pytz
-# Custom CSS with white theme and bold text
+
+
+
+
+
+# Custom theme configuration
 st.markdown("""
     <style>
         /* Global styles */
-        body {
-            background-color: #FFFFFF;
+        .stApp {
+            background-color: #2f1f42;
         }
         
         /* Main container styling */
         .main {
-            padding: 2rem;
-            background-color: #FFFFFF;
+            background-color: #2f1f42;
+            color: #c7e5b0;
         }
         
         /* Card styling */
         .stCard {
-            background-color: #FFFFFF;
+            background-color: #220e06;
             padding: 2rem;
             border-radius: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             margin-bottom: 1rem;
-            border: 1px solid #F0F0F0;
+            border: 1px solid #cebde0;
         }
         
         /* Header styling */
         .main-header {
-            color: #000000;
+            color: #cebde0;
             font-size: 2.5rem;
             font-weight: 800;
             text-align: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid #F0F0F0;
+            border-bottom: 2px solid #cebde0;
         }
         
         .section-header {
-            color: #000000;
+            color: #cebde0;
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid #F0F0F0;
+            border-bottom: 1px solid #cebde0;
         }
         
         /* Label styling */
         .stSelectbox label, .stNumberInput label, .stTextInput label {
-            color: #000000;
+            color: #c7e5b0 !important;
             font-weight: 600;
             font-size: 1rem;
         }
         
         /* Input field styling */
         .stSelectbox > div > div, .stNumberInput > div > div, .stTextInput > div {
-            background-color: #FFFFFF;
+            background-color: #2f1f42 !important;
             border-radius: 0.5rem;
-            border: 2px solid #E0E0E0;
+            border: 2px solid #cebde0 !important;
+            color: #c7e5b0 !important;
             font-weight: 500;
         }
         
         .stSelectbox > div > div:hover, .stNumberInput > div > div:hover, .stTextInput > div:hover {
-            border-color: #000000;
+            border-color: #cebde0 !important;
+            box-shadow: 0 0 0 1px #cebde0;
+        }
+        
+        /* Dropdown styling */
+        .stSelectbox > div > div > div[data-baseweb="select"] > div {
+            background-color: #2f1f42 !important;
+            color: #c7e5b0 !important;
         }
         
         /* Button styling */
         .stButton > button {
-            background-color: #000000;
-            color: #FFFFFF;
+            background-color: #cebde0;
+            color: #2f1f42;
             font-weight: 700;
             padding: 0.75rem 2rem;
             border-radius: 0.5rem;
@@ -80,15 +93,15 @@ st.markdown("""
         }
         
         .stButton > button:hover {
-            background-color: #333333;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #c7e5b0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
         
         /* Success/Error message styling */
         .element-container .stSuccess {
-            background-color: #FFFFFF;
-            color: #00A36C;
-            border: 2px solid #00A36C;
+            background-color: #220e06;
+            color: #c7e5b0;
+            border: 2px solid #c7e5b0;
             padding: 1rem;
             border-radius: 0.5rem;
             margin: 1rem 0;
@@ -96,28 +109,51 @@ st.markdown("""
         }
         
         .element-container .stError {
-            background-color: #FFFFFF;
-            color: #DC2626;
-            border: 2px solid #DC2626;
+            background-color: #220e06;
+            color: #ff6b6b;
+            border: 2px solid #ff6b6b;
             padding: 1rem;
             border-radius: 0.5rem;
             margin: 1rem 0;
             font-weight: 600;
         }
         
-        /* Dropdown options styling */
-        .stSelectbox > div > div > div {
-            font-weight: 500;
+        /* Input text color */
+        input, textarea, [data-baseweb="select"] {
+            color: #c7e5b0 !important;
         }
         
-        /* Number input styling */
-        .stNumberInput > div > div > div {
-            font-weight: 500;
+        /* Dropdown menu styling */
+        [data-baseweb="popover"] {
+            background-color: #2f1f42 !important;
         }
         
-        /* Text input styling */
-        .stTextInput > div > div {
-            font-weight: 500;
+        [data-baseweb="menu"] {
+            background-color: #2f1f42 !important;
+        }
+        
+        [data-baseweb="option"] {
+            color: #c7e5b0 !important;
+        }
+        
+        [data-baseweb="option"]:hover {
+            background-color: #220e06 !important;
+        }
+        
+        /* Number input arrows */
+        input[type="number"] {
+            color: #c7e5b0 !important;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: #2f1f42;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cebde0;
+            border-radius: 5px;
         }
         
         /* Responsive layout */
