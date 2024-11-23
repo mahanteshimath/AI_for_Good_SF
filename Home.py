@@ -90,12 +90,12 @@ chatbot = st.Page(
 )
 
 
-Accidents_page = st.Page(
+Accidents_Analysis_page = st.Page(
     "pages/Accidents_Analysis_Prevention_Using_AI.py",
     title="Accidents Analysis Prevention Using AI",
     icon=":material/car_crash:",
 )
-road_page = st.Page(
+Severity_Prediction = st.Page(
     "pages/Accident_Severity_Prediction_Using_AI.py",
     title="Accident Severity Prediction_Using AI",
     icon=":material/car_crash:",
@@ -109,7 +109,7 @@ pg = st.navigation(
         "Info": [Hypothesis_page,Architecture_page],
         "What is wrong with Indian infra": [problem,AI_Civil],
         "SF-MP Social impact Data": [project_4_page,project_1_page,project_3_page,project_2_page,AQI],
-        "Open Government Data":[chatbot,Accidents_page,road_page],
+        "Open Government Data":[chatbot,Accidents_Analysis_page,Severity_Prediction],
     }
 )
 
