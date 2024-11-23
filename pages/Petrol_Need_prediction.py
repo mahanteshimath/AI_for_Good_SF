@@ -160,7 +160,7 @@ fig.add_trace(go.Scatter(
     fill=None,
     mode='lines',
     line_color='rgba(255,0,0,0)',
-    showlegend=False
+    showlegend=False, markers=True
 ))
 
 fig.add_trace(go.Scatter(
@@ -170,7 +170,7 @@ fig.add_trace(go.Scatter(
     mode='lines',
     line_color='rgba(255,0,0,0)',
     name='95% Confidence Interval',
-    fillcolor='rgba(255,0,0,0.1)'
+    fillcolor='rgba(255,0,0,0.1)' , markers=True
 ))
 
 fig.update_layout(
@@ -178,7 +178,7 @@ fig.update_layout(
     xaxis_title="Year",
     yaxis_title="Oil Demand (MMT)",
     height=600,
-    hovermode='x unified'
+    hovermode='x unified', markers=True
 )
 
 st.plotly_chart(fig, use_container_width=True)

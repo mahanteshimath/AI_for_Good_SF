@@ -116,7 +116,7 @@ st.plotly_chart(fig2, use_container_width=True)
 # Average Distance Travelled
 st.subheader('Average Distance Travelled')
 fig3 = px.line(avg_distance, x='Year', y='Value',
-               title='Average Distance Travelled per Passenger (km)')
+               title='Average Distance Travelled per Passenger (km)', markers=True)
 fig3.update_traces(line_color='#9b59b6')
 st.plotly_chart(fig3, use_container_width=True)
 

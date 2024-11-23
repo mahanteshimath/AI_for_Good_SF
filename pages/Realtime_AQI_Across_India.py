@@ -296,7 +296,7 @@ if not filtered_data.empty:
     # Create a line chart with Plotly
     fig = px.line(filtered_data, x='INSRT_TIMESTAMP', y=["PM25", "PM10", "CO", "O3", "NO2", "SO2"],
                 labels={"INSRT_TIMESTAMP": "Timestamp", "value": "Concentration (µg/m³)"},
-                title="Air Quality Data Over Time")
+                title="Air Quality Data Over Time", markers=True)
 
     # Display the plot
     st.plotly_chart(fig, use_container_width=True)
