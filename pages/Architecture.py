@@ -18,10 +18,10 @@ st.markdown('''
 This architecture diagram titled **"INDIAN-INFRA-AI-INSIGHTS"** illustrates a data processing and analytics pipeline leveraging Snowflake, data sources, document processing, and a front-end interface using Streamlit. Here's a breakdown of each component and data flow:
 
 1.**Data Sources**
-- **Snowflake Data Marketplace**: Sources datasets related to infrastructure, weather, and other public data.
-- **data.gov.in**: Provides open government datasets for analysis.
-- **Custom Datasets**: Uploads from external sources are processed into Snowflake for analysis.
-- **Weather API**: Fetches Air Quality Index (AQI) data and other weather-related metrics.
+   - **Snowflake Data Marketplace**: Sources datasets related to infrastructure, weather, and other public data.
+   - **data.gov.in**: Provides open government datasets for analysis.
+   - **Custom Datasets**: Uploads from external sources are processed into Snowflake for analysis.
+   - **Weather API**: Fetches Air Quality Index (AQI) data and other weather-related metrics.
 
 2. **Snowflake Database (Snowflake DB)**:
    - **Data Ingestion and Processing**: All data sources are ingested into Snowflake, where the data is stored and processed. This includes cleaning, transforming, and preparing the data for analysis. The processed data is saved in **final views** or **functions** within Snowflake.

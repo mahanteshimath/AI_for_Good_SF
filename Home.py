@@ -84,9 +84,22 @@ chatbot = st.Page(
     title="Snowflake Powered Accident Analysis bot",
     icon=":material/smart_toy:",
 )
+
+chatbot = st.Page(
+    "pages/Snowflake_Powered_Accident_Analysis_bot.py",
+    title="Snowflake Powered Accident Analysis bot",
+    icon=":material/smart_toy:",
+)
+
+problem = st.Page(
+    "pages/Infra_Projects_Failure_Reasons.py",
+    title="Infra Projects Failure Reasons",
+    icon=":material/construction:",
+)
 pg = st.navigation(
     {
         "Info": [Hypothesis_page,Architecture_page],
+        "What is wrong with Indian infra": [problem],
         "SF-MP Social impact Data": [project_4_page,project_1_page,project_3_page,project_2_page,AQI],
         "Open Government Data":[chatbot,road_page,Accidents_page],
     }
