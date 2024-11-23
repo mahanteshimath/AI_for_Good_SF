@@ -51,7 +51,7 @@ such as contractual issues, structural flaws, safety audits, and accountability 
 # Reason 1: Contractual Reasons
 st.markdown('<div class="section-header">Reason 1: Contractual Reasons</div>', unsafe_allow_html=True)
 st.markdown("""
-<div class="markdown-text">
+
 - **Overview**: Administrative lapses and technical inefficiencies often lead to delays and failures in infrastructure projects. 
 - **Examples**:
   - *Morbi Bridge Collapse*: A result of poor contractor selection and oversight.
@@ -59,8 +59,8 @@ st.markdown("""
 - **Key References**:
   - [The Wire](https://thewire.in/government/administrative-lapses-and-technical-incompetence-behind-morbi-bridge-collapse-sit-says)
   - [The Guardian](https://www.theguardian.com/world/2022/nov/01/gujarat-bridge-collapse-anger-grows-in-india-over-cover-up-claims)
-</div>
-""", unsafe_allow_html=True)
+
+""")
 
 # Reason 2: Design and Structural Flaws
 st.markdown('<div class="section-header">Reason 2: Design and Structural Flaws</div>', unsafe_allow_html=True)
