@@ -290,8 +290,8 @@ if not filtered_data.empty:
     st.dataframe(filtered_data)
     
     # Visualizations
-    st.write("### Trend all AQI metrix")
-    st.line_chart(filtered_data.set_index("INSRT_TIMESTAMP")[["PM25", "PM10", "CO", "O3", "NO2", "SO2"]])
+    st.write("### Trend Air Quality Data Over Time")
+    # st.line_chart(filtered_data.set_index("INSRT_TIMESTAMP")[["PM25", "PM10", "CO", "O3", "NO2", "SO2"]])
 
     # Create a line chart with Plotly
     fig = px.line(filtered_data, x='INSRT_TIMESTAMP', y=["PM25", "PM10", "CO", "O3", "NO2", "SO2"],
