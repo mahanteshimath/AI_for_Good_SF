@@ -314,7 +314,7 @@ col1, col2, col3 = st.columns(3)
 
 # ROAD CONDITIONS
 with col1:
-    st.markdown('<div class="stCard">', unsafe_allow_html=True)
+    # st.markdown('<div class="stCard">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-header">Road Conditions</h2>', unsafe_allow_html=True)
     
     vehicle_number = st.text_input("Vehicle Number", key="vehicle_number")
@@ -352,7 +352,7 @@ with col1:
 
 # ENVIRONMENTAL CONDITIONS
 with col2:
-    st.markdown('<div class="stCard">', unsafe_allow_html=True)
+    # st.markdown('<div class="stCard">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-header">Environmental Conditions</h2>', unsafe_allow_html=True)
     
     weather = st.selectbox(
@@ -385,7 +385,7 @@ with col2:
 
 # VEHICLE & DRIVER INFORMATION
 with col3:
-    st.markdown('<div class="stCard">', unsafe_allow_html=True)
+    # st.markdown('<div class="stCard">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-header">Vehicle & Driver Information</h2>', unsafe_allow_html=True)
     
     num_vehicles = st.number_input("Number of Vehicles", min_value=1, max_value=20, value=1)
@@ -445,7 +445,6 @@ if st.button("Submit Data to get prediction", key="submit"):
             prediction_results = get_prediction_results(vehicle_number)
             
             if prediction_results:
-                st.markdown('<div class="results-card">', unsafe_allow_html=True)
                 st.markdown('<h3 class="results-header">Prediction Results</h3>', unsafe_allow_html=True)
                 
                 veh_num, timestamp, probability, severity, output = prediction_results
@@ -453,7 +452,7 @@ if st.button("Submit Data to get prediction", key="submit"):
                 # Format timestamp
                 formatted_timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
-                prob_value = parse_percentage(probability)
+                prob_value = parse_percentage(probability)/100
                 
                 # Determine probability class for color coding
                 prob_class = "probability-high" if prob_value > 70 else \
