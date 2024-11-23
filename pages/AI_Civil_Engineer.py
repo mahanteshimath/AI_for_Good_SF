@@ -1,5 +1,5 @@
 import streamlit as st
-st.title("🤖 AI assistant specialized in Civil Engineering")
+st.title("🤖 AI assistant specialized in Civil 🌉 Engineering")
 st.components.v1.html(
     """
     <iframe 

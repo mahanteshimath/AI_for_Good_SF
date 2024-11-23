@@ -200,7 +200,7 @@ if st.button("Fetch and push latest AQI Data to snowflake"):
     insert_data_to_snowflake(df)
 
 
-Q1=f'''SELECT * FROM T01_AQI_FOR_INDIAN_STATES'''
+Q1=f'''SELECT * FROM V01_AQI_FOR_INDIAN_STATES'''
 R1 = execute_query(Q1)
 r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
@@ -281,6 +281,8 @@ if not filtered_data.empty:
         <div class="metric-box"><strong>O3</strong><br>{latest_entry['O3']}</div>
         <div class="metric-box"><strong>NO2</strong><br>{latest_entry['NO2']}</div>
         <div class="metric-box"><strong>SO2</strong><br>{latest_entry['SO2']}</div>
+        <div class="metric-box"><strong>SO2</strong><br>{latest_entry['AQI']}</div>
+        <div class="metric-box"><strong>SO2</strong><br>{latest_entry['AIR_QUALITY']}</div>
     </div>
     """
     st.markdown(metric_html, unsafe_allow_html=True)
@@ -302,3 +304,39 @@ if not filtered_data.empty:
     st.plotly_chart(fig, use_container_width=True)
 else:
     st.warning("No data available for the selected filters.")
+
+
+st.markdown(
+    '''
+    <style>
+    .streamlit-expanderHeader {
+        background-color: blue;
+        color: white; # Adjust this for expander header color
+    }
+    .streamlit-expanderContent {
+        background-color: blue;
+        color: white; # Expander content color
+    }
+    </style>
+    ''',
+    unsafe_allow_html=True
+)
+
+footer="""<style>
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: #2C1E5B;
+color: white;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed with ❤️ by <a style='display: inline; text-align: center;' href="https://www.linkedin.com/in/mahantesh-hiremath/" target="_blank">MAHANTESH HIREMATH</a></p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)  
+
