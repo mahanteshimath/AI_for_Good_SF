@@ -1,167 +1,289 @@
 import streamlit as st
-import json
-import google.generativeai as genai
-import pytesseract
-from PIL import Image
-import io
-import fitz  # PyMuPDF for PDF processing
+import snowflake.connector
+from datetime import datetime
+import pytz
 
-
-
-# Accessing the database credentials
-db_credentials = st.secrets["db_credentials"]
-if 'google_api_key' not in st.session_state:
-    st.session_state.google_api_key = db_credentials["google_api_key"]
-
-
-genai.configure(api_key=st.session_state.google_api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
-
-
-
-def extract_text_from_pdf(pdf_file):
-    """Extract text from PDF file"""
-    try:
-        pdf_bytes = pdf_file.read()
-        doc = fitz.open(stream=pdf_bytes, filetype="pdf")
-        text = ""
-        for page in doc:
-            text += page.get_text()
-        return text
-    except Exception as e:
-        st.error(f"Error processing PDF: {str(e)}")
-        return None
-
-def extract_text_from_image(image_file):
-    """Extract text from image using OCR"""
-    try:
-        image = Image.open(image_file)
-        text = pytesseract.image_to_string(image)
-        return text
-    except Exception as e:
-        st.error(f"Error processing image: {str(e)}")
-        return None
-
-def analyze_bridge_plan(plan_text, uploaded_images=None):
-    # Construct the prompt based on available data
-    base_prompt = """
-    As a civil engineering expert, analyze the following bridge development plan. 
-    Consider these key aspects:
-    1. Structural integrity and safety
-    2. Environmental impact
-    3. Cost efficiency
-    4. Construction timeline
-    5. Maintenance requirements
-    6. Potential risks and mitigation strategies
-    
-    Provide a detailed analysis with specific recommendations.
-    """
-    
-    if uploaded_images:
-        base_prompt += "\nAnalysis includes insights from visual bridge plan documents."
-    
-    base_prompt += f"\nBridge Plan:\n{plan_text}"
-    
-    base_prompt += """
-    Format the response as a JSON with the following structure:
-    {
-        "overall_assessment": "summary of analysis",
-        "structural_analysis": {
-            "strengths": [],
-            "concerns": [],
-            "recommendations": []
-        },
-        "environmental_impact": {
-            "positive_impacts": [],
-            "negative_impacts": [],
-            "mitigation_strategies": []
-        },
-        "cost_analysis": {
-            "efficiency_rating": "1-10",
-            "cost_saving_opportunities": [],
-            "budget_risks": []
-        },
-        "timeline_assessment": {
-            "estimated_duration": "",
-            "potential_delays": [],
-            "optimization_suggestions": []
-        },
-        "maintenance_plan": {
-            "frequency": "",
-            "key_requirements": [],
-            "estimated_costs": ""
-        },
-        "risk_assessment": {
-            "critical_risks": [],
-            "mitigation_strategies": [],
-            "contingency_plans": []
+# Custom CSS
+st.markdown("""
+    <style>
+        /* Main container styling */
+        .main {
+            padding: 2rem;
         }
-    }
+        
+        /* Card styling */
+        .stCard {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1rem;
+        }
+        
+        /* Header styling */
+        .main-header {
+            color: #1E3A8A;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .section-header {
+            color: #1E3A8A;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        /* Input field styling */
+        .stSelectbox label, .stNumberInput label, .stTextInput label {
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .stSelectbox > div > div, .stNumberInput > div > div, .stTextInput > div {
+            background-color: #F9FAFB;
+            border-radius: 0.5rem;
+            border: 1px solid #E5E7EB;
+        }
+        
+        .stSelectbox > div > div:hover, .stNumberInput > div > div:hover, .stTextInput > div:hover {
+            border-color: #3B82F6;
+        }
+        
+        /* Button styling */
+        .stButton > button {
+            background-color: #2563EB;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            border: none;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        
+        .stButton > button:hover {
+            background-color: #1D4ED8;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+        
+        /* Success/Error message styling */
+        .element-container .stSuccess, .element-container .stError {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .element-container .stSuccess {
+            background-color: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #34D399;
+        }
+        
+        .element-container .stError {
+            background-color: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #F87171;
+        }
+        
+        /* Responsive layout improvements */
+        @media (max-width: 768px) {
+            .main {
+                padding: 1rem;
+            }
+            
+            .stCard {
+                padding: 1rem;
+            }
+        }
+    </style>
+""", unsafe_allow_html=True)
+# Main header
+st.markdown('<h1 class="main-header">Road Accidents Data Collection System</h1>', unsafe_allow_html=True)
+
+# Initialize connection to Snowflake
+def init_connection():
+    return snowflake.connector.connect(
+            account=st.session_state.account,
+            role=st.session_state.role,
+            warehouse=st.session_state.warehouse,
+            database=st.session_state.database,
+            schema=st.session_state.schema,
+            user=st.session_state.user,
+            password=st.session_state.password,
+            client_session_keep_alive=True
+    )
+
+# Function to insert data into Snowflake
+def insert_data(data):
+    conn = init_connection()
+    cur = conn.cursor()
+    
+    query = """
+    INSERT INTO T01_ROAD_ACCIDENTS (
+        VEHICLE_NUMBER, ROAD_SURFACE_CONDITIONS, WEATHER_CONDITIONS, 
+        LIGHT_CONDITIONS, NUMBER_OF_VEHICLES, ROAD_TYPE, 
+        URBAN_OR_RURAL_AREA, VEHICLE_TYPE, DRIVER_AGE,
+        DRIVER_SEX, DRIVER_HOME_AREA_TYPE, VEHICLE_AGE,
+        SPEED_LIMIT, JUNCTION_DETAIL, JUNCTION_CONTROL,
+        PEDESTRIAN_CROSSING_HUMAN_CONTROL, PEDESTRIAN_CROSSING_PHYSICAL_FACILITIES,
+        ROAD_CLASS, TIME_OF_DAY
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
-    response = model.generate_content(base_prompt)
-    try:
-        return json.loads(response.text)
-    except Exception as e:
-        st.error(f"Error parsing AI response: {str(e)}")
-        return None
-
-
-
-# App title and description
-st.title("🌉 Bridge Development Plan Analyzer")
-st.write("""
-This AI-powered tool analyzes bridge development plans and provides comprehensive 
-insights on structural integrity, environmental impact, costs, timeline, and risks.
-""")
-
-# File upload
-uploaded_files = st.file_uploader(
-    "Upload your bridge development plan (PDF, TXT, or JPEG)", 
-    type=["pdf", "txt", "jpeg", "jpg"],
-    accept_multiple_files=True
-)
-
-# Text input as alternative
-plan_text = st.text_area(
-    "Or paste your plan text here:",
-    height=200,
-    placeholder="Enter the bridge development plan details..."
-)
-
-# Initialize list to store uploaded images
-uploaded_images = []
-
-if uploaded_files:
-    plan_text_parts = []
+    cur.execute(query, (
+        data["vehicle_number"], data["road_surface"], data["weather"],
+        data["light"], data["num_vehicles"], data["road_type"],
+        data["area"], data["vehicle_type"], data["driver_age"],
+        data["driver_sex"], data["home_area"], data["vehicle_age"],
+        data["speed_limit"], data["junction_detail"], data["junction_control"],
+        data["ped_control"], data["ped_facilities"], data["road_class"],
+        data["time_of_day"]
+    ))
     
-    for uploaded_file in uploaded_files:
-        if uploaded_file.type == "application/pdf":
-            pdf_text = extract_text_from_pdf(uploaded_file)
-            if pdf_text:
-                plan_text_parts.append(pdf_text)
-                
-        elif uploaded_file.type.startswith("image/"):
-            # Display the uploaded image
-            st.image(uploaded_file, caption="Uploaded Bridge Plan Image", use_column_width=True)
-            # Extract text from image
-            image_text = extract_text_from_image(uploaded_file)
-            if image_text:
-                plan_text_parts.append(image_text)
-            # Store image for potential further use
-            uploaded_images.append(uploaded_file)
-            
-        else:  # Text files
-            text_content = uploaded_file.getvalue().decode("utf-8")
-            plan_text_parts.append(text_content)
-    
-    # Combine all text parts
-    if plan_text_parts:
-        plan_text = "\n\n".join(plan_text_parts)
+    conn.commit()
+    cur.close()
+    conn.close()
 
-if st.button("Analyze Plan", disabled=not (plan_text or uploaded_files)):
-    with st.spinner("Analyzing your bridge development plan..."):
-        # Pass uploaded_images instead of image_data
-        analysis = analyze_bridge_plan(plan_text, uploaded_images)
-        if analysis:
-            display_analysis(analysis)
+# Create three columns with cards
+col1, col2, col3 = st.columns(3)
+
+# ROAD CONDITIONS
+with col1:
+    st.markdown('<div class="stCard">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Road Conditions</h2>', unsafe_allow_html=True)
+    
+    vehicle_number = st.text_input("Vehicle Number", key="vehicle_number")
+    
+    road_surface = st.selectbox(
+        "Road Surface Conditions",
+        ["Dry", "Wet", "Snow", "Ice", "Flood", "Mud"]
+    )
+    
+    road_type = st.selectbox(
+        "Road Type",
+        ["Motorway", "Dual Carriageway", "Single Carriageway", "Roundabout", "Traffic Calmed", "Urban Road"]
+    )
+    
+    road_class = st.selectbox(
+        "Road Class",
+        ["Motorway", "A Road", "B Road", "Minor Road", "Restricted Local Access Road"]
+    )
+    
+    area = st.selectbox(
+        "Urban or Rural Area",
+        ["Urban", "Rural"]
+    )
+    
+    junction_detail = st.selectbox(
+        "Junction Detail",
+        ["No Junction", "Roundabout", "Mini Roundabout", "T-Junction", "Staggered Junction", "Crossroads"]
+    )
+    
+    junction_control = st.selectbox(
+        "Junction Control",
+        ["Uncontrolled", "Authorised Person", "Traffic Signals", "Stop Sign", "Give Way"]
+    )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ENVIRONMENTAL CONDITIONS
+with col2:
+    st.markdown('<div class="stCard">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Environmental Conditions</h2>', unsafe_allow_html=True)
+    
+    weather = st.selectbox(
+        "Weather Conditions",
+        ["Clear", "Rainy", "Foggy", "Stormy", "Windy", "Hazy"]
+    )
+    
+    light = st.selectbox(
+        "Light Conditions",
+        ["Daylight", "Dark - Street Lights On", "Dark - Street Lights Off", "Dusk", "Dawn"]
+    )
+    
+    time_of_day = st.selectbox(
+        "Time of Day",
+        ["Early Morning", "Morning Rush Hour", "Late Morning", "Afternoon", "Evening Rush Hour", "Night", "Late Night"]
+    )
+    
+    ped_control = st.selectbox(
+        "Pedestrian Control",
+        ["None", "Pelican Crossing", "Zebra Crossing", "Footbridge", "Underpass"]
+    )
+    
+    ped_facilities = st.selectbox(
+        "Pedestrian Crossing Physical Facilities",
+        ["None", "Zebra Crossing", "Pelican Crossing", "Footbridge", "Underpass"]
+    )
+    
+    speed_limit = st.number_input("Speed Limit", min_value=0, max_value=120, value=30)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# VEHICLE & DRIVER INFORMATION
+with col3:
+    st.markdown('<div class="stCard">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Vehicle & Driver Information</h2>', unsafe_allow_html=True)
+    
+    num_vehicles = st.number_input("Number of Vehicles", min_value=1, max_value=10, value=1)
+    
+    vehicle_type = st.selectbox(
+        "Vehicle Type",
+        ["Car", "Motorcycle", "Bus", "Truck", "Van", "Auto-Rickshaw", "Bicycle", "Pedestrian"]
+    )
+    
+    vehicle_age = st.text_input("Vehicle Age")
+    
+    driver_age = st.number_input("Driver Age", min_value=16, max_value=100, value=30)
+    
+    driver_sex = st.selectbox(
+        "Driver Sex",
+        ["Male", "Female", "Other"]
+    )
+    
+    home_area = st.selectbox(
+        "Driver Home Area Type",
+        ["Residential", "Commercial", "Industrial", "Rural", "Suburban"]
+    )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# Submit button container with styling
+st.markdown('<div class="stCard" style="text-align: center;">', unsafe_allow_html=True)
+if st.button("Submit Data", key="submit"):
+    if not vehicle_number:
+        st.error("Please enter a vehicle number")
+    else:
+        data = {
+            "vehicle_number": vehicle_number,
+            "road_surface": road_surface,
+            "weather": weather,
+            "light": light,
+            "num_vehicles": num_vehicles,
+            "road_type": road_type,
+            "area": area,
+            "vehicle_type": vehicle_type,
+            "driver_age": driver_age,
+            "driver_sex": driver_sex,
+            "home_area": home_area,
+            "vehicle_age": vehicle_age,
+            "speed_limit": speed_limit,
+            "junction_detail": junction_detail,
+            "junction_control": junction_control,
+            "ped_control": ped_control,
+            "ped_facilities": ped_facilities,
+            "road_class": road_class,
+            "time_of_day": time_of_day
+        }
+        
+        try:
+            insert_data(data)
+            st.success("Data successfully submitted to the database!")
+        except Exception as e:
+            st.error(f"Error submitting data: {str(e)}")
+st.markdown('</div>', unsafe_allow_html=True)
