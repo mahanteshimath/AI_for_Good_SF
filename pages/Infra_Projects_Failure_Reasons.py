@@ -17,14 +17,15 @@ st.markdown("""
         }
         .section-header {
             color: #1F618D;
-            font-size: 2rem;
+            font-size: 2.4rem;
+            font-weight: bold;
             border-bottom: 2px solid #1F618D;
             padding-bottom: 10px;
             margin-top: 30px;
             margin-bottom: 10px;
         }
         .markdown-text {
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             line-height: 1.6;
         }
         .footer {
@@ -106,7 +107,6 @@ st.markdown('<div class="section-header">Conclusion</div>', unsafe_allow_html=Tr
 st.markdown("""
 India’s infrastructure holds immense potential, but recurring issues in design, execution, and accountability hinder progress. 
 Addressing these challenges with transparency, stricter audits, and improved governance can lead to safer and more reliable infrastructure.
-</div>
 """)
 
 # Footer
