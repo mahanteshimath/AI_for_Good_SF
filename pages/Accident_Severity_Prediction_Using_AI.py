@@ -463,8 +463,8 @@ if st.button("Submit Data to get prediction", key="submit"):
                 
                 # Display results with formatting
                 st.markdown(f'<div class="result-item">Vehicle Number: {veh_num}</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="result-item">Timestamp: {formatted_timestamp}</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="result-item">Accident Probability: <span class="{prob_class}">{probability:.2%}</span></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="result-item">Vehicle Passed by on Timestamp: {formatted_timestamp}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="result-item">Accident Probability: <span class="{prob_class}">{prob_value:.2%}</span></div>', unsafe_allow_html=True)
                 st.markdown(f'<div class="result-item">Accident Severity: {severity}</div>', unsafe_allow_html=True)
                 st.markdown(f'<div class="result-item">AI Analysis: {output}</div>', unsafe_allow_html=True)
                 
