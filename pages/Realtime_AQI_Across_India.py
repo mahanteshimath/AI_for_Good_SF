@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-import altair as alt
+import plotly.express as px
 import snowflake.connector
 from datetime import datetime
 import pytz
@@ -292,5 +292,13 @@ if not filtered_data.empty:
     # Visualizations
     st.write("### Trend all AQI metrix")
     st.line_chart(filtered_data.set_index("INSRT_TIMESTAMP")[["PM25", "PM10", "CO", "O3", "NO2", "SO2"]])
+
+    # Create a line chart with Plotly
+    fig = px.line(filtered_data, x='INSRT_TIMESTAMP', y=["PM25", "PM10", "CO", "O3", "NO2", "SO2"],
+                labels={"INSRT_TIMESTAMP": "Timestamp", "value": "Concentration (µg/m³)"},
+                title="Air Quality Data Over Time")
+
+    # Display the plot
+    st.plotly_chart(fig, use_container_width=True)
 else:
     st.warning("No data available for the selected filters.")
