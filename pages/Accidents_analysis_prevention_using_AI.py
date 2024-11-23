@@ -30,7 +30,6 @@ def execute_query(query):
     except Exception as e:
         st.error(f"Error executing query: {str(e)}")
         return None
-    
 
 
 st.title(":blue[🚗 Road Accidents Analysis in India (2019-2022)]")
