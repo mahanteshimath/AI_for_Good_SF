@@ -29,12 +29,12 @@ st.markdown("""
             line-height: 1.6;
             font-weight: bold;
         }
-        .footer {
-            font-size: 0.9rem;
-            color: #555;
-            text-align: center;
-            margin-top: 50px;
-        }
+        # .footer {
+        #     font-size: 0.9rem;
+        #     color: #555;
+        #     text-align: center;
+        #     margin-top: 50px;
+        # }
     </style>
 """, unsafe_allow_html=True)
 
