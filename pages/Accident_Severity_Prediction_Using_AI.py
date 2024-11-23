@@ -408,7 +408,7 @@ with col3:
         "Driver Home Area Type",
         ["Residential", "Commercial", "Industrial", "Rural", "Suburban"]
     )
-    st.markdown('</div>', unsafe_allow_html=True)
+    # st.markdown('</div>', unsafe_allow_html=True)
 
 # Submit button container with styling
 st.markdown('<div class="stCard" style="text-align: center;">', unsafe_allow_html=True)
