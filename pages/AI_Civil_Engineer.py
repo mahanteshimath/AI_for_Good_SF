@@ -3,10 +3,8 @@ import streamlit as st
 st.components.v1.html(
     """
     <iframe 
-        src="https://montys-multipdf-chat.streamlit.app/?embed_options=dark_theme" 
-        width="100%" 
-        height="800px" 
-        style="border:none;">
+        src="https://montys-multipdf-chat.streamlit.app/?embed=true" 
+        style="height: 800px; width: 100%; border: none;">
     </iframe>
     """,
     height=800,
