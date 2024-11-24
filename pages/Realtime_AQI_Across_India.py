@@ -10,7 +10,11 @@ current_time_ist = datetime.now(ist_timezone)
 current_time_ist = current_time_ist.strftime("%Y-%m-%d %H:%M:%S")
 
 
-# st.write("Current IST Time:", current_time_ist.strftime("%Y-%m-%d %H:%M:%S")) 
+col1,col2 = st.columns(2)
+with col1:
+    st.image("./src/DH1.png", caption="What we like", use_column_width=True)
+with col2:
+    st.image("./src/DH2.png", caption="This is Now", use_column_width=True)
 
 # Function to fetch AQI data
 def get_aqi_data(city, api_key):
@@ -194,7 +198,8 @@ df["PM2.5 (μg/m³)"] = pd.to_numeric(df["PM2.5 (μg/m³)"])
 st.title(":blue[ India LIVE AQI Dashboard 🌍]")
 st.subheader(":blue[Real-time Air Quality Index (AQI) across Indian states.]")
 
-st.subheader("Refresh data from weatherapi ")
+
+
 if st.button("Fetch and push latest AQI Data to snowflake"):
     create_table()
     insert_data_to_snowflake(df)
