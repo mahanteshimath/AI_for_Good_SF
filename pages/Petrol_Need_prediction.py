@@ -108,7 +108,7 @@ st.title("🛢️ India's Oil Demand Forecast Analysis (1999-2050)")
 # Key Metrics
 st.header("Key Metrics")
 col1, col2, col3, col4 = st.columns(4)
-Current_Demand=262
+Current_Demand=262.00
 with col1:
     st.metric("Current Demand (2023)", 
               f"{Current_Demand} MMT",
