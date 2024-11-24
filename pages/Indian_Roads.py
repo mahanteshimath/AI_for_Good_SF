@@ -70,10 +70,7 @@ fig = px.line(filtered_data, x="Year", y="Value", title="Yearly Trend", markers=
 st.plotly_chart(fig)
 
 
-
-
-st.title("Vehicle Registration Analysis")
-
+st.markdown(""------------"")
 
 st.title(":blue[Vehicle Registration Analysis 2018-2021]")
 Q1=f'''SELECT *
@@ -124,7 +121,7 @@ r2_expander.write(R2_DF)
 
 line_chart = px.line(R2_DF, x="YEAR", y="INDIA", title=f"{title}: All-India Trend", markers=True)
 st.plotly_chart(line_chart)
-
+st.markdown(""------------"")
 st.header("💡 Insights and Recommendations")
 st.markdown("""  
 
