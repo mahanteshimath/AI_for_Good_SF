@@ -170,7 +170,7 @@ fig.add_trace(go.Scatter(
     mode='lines',
     line_color='rgba(255,0,0,0)',
     name='95% Confidence Interval',
-    fillcolor='rgba(255,0,0,0.1)' , markers=True
+    fillcolor='rgba(255,0,0,0.1)'
 ))
 
 fig.update_layout(
