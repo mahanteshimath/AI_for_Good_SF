@@ -36,7 +36,7 @@ def execute_query(query):
     
 
 
-st.title(":blue[ Indian Road development (in KM)]")
+st.title(":blue[ 🛣️ Indian Road development (in KM)]")
 Q1=f'''SELECT INDIAN_ROAD_CATEGORY, "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023" FROM IND_DB.IND_SCH.T01_INDIAN_ROADS'''
 R1 = execute_query(Q1)
 r1_expander = st.expander("Data sets used in this entire analysis.")

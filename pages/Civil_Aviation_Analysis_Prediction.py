@@ -34,7 +34,7 @@ def execute_query(query):
         return None
     
 
-
+st.title(":blue[ ✈️ Civil Aviation Analysis 1990-2019 ✈️]")
 
 Q1=f'''SELECT * FROM  IND_DB.IND_SCH.V01_CIVIL_AVIATION_PASSENGER'''
 R1 = execute_query(Q1)
@@ -75,51 +75,9 @@ pivot_data = aviation_data_long.pivot(
 )
 fig_heatmap = px.imshow(pivot_data, aspect="auto", color_continuous_scale="Viridis", title="Heatmap")
 st.plotly_chart(fig_heatmap)
-
-# Predict Future Trends Using Snowflake
-st.title("Future Predictions")
-st.write("Forecasting passenger trends using Snowflake ML...")
-
-
-# # Forecast Query
-# def get_forecast_results(category):
-#     conn = get_snowflake_connection()
-#     query = f"""
-#         SELECT PREDICTED_VALUE, LOWER_BOUND, UPPER_BOUND, TIME 
-#         FROM TABLE(SNOWFLAKE.ML.FORECAST(
-#             SELECT VALUE, YEAR AS TIME 
-#             FROM YOUR_TABLE 
-#             WHERE CIVIL_AVIATION_PASSENGER_CATEGORY = '{category}',
-#             OUTPUT_FUTURE_LENGTH => 10
-#         ));
-#     """
-#     return pd.read_sql(query, conn)
-
-# # Fetch predictions for the selected category
-# try:
-#     forecast_data = get_forecast_results(selected_category)
-#     forecast_fig = px.line(
-#         forecast_data,
-#         x="TIME",
-#         y="PREDICTED_VALUE",
-#         title=f"Forecast for {selected_category}",
-#         error_y="UPPER_BOUND",
-#         error_y_minus="LOWER_BOUND"
-#     )
-#     st.plotly_chart(forecast_fig)
-# except Exception as e:
-#     st.error(f"Error fetching forecast data: {e}")
-
-# # Recommendations
-# st.title("Recommendations")
-# if max_growth_year["Year"] > 2018:
-#     st.write("**Recent Growth Spike:** Leverage marketing campaigns to maintain momentum.")
-# if min_growth_year["Year"] < 2010:
-#     st.write("**Historical Decline:** Investigate reasons for the decline and address operational issues.")
-# st.write("**General Recommendations:** Consider using new routes or improving customer services to boost passenger numbers.")
-
-
-
+st.markdown("""------------""")
+st.header("💡 Insights and Recommendations")
+st.markdown("""  """)
 
 st.markdown(
     '''
