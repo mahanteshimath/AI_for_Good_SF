@@ -51,32 +51,39 @@
 ---
 
 ## 🧩 Architecture  
+![alt text](image-1.png)
 
 1. **Data Ingestion**: Data collected from Snowflake, APIs, and custom uploads.  
 2. **Processing**: Data cleaning, validation, and embedding creation using Snowflake and Streamlit utilities.  
 3. **Visualization**: Dynamic dashboards with charts, heatmaps, and interactive visualizations.  
 4. **User Interaction**: Intuitive interface for entering inputs, viewing results, and exploring insights.  
+---
 
+## 📁 Project Structure  
+
+```plaintext
 ├── .devcontainer
-    └── devcontainer.json
+│   └── devcontainer.json
 ├── .streamlit
-    └── config.toml
+│   └── config.toml
 ├── Home.py
 ├── README.md
 ├── pages
-    ├── AI_Civil_Engineer.py
-    ├── Accident_Severity_Prediction_Using_AI.py
-    ├── Accidents_Analysis_Prevention_Using_AI.py
-    ├── Architecture.py
-    ├── Hypothesis.py
-    ├── Indian_Civil_Aviation.py
-    ├── Indian_Roads.py
-    ├── Indian_Trains.py
-    ├── Infra_Projects_Failure_Reasons.py
-    ├── Petrol_Need_prediction.py
-    ├── Realtime_AQI_Across_India.py
-    └── Snowflake_Powered_Accident_Analysis_bot.py
+│   ├── AI_Civil_Engineer.py
+│   ├── Accident_Severity_Prediction_Using_AI.py
+│   ├── Accidents_Analysis_Prevention_Using_AI.py
+│   ├── Architecture.py
+│   ├── Hypothesis.py
+│   ├── Indian_Civil_Aviation.py
+│   ├── Indian_Roads.py
+│   ├── Indian_Trains.py
+│   ├── Infra_Projects_Failure_Reasons.py
+│   ├── Petrol_Need_prediction.py
+│   ├── Realtime_AQI_Across_India.py
+│   └── Snowflake_Powered_Accident_Analysis_bot.py
+```
 
+---
 ---
 
 ## 🔥 Unique Highlights  
