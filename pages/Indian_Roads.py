@@ -121,7 +121,7 @@ r2_expander.write(R2_DF)
 
 line_chart = px.line(R2_DF, x="YEAR", y="INDIA", title=f"{title}: All-India Trend", markers=True)
 st.plotly_chart(line_chart)
-st.markdown(""------------"")
+st.markdown("""------------""")
 st.header("💡 Insights and Recommendations")
 st.markdown("""  
 
