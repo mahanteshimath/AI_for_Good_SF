@@ -110,9 +110,19 @@ bar_chart = px.bar(
 )
 st.plotly_chart(bar_chart)
 
+Q2=f'''SELECT TITLE,YEAR,INDIA FROM     IND_DB.IND_SCH.V01_IND_AUTOMOBILE_REGISTRATION_DATA
+     WHERE TITLE={title}
+     '''
+R2 = execute_query(Q2)
+r2_expander = st.expander("Data sets used in this entire analysis.")
+R2_DF = pd.DataFrame(R2)
+R2_DF.index = R2_DF.index + 1
+r2_expander.write(R2_DF)
+
+
 # Line Chart of All-India Registrations Over Years
 st.write("#### All-India Registrations Over the Years")
-line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend", markers=True)
+line_chart = px.line(R2_DF, x="YEAR", y="INDIA", title=f"{title}: All-India Trend", markers=True)
 st.plotly_chart(line_chart)
 
 st.header("💡 Insights and Recommendations")
