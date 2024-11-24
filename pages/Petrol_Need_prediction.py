@@ -160,7 +160,7 @@ fig.add_trace(go.Scatter(
     fill=None,
     mode='lines',
     line_color='rgba(255,0,0,0)',
-    showlegend=False, markers=True
+    showlegend=False
 ))
 
 fig.add_trace(go.Scatter(
