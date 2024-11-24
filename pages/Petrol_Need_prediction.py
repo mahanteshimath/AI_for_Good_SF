@@ -112,7 +112,7 @@ Current_Demand=262.00
 with col1:
     st.metric("Current Demand (2023)", 
               f"{Current_Demand} MMT",
-              f"{df['ACTUAL'].iloc[-1] - 262} MMT")
+              f"{262 - 262} MMT")
 
 with col2:
     forecast_2030 = df[df['DATE'].dt.year == 2030]['FORECAST'].values[0]
