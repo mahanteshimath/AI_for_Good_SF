@@ -412,7 +412,7 @@ with col3:
 
 # Submit button container with styling
 st.markdown('<div class="stCard" style="text-align: center;">', unsafe_allow_html=True)
-if st.button("Submit Data to get prediction", key="submit"):
+if st.button("Submit Data to get prediction", key="submit",type='primary'):
     if not vehicle_number:
         st.error("Please enter a vehicle number")
     else:
