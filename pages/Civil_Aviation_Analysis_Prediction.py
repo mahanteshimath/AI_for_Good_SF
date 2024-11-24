@@ -77,7 +77,52 @@ fig_heatmap = px.imshow(pivot_data, aspect="auto", color_continuous_scale="Virid
 st.plotly_chart(fig_heatmap)
 st.markdown("""------------""")
 st.header("💡 Insights and Recommendations")
-st.markdown("""  """)
+st.markdown(""" 
+### Analysis of Indian Civil Aviation Sector (1989-2019)
+
+#### Key Insights
+
+1. **Passenger Growth**
+   - **Domestic**: Passenger traffic rose from 9.5 million (1989) to 140.3 million (2019), a 1,375% growth.
+   - **International**: Increased from 7.7 million (1994) to 63.7 million (2019), a 727% rise.
+   - **Market Share**: Private airlines dominate domestic routes, carrying 107 million passengers by 2018 compared to 16 million by public carriers.
+
+2. **Operational Efficiency**
+   - **Load Factor**: Domestic load factor rose from 69% (1993) to 86% (2019), and international from 66% (1989) to 81% (2019).
+   - **Capacity**: Available seat kilometers have consistently grown, reflecting fleet expansion.
+
+3. **Market Competition**
+   - **Foreign Carriers**: In 2019, foreign airlines carried 38.1 million international passengers vs. 25.6 million by Indian airlines.
+   - **Private Sector Growth**: Private airlines carried over 120 million passengers by 2018.
+
+4. **Industry Resilience**
+   - The sector demonstrated strong recovery post-2001 aviation crisis, 2008 financial crisis, and fuel price fluctuations, showing consistent growth despite disruptions.
+
+#### Recommendations
+
+1. **Infrastructure Development**
+   - Expand airports, especially in tier-2 and tier-3 cities.
+   - Invest in advanced air traffic management and ground handling systems.
+
+2. **Market Competition**
+   - Develop policies to enhance competitiveness of Indian airlines.
+   - Encourage route optimization, focusing on underserved domestic and international routes.
+
+3. **Operational Efficiency**
+   - Support fleet modernization and sustainable practices.
+   - Improve crew scheduling and maintenance.
+
+4. **Regulatory Framework**
+   - Streamline licensing and reduce compliance burden.
+   - Encourage FDI and public-private partnerships.
+
+5. **Customer Experience**
+   - Standardize service quality and improve passenger handling.
+   - Promote digital transformation with improved booking and check-in systems.
+
+#### Future Outlook
+The sector is poised for continued growth due to rising middle-class population, increasing disposable income, business travel, and tourism. By addressing infrastructure and regulatory challenges, the sector can sustain its growth trajectory and meet future demand.
+ """)
 
 st.markdown(
     '''
