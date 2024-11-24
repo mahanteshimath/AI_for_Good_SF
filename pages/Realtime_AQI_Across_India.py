@@ -8,8 +8,6 @@ import pytz
 ist_timezone = pytz.timezone('Asia/Kolkata')
 current_time_ist = datetime.now(ist_timezone)
 current_time_ist = current_time_ist.strftime("%Y-%m-%d %H:%M:%S")
-
-
 col1,col2 = st.columns(2)
 with col1:
     st.image("./src/DH1.png", caption="What we like", use_column_width=True)
