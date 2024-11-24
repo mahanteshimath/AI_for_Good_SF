@@ -7,7 +7,7 @@ Here's a well-structured **README.md** for your app:
 **A Streamlit-powered AI application to analyze, predict, and improve India's infrastructure across diverse sectors using advanced AI techniques and data visualization.**  
 
 ---
-
+![alt text](image.png)
 ## 🚀 Features  
 
 1. **Accident Severity Prediction**  
