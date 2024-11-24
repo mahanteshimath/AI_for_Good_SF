@@ -124,12 +124,12 @@ if R1 is not None:
         with col1:
             current_demand = forecast_df['ACTUAL'].iloc[-1]
             st.metric("Current Demand (2023)", f"{262:.0f} MMT",
-                      f"{262 -0} MMT")
+                      f"{0} MMT")
 
         with col2:
             forecast_2030 = forecast_df[forecast_df['DATE'].dt.year == 2030]['FORECAST'].values[0]
             st.metric("Projected Demand (2030)", f"{forecast_2030:.0f} MMT",
-                      f"{forecast_2030 - current_demand:.1f} MMT")
+                      f"{forecast_2030 - 262:.1f} MMT")
 
         with col3:
             forecast_2040 = forecast_df[forecast_df['DATE'].dt.year == 2040]['FORECAST'].values[0]
