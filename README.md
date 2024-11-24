@@ -1,8 +1,5 @@
-Here's a well-structured **README.md** for your app:
 
----
-
-# Indian Infra AI Insights 🌉🇮🇳  
+# [INDIAN-INFRA-AI-INSIGHTS.STREAMLIT.APP](https://indian-infra-ai-insights.streamlit.app/)
 
 **A Streamlit-powered AI application to analyze, predict, and improve India's infrastructure across diverse sectors using advanced AI techniques and data visualization.**  
 
