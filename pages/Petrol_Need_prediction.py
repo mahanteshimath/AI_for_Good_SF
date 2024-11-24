@@ -118,7 +118,7 @@ with col2:
     forecast_2030 = df[df['DATE'].dt.year == 2030]['FORECAST'].values[0]
     st.metric("Projected Demand (2030)", 
               f"{forecast_2030:.0f} MMT",
-              f"{forecast_2030 - df['ACTUAL'].iloc[-1]:.1f} MMT")
+              f"{(forecast_2030 - 262):.1f} MMT")
 
 with col3:
     forecast_2040 = df[df['DATE'].dt.year == 2040]['FORECAST'].values[0]
