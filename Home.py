@@ -51,8 +51,8 @@ AI_Civil = st.Page(
 
 #"SF-MP Social impact"
 project_1_page = st.Page(
-    "pages/Train_Passengers_and_Prediction.py",
-    title="Train Passengers and Prediction",
+    "pages/Indian_Trains.py",
+    title="Indian Trains",
     icon=":material/train:",
 )
 

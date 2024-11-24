@@ -77,8 +77,7 @@ total_passengers = df_melted[df_melted['CATEGORY'] == 'Indian Railways - Number 
 suburban = df_melted[df_melted['CATEGORY'] == 'Indian Railways - Number of Passengers carried (Suburban) (Annual)']
 non_suburban = df_melted[df_melted['CATEGORY'] == 'Indian Railways - Number of Passengers carried (Non-Suburban) (Annual)']
 
-# Title and Description
-st.title('Indian Railways Passenger Analysis (1971-2022)')
+
 st.markdown("""
 This dashboard analyzes Indian Railways passenger data over five decades, including total passengers,
 suburban vs non-suburban travel, and average distance traveled.
