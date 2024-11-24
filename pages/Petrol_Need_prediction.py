@@ -212,8 +212,8 @@ st.markdown("""
 st.header("📈 Growth Rate Analysis")
 
 # Calculate growth rates
-historical_growth = (df['ACTUAL'].iloc[-1] / df['ACTUAL'].iloc[0]) ** (1/24) - 1
-forecast_growth = (df['FORECAST'].iloc[-1] / df['ACTUAL'].iloc[-1]) ** (1/27) - 1
+historical_growth = (262 / 73) ** (1/24) - 1
+forecast_growth = (471 / 73) ** (1/27) - 1
 
 col1, col2 = st.columns(2)
 
@@ -225,28 +225,31 @@ with col2:
     st.subheader("Projected Growth Rate (2024-2050)")
     st.metric("Annual Average", f"{forecast_growth*100:.1f}%")
 
-# Analysis and Insights
-st.header("📊 Key Insights")
 
-st.markdown("""
-1. **Increasing Import Dependency**
-   - Import dependency has risen from 54.8% in 1999 to 88.9% in 2023
-   - Domestic production has declined from 33 MMT to 29 MMT in the same period
-   
-2. **Production Trends**
-   - Domestic production peaked at 38 MMT during 2011-2014
-   - There's been a consistent decline in domestic production since 2014
-   
-3. **Import Growth**
-   - Imports have increased significantly from 40 MMT in 1999 to 233 MMT in 2023
-   - Brief decline in imports during 2020-21 (COVID-19 impact)
-   
-4. **Total Consumption**
-   - Overall oil need has grown from 73 MMT to 262 MMT (259% increase)
-   - Average annual growth rate of 5.4% in total consumption
-""")
+col3, col4 = st.columns(2)
+with col1:
+    st.header("📊 Key Insights")
+    st.markdown("""
+    1. **Increasing Import Dependency**
+    - Import dependency has risen from 54.8% in 1999 to 88.9% in 2023
+    - Domestic production has declined from 33 MMT to 29 MMT in the same period
+    
+    2. **Production Trends**
+    - Domestic production peaked at 38 MMT during 2011-2014
+    - There's been a consistent decline in domestic production since 2014
+    
+    3. **Import Growth**
+    - Imports have increased significantly from 40 MMT in 1999 to 233 MMT in 2023
+    - Brief decline in imports during 2020-21 (COVID-19 impact)
+    
+    4. **Total Consumption**
+    - Overall oil need has grown from 73 MMT to 262 MMT (259% increase)
+    - Average annual growth rate of 5.4% in total consumption
+    """)
+with col2:
+    st.image("./src/petrol_demad.png", caption="Petrol demand", use_column_width=True)
 
-# Recommendations
+
 st.header("💡 Recommendations")
 
 st.markdown("""
