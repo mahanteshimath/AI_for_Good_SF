@@ -158,47 +158,20 @@ st.markdown(article_content)
 st.markdown("""---------------------------------""")
 
 # Creating the budget allocation data as a DataFrame
-data = {
-    "Financial Year": [
-        "1999-2000", "2004-05", "2009-10", "2014-15", 
-        "2019-20", "2020-21", "2021-22", "2022-23", 
-        "2023-24", "2024-25"
-    ],
-    "Budget Allocation (in lakh crore)": [
-        0.55, 0.87, 1.0, 1.75, 
-        3.38, 4.39, 5.54, 7.5, 
-        10.0, 11.11
-    ],
-    "Notes": [
-        "Initial allocations for infrastructure projects.",
-        "Increase due to focus on rural and urban infrastructure.",
-        "Global financial crisis prompted increased spending.",
-        "Significant push under the new government.",
-        "Continued emphasis on infrastructure as part of economic growth strategy.",
-        "Response to COVID-19 with a focus on economic recovery.",
-        "Increased investment in roads, railways, and urban development.",
-        "Major projects in transportation and housing initiated.",
-        "Strong focus on sustainable infrastructure and green projects.",
-        "Marked increase to support extensive infrastructure initiatives across sectors."
-    ]
-}
-
-# Convert the data to a DataFrame
-df = pd.DataFrame(data)
-
-
-# df = pd.read_csv('src/InfraBudget.csv')
-
-# Set the title of the app
 st.title("Budget Allocation Over Financial Years")
-
+Q1='''SELECT * FROM IND_DB.IND_SCH.T01_INFRASTRUCTURE_BUDGET'''
+R1 = execute_query(Q1)
 r1_expander = st.expander("Budget Allocation Data")
-r1_expander.table(df)
+R1_DF = pd.DataFrame(R1)
+R1_DF.index = R1_DF.index + 1
+r1_expander.write(R1_DF)
+df = R1_DF
+
 plt.figure(figsize=(8, 6))
-bars = plt.bar(df["Financial Year"], df["Budget Allocation (in lakh crore)"], color='skyblue')
+bars = plt.bar(df["FINANCIAL_YEAR"], df["BUDGET_ALLOCATION"], color='skyblue')
 plt.title("Budget Allocation (in lakh crore) by Financial Year")
-plt.xlabel("Financial Year")
-plt.ylabel("Budget Allocation (in lakh crore)")
+plt.xlabel("FINANCIAL_YEAR")
+plt.ylabel("BUDGET_ALLOCATION")
 plt.xticks(rotation=45)
 plt.grid(axis='y')
 
