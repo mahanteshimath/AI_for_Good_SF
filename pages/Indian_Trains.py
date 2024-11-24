@@ -130,58 +130,63 @@ def calculate_cagr(start_value, end_value, num_years):
 total_cagr = calculate_cagr(total_passengers['Value'].iloc[0], 
                            total_passengers[total_passengers['Year']==2019]['Value'].values[0], 
                            2019-1971)
+st.markdown("""------------""")
+st.header("💡 Insights and Recommendations")
+st.markdown(""" 
 
-st.markdown(f"""
-### Growth Metrics
-- **Pre-pandemic CAGR (1971-2019)**: {total_cagr:.1f}%
-- **Peak Year**: {total_passengers.loc[total_passengers['Value'].idxmax(), 'Year']}
-- **Maximum Passengers**: {total_passengers['Value'].max()/1e9:.2f}B
+- **Pre-pandemic CAGR (1971–2019):** 2.6%  
+- **Peak Year:** 2019  
+- **Maximum Passengers:** 8.44 billion  
 
-### Key Observations
-1. **Long-term Growth Trend**
-   - Sustained growth from 1971 to 2019
-   - Average annual growth rate of {total_cagr:.1f}%
-   - Significant expansion in railway usage
+#### **Key Observations**  
+1. **Long-term Growth Trend**  
+   - Steady growth in railway usage from 1971 to 2019 with an average annual growth rate of 2.6%.  
+   - Passenger traffic has expanded significantly over the years, indicating sustained demand.  
+   - Economic and population growth have been key drivers of long-term railway growth.  
 
-2. **Travel Distance Evolution**
-   - Starting average distance (1971): {avg_distance['Value'].iloc[0]:.0f} km
-   - Latest average distance (2022): {avg_distance['Value'].iloc[-1]:.0f} km
-   - Shows increasing preference for longer journeys
+2. **Travel Distance Evolution**  
+   - The average travel distance increased from **49 km in 1971** to **168 km in 2022**.  
+   - Longer journeys have become more common, signaling shifts in travel preferences.  
+   - Increased demand for intercity and long-distance travel, reflecting socio-economic changes.  
 
-3. **Passenger Mix Trends**
-   - Suburban travel consistently higher than non-suburban
-   - Growing urbanization reflected in suburban numbers
-   - Non-suburban travel shows steady growth
-""")
+3. **Passenger Mix Trends**  
+   - Suburban travel has consistently outpaced non-suburban travel, driven by urbanization.  
+   - Non-suburban travel continues to show steady growth, with increased demand for regional and intercity routes.  
+   - The shift to suburban travel highlights the growing need for efficient urban transportation solutions.  
 
-# Recommendations
-st.subheader('Strategic Recommendations')
-st.markdown("""
-1. **Infrastructure Development**
-   - Invest in long-distance infrastructure to support increasing journey lengths
-   - Enhance suburban network capacity in major metropolitan areas
-   - Modernize existing infrastructure for better efficiency
+---
 
-2. **Service Optimization**
-   - Increase frequency of long-distance trains
-   - Optimize suburban schedules during peak hours
-   - Implement dynamic pricing based on demand patterns
+### Strategic Recommendations  
 
-3. **Technology Integration**
-   - Deploy smart ticketing systems
-   - Implement real-time passenger information systems
-   - Use data analytics for predictive maintenance
+#### **1. Infrastructure Development**  
+- **Long-Distance Infrastructure:** Build or enhance long-distance railway lines to support growing demand for longer journeys.  
+- **Suburban Network Expansion:** Invest in expanding suburban networks in high-density metropolitan areas.  
+- **Modernization:** Upgrade existing stations, tracks, and facilities to enhance operational efficiency.  
 
-4. **Capacity Enhancement**
-   - Add more coaches to existing trains
-   - Introduce new routes in high-demand corridors
-   - Upgrade stations to handle increased passenger flow
+#### **2. Service Optimization**  
+- **Train Frequency:** Increase the frequency of long-distance trains to improve accessibility and reduce congestion.  
+- **Peak Hour Optimization:** Adjust suburban train schedules during peak times to better accommodate commuter traffic.  
+- **Dynamic Pricing:** Introduce flexible ticket pricing based on demand patterns to optimize revenue and manage capacity.  
 
-5. **Post-Pandemic Recovery**
-   - Focus on safety measures and passenger confidence
-   - Implement flexible capacity management
-   - Develop contingency plans for future disruptions
-""")
+#### **3. Technology Integration**  
+- **Smart Ticketing:** Implement digital and smart ticketing systems to streamline the booking process and reduce operational costs.  
+- **Real-Time Passenger Information:** Deploy real-time tracking and communication systems for better passenger experience.  
+- **Predictive Maintenance:** Use data analytics and AI to predict maintenance needs, minimizing downtime and improving reliability.  
+
+#### **4. Capacity Enhancement**  
+- **Train Expansion:** Add more coaches to existing trains to increase capacity and accommodate growing demand.  
+- **New Routes:** Introduce new train routes in high-demand areas to enhance connectivity and ease congestion.  
+- **Station Upgrades:** Modernize stations to handle increased passenger flow efficiently and enhance customer experience.  
+
+#### **5. Post-Pandemic Recovery**  
+- **Safety Measures:** Implement stringent safety protocols to ensure passenger confidence and maintain public health standards.  
+- **Flexible Capacity Management:** Introduce flexible seating and train schedules to cater to fluctuating demand due to potential future disruptions.  
+- **Contingency Planning:** Develop comprehensive contingency strategies to handle future disruptions and ensure operational continuity.  
+
+
+
+
+ """)
 
 
 
