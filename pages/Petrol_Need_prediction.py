@@ -226,6 +226,37 @@ with col2:
     st.metric("Annual Average", f"{forecast_growth*100:.1f}%")
 
 
+# Trend Analysis
+st.header("📈 Production and Import Trend Analysis")
+
+Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
+R1 = execute_query(Q1)
+r1_expander = st.expander("Data sets used in this entire analysis.")
+R1_DF = pd.DataFrame(R1)
+R1_DF.index = R1_DF.index + 1
+r1_expander.write(R1_DF)
+
+
+df=R1_DF
+
+# Calculate year-over-year changes
+df['Production_Change'] = df['DOMESTIC_CRUDE_OIL_PRODUCTION'].pct_change() * 100
+df['Import_Change'] = df['IMPORTS_OF_CRUDE_OIL'].pct_change() * 100
+
+# Recent trends
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Recent Production Trend")
+    recent_prod = df['Production_Change'].iloc[-5:]
+    st.line_chart(recent_prod)
+
+with col2:
+    st.subheader("Recent Import Trend")
+    recent_imp = df['Import_Change'].iloc[-5:]
+    st.line_chart(recent_imp)
+
+
 col3, col4 = st.columns(2)
 with col1:
     st.header("📊 Key Insights")
@@ -278,36 +309,6 @@ st.markdown("""
    - Develop strategic partnerships with oil-producing nations
    - Invest in overseas oil assets
 """)
-
-# Trend Analysis
-st.header("📈 Trend Analysis")
-
-Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
-R1 = execute_query(Q1)
-r1_expander = st.expander("Data sets used in this entire analysis.")
-R1_DF = pd.DataFrame(R1)
-R1_DF.index = R1_DF.index + 1
-r1_expander.write(R1_DF)
-
-
-df=R1_DF
-
-# Calculate year-over-year changes
-df['Production_Change'] = df['DOMESTIC_CRUDE_OIL_PRODUCTION'].pct_change() * 100
-df['Import_Change'] = df['IMPORTS_OF_CRUDE_OIL'].pct_change() * 100
-
-# Recent trends
-col1, col2 = st.columns(2)
-
-with col1:
-    st.subheader("Recent Production Trend")
-    recent_prod = df['Production_Change'].iloc[-5:]
-    st.line_chart(recent_prod)
-
-with col2:
-    st.subheader("Recent Import Trend")
-    recent_imp = df['Import_Change'].iloc[-5:]
-    st.line_chart(recent_imp)
 
 
 st.markdown(
