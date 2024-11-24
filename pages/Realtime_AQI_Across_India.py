@@ -312,6 +312,49 @@ if not filtered_data.empty:
 else:
     st.warning("No data available for the selected filters.")
 
+st.header("💡 Recommendations")
+st.image("./src/AQI.jpeg", caption="10 AI-specific ways to reduce air pollution in Delhi")
+st.markdown("""
+Here are **10 AI-specific ways to reduce air pollution in Delhi**, tailored to its challenges:
+
+1. **Real-time Air Quality Forecasting**  
+   AI can analyze data from Delhi's air quality sensors (like SAFAR) to predict pollution levels and issue health advisories. This allows residents to plan activities during low-pollution hours and helps policymakers enforce short-term measures.
+
+2. **Traffic Congestion Reduction**  
+   AI can optimize Delhi's traffic flow by integrating data from ITS (Intelligent Transport Systems), cameras, and GPS. Dynamic signal adjustments, congestion alerts, and promoting alternate routes can reduce vehicular emissions, a significant contributor to Delhi's air pollution.
+
+3. **Reducing Stubble Burning Impact**  
+   AI models can predict wind patterns and the effect of stubble-burning smoke from neighboring states on Delhi’s air quality. This can help authorities coordinate preventive measures like water sprinkling and cloud seeding in advance.
+
+4. **Identifying High-Emission Vehicles**  
+   Using AI-powered cameras at major checkpoints (like Delhi-Gurugram or Delhi-Noida borders), authorities can monitor and restrict entry of non-compliant vehicles (e.g., older or diesel vehicles) to reduce tailpipe emissions.
+
+5. **Industrial Pollution Monitoring**  
+   AI can track emissions from factories in Delhi and surrounding NCR regions using IoT sensors and satellite data. Non-compliance alerts can help authorities enforce emission norms and shut down illegal polluting units.
+
+6. **Optimizing Waste Management**  
+   AI systems can streamline waste collection and disposal in Delhi by identifying hotspots for illegal garbage burning and recommending efficient collection routes, reducing harmful emissions.
+
+7. **Promoting Green Cover**  
+   AI can help identify regions in Delhi where planting trees will have the maximum impact on air quality. Machine learning models can predict the effectiveness of different tree species in absorbing pollutants like PM2.5 and PM10.
+
+8. **Monitoring and Reducing Construction Dust**  
+   AI-powered drones can monitor construction sites in Delhi to ensure compliance with dust control measures (e.g., covering materials, using water sprinklers). Automated alerts can penalize violators, reducing PM levels.
+
+9. **Public Awareness Campaigns**  
+   AI chatbots and mobile apps can provide Delhi residents with tailored pollution reduction tips, such as using public transport, carpooling, and avoiding wood or coal-burning heaters in winters.
+
+10. **Cleaner Energy for Public Transport**  
+    AI can optimize the deployment of Delhi’s electric buses by analyzing commuter patterns and identifying routes where replacing diesel buses with electric ones will have the most significant environmental impact.
+
+### Immediate AI-driven Initiatives:  
+- Integrate AI with the **Delhi AQI Dashboard** for predictive insights.  
+- Deploy AI cameras for enforcing **GRAP (Graded Response Action Plan)** measures.  
+- Use satellite monitoring to track real-time stubble-burning impacts.  
+
+These measures can directly address Delhi's primary pollution sources, like vehicular emissions, construction dust, and stubble burning, to make the city more livable.
+
+""")
 
 st.markdown(
     '''
