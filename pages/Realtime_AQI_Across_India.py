@@ -10,9 +10,9 @@ current_time_ist = datetime.now(ist_timezone)
 current_time_ist = current_time_ist.strftime("%Y-%m-%d %H:%M:%S")
 col1,col2 = st.columns(2)
 with col1:
-    st.image("./src/DH1.png", caption="What we like", use_column_width=True)
+    st.image("./src/DH1.PNG", caption="What we like", use_column_width=True)
 with col2:
-    st.image("./src/DH2.png", caption="This is Now", use_column_width=True)
+    st.image("./src/DH2.PNG", caption="This is Now", use_column_width=True)
 
 # Function to fetch AQI data
 def get_aqi_data(city, api_key):

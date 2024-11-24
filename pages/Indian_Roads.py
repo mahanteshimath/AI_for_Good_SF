@@ -153,8 +153,45 @@ st.write("#### All-India Registrations Over the Years")
 line_chart = px.line(df[df["TITLE"] == title], x="YEAR", y="INDIA", title=f"{title}: All-India Trend", markers=True)
 st.plotly_chart(line_chart)
 
+st.header("💡 Insights and Recommendations")
+st.markdown("""  
+
+### Insights and Recommendations for Vehicle Registration Analysis (2018–2021)
+
+1. **Overall National Trend**:
+   - Vehicle registrations peaked in 2018 (47.33 million) and steadily declined in subsequent years.
+   - The sharpest drop occurred in 2020 (35.02 million), likely due to the COVID-19 pandemic, with a slight recovery in 2021 (35.41 million).
+
+2. **State-Wise Trends**:
+   - **Consistently High Registrations**:
+     - States like **Uttar Pradesh**, **Maharashtra**, and **Tamil Nadu** had the highest registrations across all years, contributing significantly to national totals.
+   - **Significant Declines**:
+     - States like **Delhi** and **Kerala** showed notable decreases in registrations post-2018, reflecting potential market saturation or economic impacts.
+   - **Smaller States**:
+     - States like **Sikkim**, **Goa**, and **Arunachal Pradesh** contributed marginally to the totals but showed consistent patterns year-on-year.
+
+3. **Impact of the Pandemic (2020)**:
+   - Vehicle registrations declined across all states, with smaller states seeing the steepest relative drops.
+   - Economic uncertainties and mobility restrictions were likely drivers of this decline.
 
 
+---
+
+#### Recommendations
+1. **Policy Interventions for Recovery**:
+   - **Tax Incentives**: Introduce temporary tax benefits for vehicle purchases to stimulate demand, especially in states with significant drops.
+   - **Support for EV Adoption**: Leverage the recovery to promote electric vehicle registrations, focusing on states like Delhi, which already show EV momentum.
+
+2. **Targeted State Policies**:
+   - **Underperforming States**: Focus on states like **Bihar**, **Jharkhand**, and **Odisha** to explore barriers to vehicle adoption and offer localized incentives.
+   - **Small States**: Encourage vehicle leasing models in smaller states like **Goa** and **Sikkim** to address affordability concerns.
+
+3. **Post-Pandemic Adjustments**:
+   - Collaborate with vehicle manufacturers to boost financing options for consumers impacted during the pandemic.
+   - Introduce rural-focused vehicle financing schemes to enhance registrations in states like **Uttar Pradesh** and **Bihar**.
+
+
+""")
 
 
 
