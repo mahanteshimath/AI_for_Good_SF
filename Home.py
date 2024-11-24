@@ -63,8 +63,8 @@ project_2_page = st.Page(
 )
 
 project_3_page = st.Page(
-    "pages/Civil_Aviation_Analysis_Prediction.py",
-    title="Civil Aviation Analysis Prediction",
+    "pages/Indian_Civil_Aviation.py",
+    title="Indian Civil Aviation",
     icon=":material/flight:",
 )
 
