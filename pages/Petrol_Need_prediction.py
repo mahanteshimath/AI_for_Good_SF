@@ -120,7 +120,7 @@ if R1 is not None:
         # Key Metrics for Forecast
         st.header("Key Metrics")
         col1, col2, col3, col4 = st.columns(4)
-
+        current_demand=262
         with col1:
             current_demand = forecast_df['ACTUAL'].iloc[-1]
             st.metric("Current Demand (2023)", f"{current_demand:.0f} MMT",
