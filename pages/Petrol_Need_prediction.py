@@ -178,7 +178,7 @@ fig.update_layout(
     xaxis_title="Year",
     yaxis_title="Oil Demand (MMT)",
     height=600,
-    hovermode='x unified', markers=True
+    hovermode='x unified'
 )
 
 st.plotly_chart(fig, use_container_width=True)
