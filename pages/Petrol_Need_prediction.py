@@ -5,13 +5,13 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
 
-# Configure Streamlit theme
-st.set_page_config(
-    page_title="India Oil Demand Forecast",
-    page_icon="⛽",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+# # Configure Streamlit theme
+# st.set_page_config(
+#     page_title="India Oil Demand Forecast",
+#     page_icon="⛽",
+#     layout="wide",
+#     initial_sidebar_state="expanded"
+# )
 
 # Custom CSS
 st.markdown("""
