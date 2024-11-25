@@ -239,8 +239,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Default Values
-default_state = "Andhra Pradesh"
-default_city = "Vijayawada"
+
+default_state = "Delhi"
+default_city = "New Delhi"
 
 # Sidebar Filters
 state_filter = st.selectbox("Select CITY", df["CITY"].unique(), index=df["CITY"].unique().tolist().index(default_city))
