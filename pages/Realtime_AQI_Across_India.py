@@ -116,6 +116,7 @@ def insert_data_to_snowflake(dataframe):
             ))
         conn.commit()
         st.success(f"AQI data fetched as on IST Time: {current_time_ist}")
+        st.balloons()
         conn.close()
     except Exception as e:
         st.error(f"Error inserting data to Snowflake: {str(e)}")
