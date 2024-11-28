@@ -3,7 +3,7 @@ st.title("🤖 AI assistant specialized in Civil 🌉 Engineering")
 st.components.v1.html(
     """
     <iframe 
-        src="https://montys-multipdf-chat.streamlit.app//?embed=true&embed_options=hide_loading_screen" 
+        src="https://ai-civil-engineer.streamlit.app//?embed=true&embed_options=hide_loading_screen" 
         style="height: 800px; width: 100%; border: none;">
     </iframe>
     """,
