@@ -7,3 +7,9 @@ https://yy95703.ap-south-1.aws.snowflakecomputing.com
 
 https://tmb92380.snowflakecomputing.com
 GVITCQJ.LUB02801
+Give NH Accidents in 2019
+
+Give NH Accidents in 2022
+
+%age growth of NH Accidents in 2022 vs NH Accidents in 2019
+
