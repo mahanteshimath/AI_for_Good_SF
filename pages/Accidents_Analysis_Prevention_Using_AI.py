@@ -82,7 +82,8 @@ yearly_data = pd.DataFrame({
     'Year': [2019, 2022],
     'Total Accidents': [437396, 394163],
     'Fatalities': [151113, 131714],
-    'Injuries': [469418, 380596]
+    'Injuries': [469418, 380596],
+    'NH Accidents':[146286,151997]
 })
 
 # Create data for causes
@@ -130,7 +131,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 # Key Metrics in 2022
-st.subheader("Key Metrics (2022)")
+st.subheader("Key Metrics (2019 vs 2022)")
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric("Total Accidents", "394,163", "12.5% ↑")
@@ -139,7 +140,7 @@ with col2:
 with col3:
     st.metric("Injuries", "380,596", "15.5% ↑")
 with col4:
-    st.metric("NH Accidents", "33.4%", "of total accidents")
+    st.metric("NH Accidents", "1,51,997", "40.8% ↑ ")
 
 # Dashboard Layout
 col1, col2 = st.columns(2)
@@ -148,10 +149,10 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("Yearly Comparison (2019 vs 2022)")
     fig_yearly = px.bar(yearly_data.melt(id_vars=['Year'], 
-                                       value_vars=['Total Accidents', 'Fatalities', 'Injuries']),
+                                       value_vars=['Total Accidents', 'Fatalities', 'Injuries','NH Accidents']),
                        x='variable', y='value', color='Year', 
                        barmode='group',
-                       color_discrete_sequence=['#2C3E50', '#E74C3C'],
+                       color_discrete_sequence=['#2C3E50', '#E74C3C', '#3498DB'],
                        title='Road Accident Statistics Comparison')
     fig_yearly.update_layout(
         height=400,
