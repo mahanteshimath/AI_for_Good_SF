@@ -140,7 +140,7 @@ with col2:
 with col3:
     st.metric("Injuries", "380,596", "15.5% ↑")
 with col4:
-    st.metric("NH Accidents", "1,51,997", "40.8% ↑ ")
+    st.metric("NH Accidents", "1,51,997", "3.9% ↑ ")
 
 # Dashboard Layout
 col1, col2 = st.columns(2)
