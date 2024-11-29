@@ -131,7 +131,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 # Key Metrics in 2022
-st.subheader("Key Metrics (2019 vs 2022)")
+st.subheader("Accidents Key Metrics 2022 (2019 vs 2022)")
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric("Total Accidents", "394,163", "12.5% ↑")
