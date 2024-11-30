@@ -202,6 +202,8 @@ st.subheader(":blue[Real-time Air Quality Index (AQI) across Indian states.]")
 if st.button("Fetch and push latest AQI Data to snowflake"):
     create_table()
     insert_data_to_snowflake(df)
+    DY_REFRESH=f'''ALTER DYNAMIC TABLE IDENTIFIER('IND_DB.IND_SCH.T01_DYNAMIC_AQI_FOR_INDIAN_STATES') REFRESH'''
+    execute_query(DY_REFRESH)
 
 
 Q1=f'''SELECT * FROM V01_AQI_FOR_INDIAN_STATES'''
