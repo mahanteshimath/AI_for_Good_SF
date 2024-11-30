@@ -88,8 +88,8 @@ yearly_data = pd.DataFrame({
 
 # Create data for causes
 causes_2019 = pd.DataFrame({
-    'Cause': ['Overspeeding', 'Other Causes', 'Dangerous Driving', 'Poor Weather', 'Vehicle Defects'],
-    'Percentage': [34.4, 25.6, 24.8, 8.7, 6.5]
+    'Cause': ['Overspeeding','Driving on wrong side','Use of mobile phone','Drunken driving','Others','Jumping red light'],
+    'Percentage': [67.3,6.1,3.3,3.5,18.6,1.2]
 })
 
 # Create peak hours data
@@ -164,7 +164,7 @@ with col1:
 
 # Causes Pie Chart
 with col2:
-    st.subheader("Major Causes of Accidents (2019)")
+    st.subheader("Major Causes of Accident-Kills (2019)")
     fig_causes = px.pie(causes_2019, values='Percentage', names='Cause',
                        title='Distribution of Accident Causes',
                        color_discrete_sequence=px.colors.qualitative.Set3)
