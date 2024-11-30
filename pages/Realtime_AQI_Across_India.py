@@ -206,7 +206,7 @@ if st.button("Fetch and push latest AQI Data to snowflake"):
     execute_query(DY_REFRESH)
 
 
-Q1=f'''SELECT * FROM V01_AQI_FOR_INDIAN_STATES'''
+Q1=f'''SELECT * FROM IND_DB.IND_SCH.T01_DYNAMIC_AQI_FOR_INDIAN_STATES'''
 R1 = execute_query(Q1)
 r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
