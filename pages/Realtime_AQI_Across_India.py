@@ -256,7 +256,7 @@ filtered_data = df[(df["CITY"] == state_filter)]
 if not filtered_data.empty:
     # Metrics Section
     latest_entry = filtered_data.iloc[-1]
-    st.subheader(f"Air Quality Metrics for  {state_filter} as of :  "+ latest_entry['INSRT_TIMESTAMP']")
+    st.subheader(f"Air Quality Metrics for  {state_filter} as of :  {latest_entry['INSRT_TIMESTAMP']}")
     
     # metric_html = f"""
     #     <div class="metric-container">
