@@ -125,9 +125,16 @@ if session is not None:
         for doc in docs_available:
             list_docs.append(doc["name"])
         st.dataframe(list_docs)
+    st.markdown("""
+    # Sample Prompts/Questions
 
-    st.divider()
-    st.write("### Sample Questions")
+    1. **GIVE TOP 10 SURPRISING ACCIDENTS STATS FROM ROAD ACCIDENTS IN INDIA 2019**  
+    2. **GIVE TOP 10 SURPRISING ACCIDENTS STATS FROM ROAD ACCIDENTS IN INDIA 2022**
+    3. **Give NH Accidents in 2019**  
+    4. **Give NH Accidents in 2022**  
+    5. **%age growth of NH Accidents in 2022 vs NH Accidents in 2019**
+
+    """)
     st.divider()
     # Initialize chat messages if needed
     if st.session_state.clear_conversation or "messages" not in st.session_state:
