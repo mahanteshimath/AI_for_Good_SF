@@ -50,7 +50,7 @@ if session is not None:
         st.selectbox('Select your model:', (
             'mixtral-8x7b', 'snowflake-arctic', 'mistral-large',
             'llama3-8b', 'llama3-70b', 'reka-flash', 
-            'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name")
+            'mistral-7b', 'llama2-70b-chat', 'gemma-7b'), key="model_name",index='llama3-70b')
 
         # Chat history usage
         st.checkbox('Do you want that I remember the chat history?', key="use_chat_history", value=True)
