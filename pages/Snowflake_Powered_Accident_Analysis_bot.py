@@ -127,7 +127,8 @@ if session is not None:
         st.dataframe(list_docs)
 
     st.divider()
-
+    st.write("### Sample Questions")
+    st.divider()
     # Initialize chat messages if needed
     if st.session_state.clear_conversation or "messages" not in st.session_state:
         st.session_state.messages = []
