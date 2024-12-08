@@ -110,7 +110,9 @@ Addressing these challenges with transparency, stricter audits, and improved gov
 """)
 
 # Footer
-st.markdown('<div class="footer">**Sources:** Compiled from trusted publications such as The Wire, NDTV, Business Today, and The Guardian.</div>', unsafe_allow_html=True)
+st.markdown("""**Sources:** Compiled from trusted publications such as The Wire, NDTV, Business Today, and The Guardian.
+               -[All source link](https://docs.google.com/document/d/1FuvSsZJzO3zDfeG8atkLHO5U0EA1Hq5_WNsir3CNS8U/edit?usp=sharing)
+            """)
 
 
 
