@@ -158,7 +158,7 @@ st.markdown(article_content)
 st.markdown("""---------------------------------""")
 
 # Creating the budget allocation data as a DataFrame
-st.title("Budget Allocation Over Financial Years")
+st.title("Budget Allocation in infrastructure(in lakh crore) by Financial Year")
 Q1='''SELECT * FROM IND_DB.IND_SCH.T01_INFRASTRUCTURE_BUDGET'''
 R1 = execute_query(Q1)
 r1_expander = st.expander("Budget Allocation Data")
@@ -169,7 +169,7 @@ df = R1_DF
 
 plt.figure(figsize=(8, 6))
 bars = plt.bar(df["FINANCIAL_YEAR"], df["BUDGET_ALLOCATION"], color='skyblue')
-plt.title("Budget Allocation (in lakh crore) by Financial Year")
+plt.title("Budget Allocation in infrastructure(in lakh crore) by Financial Year")
 plt.xlabel("FINANCIAL_YEAR")
 plt.ylabel("BUDGET_ALLOCATION")
 plt.xticks(rotation=45)
