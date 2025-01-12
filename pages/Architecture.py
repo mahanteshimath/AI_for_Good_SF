@@ -7,7 +7,35 @@ import streamlit.components.v1 as components
 with open("./src/Architectureembed.txt", "r") as file:
     html_content = file.read()
 
-
+st.markdown(
+    """
+    <style>
+    .button {
+        display: inline-block;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px #999;
+    }
+    .button:hover {background-color: #45a049}
+    .button:active {
+        background-color: #45a049;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+    </style>
+    
+    <a href="https://github.com/mahanteshimath/AI_for_Good_SF/stargazers" target="_blank" class="button">⭐ Please give a star to motivate</a>
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown("[⭐Please give star to motivate](https://github.com/mahanteshimath/AI_for_Good_SF/stargazers)", unsafe_allow_html=True)
 # Display the HTML content as an embedded diagram in Streamlit
