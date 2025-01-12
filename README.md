@@ -3,6 +3,7 @@
 
 **A Snowflake, Streamlit-powered AI application to analyze, predict, and improve India's infrastructure across diverse sectors using advanced AI techniques and data visualization.**  
 
+[⭐Please give start to motivate me](https://github.com/mahanteshimath/AI_for_Good_SF/stargazers)
 ---
 ![alt text](image.png)
 ## 🚀 Features  
