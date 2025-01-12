@@ -9,7 +9,7 @@ with open("./src/Architectureembed.txt", "r") as file:
 
 
 
-st.markdown("[⭐Please start to motivate me](https://github.com/mahanteshimath/AI_for_Good_SF/stargazers)", unsafe_allow_html=True)
+st.markdown("[⭐Please give star to motivate](https://github.com/mahanteshimath/AI_for_Good_SF/stargazers)", unsafe_allow_html=True)
 # Display the HTML content as an embedded diagram in Streamlit
 components.html(html_content, width=800, height=600)
 
