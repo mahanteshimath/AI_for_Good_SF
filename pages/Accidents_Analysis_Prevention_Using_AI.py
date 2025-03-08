@@ -36,7 +36,8 @@ st.title(":blue[🚗 Road Accidents Analysis in India (2019-2022)]")
 
 def create_accident_visualization():
     Q1=f'''SELECT * FROM IND_DB.IND_SCH.T01_ROAD_ACC_2019_2022'''
-    R1 = execute_query(Q1)
+    # R1 = execute_query(Q1)
+    R1 = pd.read_csv('src/T01_ROAD_ACC_2019_2022.csv')
     r1_expander = st.expander("Data sets used in this entire analysis.")
     R1_DF = pd.DataFrame(R1)
     R1_DF.index = R1_DF.index + 1
