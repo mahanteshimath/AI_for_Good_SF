@@ -33,7 +33,7 @@ def execute_query(query):
 st.title(":blue[⛽ Petrol Need Prediction Till 2050 ]" )
 Q1='''SELECT * FROM IND_DB.IND_SCH.T01_IND_OIL_DEPENDENCY'''
 # R1 = execute_query(Q1)
-R1 = pd.read_csv('/src/T01_IND_OIL_DEPENDENCY.csv')
+R1 = pd.read_csv('src/T01_IND_OIL_DEPENDENCY.csv')
 r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
 R1_DF.index = R1_DF.index + 1
