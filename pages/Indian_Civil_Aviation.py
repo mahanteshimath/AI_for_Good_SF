@@ -38,7 +38,7 @@ st.title(":blue[ ✈️ Civil Aviation Analysis 1990-2019 ✈️]")
 
 Q1=f'''SELECT * FROM  IND_DB.IND_SCH.V01_CIVIL_AVIATION_PASSENGER'''
 # R1 = execute_query(Q1)
-R1 = pd.read_csv('/src/V01_CIVIL_AVIATION_PASSENGER.csv')
+R1 = pd.read_csv('/workspaces/AI_for_Good_SF/src/V01_CIVIL_AVIATION_PASSENGER.csv')
 r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
 R1_DF.index = R1_DF.index + 1
