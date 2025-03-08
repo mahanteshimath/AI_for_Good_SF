@@ -79,7 +79,8 @@ Q1=f'''SELECT *
 FROM
     IND_DB.IND_SCH.V01_IND_AUTOMOBILE_REGISTRATION_DATA
      '''
-R1 = execute_query(Q1)
+R1 = pd.read_csv('src/V01_IND_AUTOMOBILE_REGISTRATION_DATA.csv')
+# R1 = execute_query(Q1)
 r1_expander = st.expander("Data sets used in this entire analysis.")
 R1_DF = pd.DataFrame(R1)
 R1_DF.index = R1_DF.index + 1
