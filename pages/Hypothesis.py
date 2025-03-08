@@ -160,7 +160,8 @@ st.markdown("""---------------------------------""")
 # Creating the budget allocation data as a DataFrame
 st.title("Budget Allocation in infrastructure(in lakh crore) by Financial Year")
 Q1='''SELECT * FROM IND_DB.IND_SCH.T01_INFRASTRUCTURE_BUDGET'''
-R1 = execute_query(Q1)
+# R1 = execute_query(Q1)
+R1 = pd.read_csv('src/T01_INFRASTRUCTURE_BUDGET.csv')
 r1_expander = st.expander("Budget Allocation Data")
 R1_DF = pd.DataFrame(R1)
 R1_DF.index = R1_DF.index + 1
